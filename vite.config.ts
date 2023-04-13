@@ -8,6 +8,6 @@ export default defineConfig({
     environment: "happy-dom",
     environmentMatchGlobs: [["**/*.dom.test.{js,ts}", "happy-dom"]],
     globals: true,
-    // setupFiles: "./tests/setup-dom-env.ts",
+    setupFiles: "./tests/setup-dom-env.ts",
   },
 });
