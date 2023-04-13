@@ -21,25 +21,25 @@ describe("Safe guards", () => {
 });
 
 describe("Rendering", () => {
-  it('(on) Switch should have a slot prop', () => {
+  it("(on) Switch should have a slot prop", () => {
     render(svelte`
       <Switch checked={true} on:change={console.log} let:checked>
         <span>{checked ? 'On' : 'Off'}</span>
       </Switch>
-    `)
+    `);
 
-    assertSwitch({ state: SwitchState.On, textContent: 'On' })
-  })
+    assertSwitch({ state: SwitchState.On, textContent: "On" });
+  });
 
-  it('(off) Switch should have a slot prop', () => {
+  it("(off) Switch should have a slot prop", () => {
     render(svelte`
       <Switch checked={false} on:change={console.log} let:checked>
         <span>{checked ? 'On' : 'Off'}</span>
       </Switch>
-    `)
+    `);
 
-    assertSwitch({ state: SwitchState.Off, textContent: 'Off' })
-  })
+    assertSwitch({ state: SwitchState.Off, textContent: "Off" });
+  });
 
   it("should be possible to render an (on) Switch using an `as` prop", () => {
     render(svelte`
@@ -60,7 +60,7 @@ describe("Rendering", () => {
       <Switch checked={false} on:change={console.log}>
         <span>Enable notifications</span>
       </Switch>
-    `)
+    `);
     assertSwitch({ state: SwitchState.Off, label: "Enable notifications" });
   });
 
@@ -232,7 +232,7 @@ describe("Keyboard interactions", () => {
           <Switch checked={false} on:change={console.log} />
           <button id="btn">Other element</button>
         </div>
-      `)
+      `);
 
       // Ensure checkbox is off
       assertSwitch({ state: SwitchState.Off });

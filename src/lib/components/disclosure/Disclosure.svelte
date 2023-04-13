@@ -25,26 +25,21 @@
 
   let DISCLOSURE_CONTEXT_NAME = "headlessui-disclosure-context";
 
-  export function useDisclosureContext(
-    component: string
-  ): Readable<StateDefinition> {
-    let context: Writable<StateDefinition> | undefined = getContext(
-      DISCLOSURE_CONTEXT_NAME
-    );
+  export function useDisclosureContext(component: string): Readable<StateDefinition> {
+    let context: Writable<StateDefinition> | undefined = getContext(DISCLOSURE_CONTEXT_NAME);
 
     if (context === undefined) {
-      throw new Error(
-        `<${component} /> is missing a parent <Disclosure /> component.`
-      );
+      throw new Error(`<${component} /> is missing a parent <Disclosure /> component.`);
     }
 
     return context;
   }
 
-  type TDisclosureProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {
+  type TDisclosureProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {
     /** Whether the `Disclosure` should be open by default */
     defaultOpen?: boolean;
   };
@@ -127,9 +122,7 @@
     });
   }
 
-  let openClosedState = writable<State>(
-    computeOpenClosedState(disclosureState)
-  );
+  let openClosedState = writable<State>(computeOpenClosedState(disclosureState));
 
   useOpenClosedProvider(openClosedState);
 
@@ -141,12 +134,6 @@
   };
 </script>
 
-<Render
-  {...$$restProps}
-  {as}
-  {slotProps}
-  use={[...use, forwardEvents]}
-  name={"Disclosure"}
->
+<Render {...$$restProps} {as} {slotProps} use={[...use, forwardEvents]} name={"Disclosure"}>
   <slot {...slotProps} />
 </Render>

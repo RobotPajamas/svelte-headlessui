@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TListboxOptionsProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "ul"> & {
+  type TListboxOptionsProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "ul"
+  > & {
     /** Whether the element should ignore the internally managed open/closed state */
     static?: boolean;
     /** Whether the element should be unmounted, instead of just hidden, based on the open/closed state	*/
@@ -121,9 +122,7 @@
 
   $: propsWeControl = {
     "aria-activedescendant":
-      $api.activeOptionIndex === null
-        ? undefined
-        : $api.options[$api.activeOptionIndex]?.id,
+      $api.activeOptionIndex === null ? undefined : $api.options[$api.activeOptionIndex]?.id,
     "aria-labelledby": $labelRef?.id ?? $buttonRef?.id,
     "aria-orientation": $api.orientation,
     id,
@@ -150,7 +149,6 @@
   bind:el={$optionsRef}
   on:keydown={handleKeyDown}
   {visible}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

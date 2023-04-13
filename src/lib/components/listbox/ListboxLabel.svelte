@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TListboxLabelProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "label"> & {};
+  type TListboxLabelProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "label"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -50,7 +51,6 @@
   use={[...use, forwardEvents]}
   name={"ListboxLabel"}
   bind:el={$labelRef}
-  on:click={handleClick}
->
+  on:click={handleClick}>
   <slot {...slotProps} />
 </Render>

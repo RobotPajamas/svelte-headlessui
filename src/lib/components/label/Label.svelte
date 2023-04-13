@@ -15,9 +15,7 @@
   export let passive = false;
   let contextStore = useLabelContext();
   if (!contextStore) {
-    throw new Error(
-      "You used a <Label /> component, but it is not inside a relevant parent."
-    );
+    throw new Error("You used a <Label /> component, but it is not inside a relevant parent.");
   }
 
   onMount(() => $contextStore!.register(id));
@@ -38,7 +36,6 @@
   use={[...use, forwardEvents]}
   on:click={(event) => {
     if (!passive) allProps["onClick"]?.(event);
-  }}
->
+  }}>
   <slot {...slotProps} />
 </Render>

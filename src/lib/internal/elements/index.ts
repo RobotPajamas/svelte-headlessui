@@ -41,7 +41,7 @@ const components = [
   "ul",
 ] as const;
 
-export type SupportedElement = typeof components[number];
+export type SupportedElement = (typeof components)[number];
 export type SupportedAs = SupportedElement | typeof SvelteComponent;
 
 export function isValidElement(element: SupportedAs) {

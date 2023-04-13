@@ -59,18 +59,15 @@
 
 <div class="w-full max-w-md px-2 py-16 sm:px-0">
   <TabGroup>
-    <TabList class="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
+    <TabList class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
       {#each Object.keys(categories) as category (category)}
         <Tab
           class={({ selected }) =>
             classNames(
-              "w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg",
-              "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
-              selected
-                ? "bg-white shadow"
-                : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
-            )}
-        >
+              "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700",
+              "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2",
+              selected ? "bg-white shadow" : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+            )}>
           {category}
         </Tab>
       {/each}
@@ -79,20 +76,17 @@
       {#each Object.values(categories) as posts, idx (idx)}
         <TabPanel
           class={classNames(
-            "bg-white rounded-xl p-3",
-            "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
-          )}
-        >
+            "rounded-xl bg-white p-3",
+            "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+          )}>
           <ul>
             {#each posts as post (post.id)}
-              <li class="relative p-3 rounded-md hover:bg-gray-100">
+              <li class="relative rounded-md p-3 hover:bg-gray-100">
                 <h3 class="text-sm font-medium leading-5">
                   {post.title}
                 </h3>
 
-                <ul
-                  class="flex mt-1 space-x-1 text-xs font-normal leading-4 text-gray-500"
-                >
+                <ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
                   <li>{post.date}</li>
                   <li>&middot;</li>
                   <li>{post.commentCount} comments</li>
@@ -104,9 +98,8 @@
                   href="#"
                   class={classNames(
                     "absolute inset-0 rounded-md",
-                    "focus:z-10 focus:outline-none focus:ring-2 ring-blue-400"
-                  )}
-                />
+                    "ring-blue-400 focus:z-10 focus:outline-none focus:ring-2"
+                  )} />
               </li>
             {/each}
           </ul>

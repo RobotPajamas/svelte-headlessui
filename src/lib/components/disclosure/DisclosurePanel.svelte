@@ -65,7 +65,6 @@
   name={"DisclosurePanel"}
   bind:el={$panelStore}
   {visible}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

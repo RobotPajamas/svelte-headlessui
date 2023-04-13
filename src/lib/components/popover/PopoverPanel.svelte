@@ -2,16 +2,15 @@
   export type PopoverPanelContext = string | null;
 
   const POPOVER_PANEL_CONTEXT_NAME = "headlessui-popover-panel-context";
-  export function usePopoverPanelContext():
-    | StateDefinition["panelId"]
-    | undefined {
+  export function usePopoverPanelContext(): StateDefinition["panelId"] | undefined {
     return getContext(POPOVER_PANEL_CONTEXT_NAME);
   }
 
-  type TPopoverPanelProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {
+  type TPopoverPanelProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {
     /**
      * Whether the `PopoverPanel` should trap focus.
      * If true, focus will move inside the `PopoverPanel` when it is opened,
@@ -28,12 +27,7 @@
 <script lang="ts">
   import { Keys } from "$lib/utils/keyboard";
   import { State, useOpenClosed } from "$lib/internal/open-closed";
-  import {
-    getFocusableElements,
-    Focus,
-    FocusResult,
-    focusIn,
-  } from "$lib/utils/focus-management";
+  import { getFocusableElements, Focus, FocusResult, focusIn } from "$lib/utils/focus-management";
   import { getContext, setContext } from "svelte";
   import type { StateDefinition } from "./Popover.svelte";
   import { PopoverStates, usePopoverContext } from "./Popover.svelte";
@@ -94,10 +88,7 @@
     // Portal or not.
     event.preventDefault();
 
-    let result = focusIn(
-      $panelStore,
-      event.shiftKey ? Focus.Previous : Focus.Next
-    );
+    let result = focusIn($panelStore, event.shiftKey ? Focus.Previous : Focus.Next);
 
     if (result === FocusResult.Underflow) {
       return $apiButton?.focus();
@@ -155,10 +146,7 @@
   };
 </script>
 
-<svelte:window
-  on:keydown={handleWindowKeydown}
-  on:focus|capture={handleFocus}
-/>
+<svelte:window on:keydown={handleWindowKeydown} on:focus|capture={handleFocus} />
 <Render
   {...$$restProps}
   id={$api.panelId}
@@ -169,7 +157,6 @@
   bind:el={$panelStore}
   on:keydown={handleKeydown}
   {visible}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TMenuButtonProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "button"> & {
+  type TMenuButtonProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "button"
+  > & {
     disabled?: boolean;
   };
 </script>
@@ -116,7 +117,6 @@
   bind:el={$buttonStore}
   on:click={handleClick}
   on:keydown={handleKeyDown}
-  on:keyup={handleKeyUp}
->
+  on:keyup={handleKeyUp}>
   <slot {...slotProps} />
 </Render>

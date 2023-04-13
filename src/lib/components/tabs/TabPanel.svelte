@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TTabPanelProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TTabPanelProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -64,7 +65,6 @@
   {slotProps}
   bind:el={$elementRef}
   visible={selected}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

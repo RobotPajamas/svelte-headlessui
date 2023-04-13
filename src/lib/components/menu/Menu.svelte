@@ -1,8 +1,5 @@
 <script lang="ts" context="module">
-  import {
-    Focus,
-    calculateActiveIndex,
-  } from "$lib/utils/calculate-active-index";
+  import { Focus, calculateActiveIndex } from "$lib/utils/calculate-active-index";
   import { getContext, setContext } from "svelte";
   import type { Readable, Writable } from "svelte/store";
   import { writable } from "svelte/store";
@@ -41,24 +38,20 @@
 
   const MENU_CONTEXT_NAME = "headlessui-menu-context";
 
-  export function useMenuContext(
-    componentName: string
-  ): Readable<StateDefinition> {
-    let context: Writable<StateDefinition> | undefined =
-      getContext(MENU_CONTEXT_NAME);
+  export function useMenuContext(componentName: string): Readable<StateDefinition> {
+    let context: Writable<StateDefinition> | undefined = getContext(MENU_CONTEXT_NAME);
 
     if (context === undefined) {
-      throw new Error(
-        `<${componentName} /> is missing a parent <Menu /> component.`
-      );
+      throw new Error(`<${componentName} /> is missing a parent <Menu /> component.`);
     }
     return context;
   }
 
-  type TMenuProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TMenuProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -114,14 +107,11 @@
 
       let reorderedItems =
         activeItemIndex !== null
-          ? items
-              .slice(activeItemIndex + 1)
-              .concat(items.slice(0, activeItemIndex + 1))
+          ? items.slice(activeItemIndex + 1).concat(items.slice(0, activeItemIndex + 1))
           : items;
 
       let matchingItem = reorderedItems.find(
-        (item) =>
-          item.data.textValue.startsWith(searchQuery) && !item.data.disabled
+        (item) => item.data.textValue.startsWith(searchQuery) && !item.data.disabled
       );
 
       let matchIdx = matchingItem ? items.indexOf(matchingItem) : -1;
@@ -138,14 +128,12 @@
         items = [...items, { id, data }];
         return;
       }
-      let currentActiveItem =
-        activeItemIndex !== null ? items[activeItemIndex] : null;
+      let currentActiveItem = activeItemIndex !== null ? items[activeItemIndex] : null;
 
       let orderMap = Array.from(
         $itemsStore.querySelectorAll('[id^="headlessui-menu-item-"]')!
       ).reduce(
-        (lookup, element, index) =>
-          Object.assign(lookup, { [element.id]: index }),
+        (lookup, element, index) => Object.assign(lookup, { [element.id]: index }),
         {}
       ) as Record<string, number>;
 
@@ -161,8 +149,7 @@
     },
     unregisterItem(id: string) {
       let nextItems = items.slice();
-      let currentActiveItem =
-        activeItemIndex !== null ? nextItems[activeItemIndex] : null;
+      let currentActiveItem = activeItemIndex !== null ? nextItems[activeItemIndex] : null;
       let idx = nextItems.findIndex((a) => a.id === id);
       if (idx !== -1) nextItems.splice(idx, 1);
       items = nextItems;
@@ -214,12 +201,6 @@
 </script>
 
 <svelte:window on:mousedown={handleWindowMousedown} />
-<Render
-  {...$$restProps}
-  use={[...use, forwardEvents]}
-  {as}
-  {slotProps}
-  name={"Menu"}
->
+<Render {...$$restProps} use={[...use, forwardEvents]} {as} {slotProps} name={"Menu"}>
   <slot {...slotProps} />
 </Render>

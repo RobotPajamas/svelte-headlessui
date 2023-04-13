@@ -4,9 +4,7 @@
   import { writable } from "svelte/store";
   const PORTAL_GROUP_CONTEXT_NAME = "headlessui-portal-group-context";
 
-  export function usePortalGroupContext():
-    | Readable<HTMLElement | null>
-    | undefined {
+  export function usePortalGroupContext(): Readable<HTMLElement | null> | undefined {
     return getContext(PORTAL_GROUP_CONTEXT_NAME);
   }
 </script>

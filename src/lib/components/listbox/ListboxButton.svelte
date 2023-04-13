@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TListboxButtonProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "button"> & {};
+  type TListboxButtonProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "button"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -92,9 +93,7 @@
     type: resolveButtonType({ type: $$props.type, as }, $buttonRef),
     "aria-haspopup": true,
     "aria-controls": $optionsRef?.id,
-    "aria-expanded": $api.disabled
-      ? undefined
-      : $api.listboxState === ListboxStates.Open,
+    "aria-expanded": $api.disabled ? undefined : $api.listboxState === ListboxStates.Open,
     "aria-labelledby": $labelRef ? [$labelRef?.id, id].join(" ") : undefined,
     disabled: $api.disabled === true ? true : undefined,
   };
@@ -115,7 +114,6 @@
   bind:el={$buttonRef}
   on:click={handleClick}
   on:keydown={handleKeyDown}
-  on:keyup={handleKeyUp}
->
+  on:keyup={handleKeyUp}>
   <slot {...slotProps} />
 </Render>

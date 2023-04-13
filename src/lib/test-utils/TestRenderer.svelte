@@ -8,22 +8,13 @@
     onSubmit?: HandlerType;
     onClick?: HandlerType;
   }
-  type SingleComponent =
-    | string
-    | [typeof SvelteComponent, ComponentProps, TestRendererProps];
-  export type TestRendererProps =
-    | undefined
-    | SingleComponent
-    | SingleComponent[];
+  type SingleComponent = string | [typeof SvelteComponent, ComponentProps, TestRendererProps];
+  export type TestRendererProps = undefined | SingleComponent | SingleComponent[];
 
-  function isSingleComponent(
-    props: SingleComponent | SingleComponent[]
-  ): props is SingleComponent {
+  function isSingleComponent(props: SingleComponent | SingleComponent[]): props is SingleComponent {
     return (
       typeof props === "string" ||
-      (Array.isArray(props) &&
-        !Array.isArray(props[0]) &&
-        typeof props[0] !== "string")
+      (Array.isArray(props) && !Array.isArray(props[0]) && typeof props[0] !== "string")
     );
   }
 </script>
@@ -66,8 +57,7 @@
         on:focus={onFocus}
         on:keydown={onKeydown}
         on:submit={onSubmit}
-        on:click={onClick}
-      >
+        on:click={onClick}>
         <svelte:self allProps={allProps[2]} />
       </svelte:component>
     {/if}

@@ -44,8 +44,7 @@
             if (visibleIds.size > 0) {
               computeActiveId();
             } else {
-              let scrollingDown =
-                entry.boundingClientRect.y < (entry.rootBounds?.y ?? 0);
+              let scrollingDown = entry.boundingClientRect.y < (entry.rootBounds?.y ?? 0);
               // If scrolling down, this one should remain active: we're still in the contents of it
               //  until we get to the next item below.
               // If scrolling up, we should go to the previous item.
@@ -61,9 +60,7 @@
   });
 
   function generateItems(root: HTMLElement, ignoreH1 = true) {
-    let headings = Array.from(
-      root.querySelectorAll(`${ignoreH1 ? "" : "h1, "}h2, h3, h4, h5, h6`)
-    );
+    let headings = Array.from(root.querySelectorAll(`${ignoreH1 ? "" : "h1, "}h2, h3, h4, h5, h6`));
     let newItems: TocItem[] = [];
     let index = 0;
     for (const heading of headings) {

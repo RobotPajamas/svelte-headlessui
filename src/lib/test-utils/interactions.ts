@@ -32,10 +32,7 @@ export function word(input: string): Partial<KeyboardEvent>[] {
 let Default = Symbol();
 let Ignore = Symbol();
 
-let cancellations: Record<
-  string | typeof Default,
-  Record<string, Set<string>>
-> = {
+let cancellations: Record<string | typeof Default, Record<string, Set<string>>> = {
   [Default]: {
     keydown: new Set(["keypress"]),
     keypress: new Set([]),
@@ -84,8 +81,7 @@ let order: Record<
       return await fireEvent.keyPress(element, event);
     },
     async function click(element, event) {
-      if (element instanceof HTMLButtonElement)
-        return await fireEvent.click(element, event);
+      if (element instanceof HTMLButtonElement) return await fireEvent.click(element, event);
       return Ignore;
     },
     async function keyup(element, event) {
@@ -103,8 +99,7 @@ let order: Record<
       return await fireEvent.keyUp(element, event);
     },
     async function click(element, event) {
-      if (element instanceof HTMLButtonElement)
-        return await fireEvent.click(element, event);
+      if (element instanceof HTMLButtonElement) return await fireEvent.click(element, event);
       return Ignore;
     },
   ],
@@ -121,10 +116,7 @@ let order: Record<
   ],
 };
 
-export async function type(
-  events: Partial<KeyboardEvent>[],
-  element = document.activeElement
-) {
+export async function type(events: Partial<KeyboardEvent>[], element = document.activeElement) {
   jest.useFakeTimers();
 
   try {
@@ -139,8 +131,7 @@ export async function type(
 
         let result: boolean | typeof Ignore | Element = await action(element, {
           type: action.name,
-          charCode:
-            event.key?.length === 1 ? event.key?.charCodeAt(0) : undefined,
+          charCode: event.key?.length === 1 ? event.key?.charCodeAt(0) : undefined,
           ...event,
         });
         if (result === Ignore) continue;
@@ -150,8 +141,7 @@ export async function type(
 
         let cancelled = !result;
         if (cancelled) {
-          let skippablesForKey =
-            cancellations[event.key!] ?? cancellations[Default as any];
+          let skippablesForKey = cancellations[event.key!] ?? cancellations[Default as any];
           let skippables = skippablesForKey?.[action.name] ?? new Set();
 
           for (let skippable of skippables) skip.add(skippable);
@@ -171,10 +161,7 @@ export async function type(
   }
 }
 
-export async function press(
-  event: Partial<KeyboardEvent>,
-  element = document.activeElement
-) {
+export async function press(event: Partial<KeyboardEvent>, element = document.activeElement) {
   return type([event], element);
 }
 
@@ -298,17 +285,12 @@ function focusNext(event: Partial<KeyboardEvent>) {
   let total = focusableElements.length;
 
   function innerFocusNext(offset = 0): Element {
-    let currentIdx = focusableElements.indexOf(
-      document.activeElement as HTMLElement
-    );
-    let next = focusableElements[
-      (currentIdx + total + direction + offset) % total
-    ] as HTMLElement;
+    let currentIdx = focusableElements.indexOf(document.activeElement as HTMLElement);
+    let next = focusableElements[(currentIdx + total + direction + offset) % total] as HTMLElement;
 
     if (next) next?.focus({ preventScroll: true });
 
-    if (next !== document.activeElement)
-      return innerFocusNext(offset + direction);
+    if (next !== document.activeElement) return innerFocusNext(offset + direction);
     return next;
   }
 
@@ -333,8 +315,7 @@ let focusableSelector = [
       ? // TODO: Remove this once JSDOM fixes the issue where an element that is
         // "hidden" can be the document.activeElement, because this is not possible
         // in real browsers.
-        (selector) =>
-          `${selector}:not([tabindex='-1']):not([style*='display: none'])`
+        (selector) => `${selector}:not([tabindex='-1']):not([style*='display: none'])`
       : (selector) => `${selector}:not([tabindex='-1'])`
   )
   .join(",");

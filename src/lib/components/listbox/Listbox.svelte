@@ -36,25 +36,21 @@
   };
 
   const LISTBOX_CONTEXT_NAME = "headlessui-listbox-context";
-  export function useListboxContext(
-    component: string
-  ): Readable<StateDefinition> {
-    let context: Writable<StateDefinition> | undefined =
-      getContext(LISTBOX_CONTEXT_NAME);
+  export function useListboxContext(component: string): Readable<StateDefinition> {
+    let context: Writable<StateDefinition> | undefined = getContext(LISTBOX_CONTEXT_NAME);
 
     if (context === undefined) {
-      throw new Error(
-        `<${component} /> is missing a parent <Listbox /> component.`
-      );
+      throw new Error(`<${component} /> is missing a parent <Listbox /> component.`);
     }
 
     return context;
   }
 
-  type TListboxProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {
+  type TListboxProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {
     /** Whether the entire `Listbox` and its children should be disabled */
     disabled?: boolean;
     /** Whether the entire `Listbox` should be oriented horizontally instead of vertically */
@@ -65,10 +61,7 @@
 </script>
 
 <script lang="ts">
-  import {
-    Focus,
-    calculateActiveIndex,
-  } from "$lib/utils/calculate-active-index";
+  import { Focus, calculateActiveIndex } from "$lib/utils/calculate-active-index";
   import { createEventDispatcher, getContext, setContext } from "svelte";
   import type { Readable, Writable } from "svelte/store";
   import { writable } from "svelte/store";
@@ -92,18 +85,14 @@
   export let value: StateDefinition["value"];
 
   /***** Events *****/
-  const forwardEvents = forwardEventsBuilder(get_current_component(), [
-    "change",
-  ]);
+  const forwardEvents = forwardEventsBuilder(get_current_component(), ["change"]);
 
   const dispatch = createEventDispatcher<{
     change: any;
   }>();
 
   /***** Component *****/
-  $: orientation = (
-    horizontal ? "horizontal" : "vertical"
-  ) as StateDefinition["orientation"];
+  $: orientation = (horizontal ? "horizontal" : "vertical") as StateDefinition["orientation"];
 
   let listboxState: StateDefinition["listboxState"] = ListboxStates.Closed;
   let labelRef: StateDefinition["labelRef"] = writable(null);
@@ -151,8 +140,7 @@
         }
       );
 
-      if (searchQuery === "" && activeOptionIndex === nextActiveOptionIndex)
-        return;
+      if (searchQuery === "" && activeOptionIndex === nextActiveOptionIndex) return;
       activeOptionIndex = nextActiveOptionIndex;
       searchQuery = "";
     },
@@ -164,15 +152,11 @@
 
       let reorderedOptions =
         activeOptionIndex !== null
-          ? options
-              .slice(activeOptionIndex + 1)
-              .concat(options.slice(0, activeOptionIndex + 1))
+          ? options.slice(activeOptionIndex + 1).concat(options.slice(0, activeOptionIndex + 1))
           : options;
 
       let matchingOption = reorderedOptions.find(
-        (option) =>
-          !option.dataRef.disabled &&
-          option.dataRef.textValue.startsWith(searchQuery)
+        (option) => !option.dataRef.disabled && option.dataRef.textValue.startsWith(searchQuery)
       );
 
       let matchIdx = matchingOption ? options.indexOf(matchingOption) : -1;
@@ -192,14 +176,12 @@
         options = [...options, { id, dataRef }];
         return;
       }
-      let currentActiveOption =
-        activeOptionIndex !== null ? options[activeOptionIndex] : null;
+      let currentActiveOption = activeOptionIndex !== null ? options[activeOptionIndex] : null;
 
       let orderMap = Array.from(
         $optionsRef.querySelectorAll('[id^="headlessui-listbox-option-"]')!
       ).reduce(
-        (lookup, element, index) =>
-          Object.assign(lookup, { [element.id]: index }),
+        (lookup, element, index) => Object.assign(lookup, { [element.id]: index }),
         {}
       ) as Record<string, number>;
 
@@ -215,8 +197,7 @@
     },
     unregisterOption(id: string) {
       let nextOptions = options.slice();
-      let currentActiveOption =
-        activeOptionIndex !== null ? nextOptions[activeOptionIndex] : null;
+      let currentActiveOption = activeOptionIndex !== null ? nextOptions[activeOptionIndex] : null;
       let idx = nextOptions.findIndex((a) => a.id === id);
       if (idx !== -1) nextOptions.splice(idx, 1);
       options = nextOptions;
@@ -276,12 +257,6 @@
 </script>
 
 <svelte:window on:mousedown={handleMousedown} />
-<Render
-  {...$$restProps}
-  {as}
-  {slotProps}
-  use={[...use, forwardEvents]}
-  name={"Listbox"}
->
+<Render {...$$restProps} {as} {slotProps} use={[...use, forwardEvents]} name={"Listbox"}>
   <slot {...slotProps} />
 </Render>

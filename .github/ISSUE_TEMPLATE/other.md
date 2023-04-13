@@ -1,10 +1,7 @@
 ---
 name: Other
 about: Other issues
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
-
-

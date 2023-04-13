@@ -11,10 +11,11 @@
     return getContext(POPOVER_GROUP_CONTEXT_NAME);
   }
 
-  type TPopoverGroupProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TPopoverGroupProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -88,7 +89,6 @@
   use={[...use, forwardEvents]}
   {slotProps}
   name={"PopoverGroup"}
-  bind:el={groupRef}
->
+  bind:el={groupRef}>
   <slot {...slotProps} />
 </Render>

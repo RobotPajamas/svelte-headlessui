@@ -32,7 +32,6 @@
   {slotProps}
   {...$contextStore?.props}
   {id}
-  use={[...use, forwardEvents]}
->
+  use={[...use, forwardEvents]}>
   <slot {...slotProps} />
 </Render>

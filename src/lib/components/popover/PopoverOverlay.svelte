@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TPopoverOverlayProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TPopoverOverlayProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -56,7 +57,6 @@
   on:click={handleClick}
   aria-hidden
   {visible}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

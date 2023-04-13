@@ -4,37 +4,25 @@
 </script>
 
 <div class="w-full px-4 pt-16">
-  <div class="w-full max-w-md p-2 mx-auto bg-white rounded-2xl">
+  <div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
     <Disclosure let:open>
       <DisclosureButton
-        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
-      >
+        class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
         <span>What is your refund policy?</span>
-        <ChevronUpIcon
-          class={`${
-            open ? "transform rotate-180" : ""
-          } w-5 h-5 text-purple-500`}
-        />
+        <ChevronUpIcon class={`${open ? "rotate-180 transform" : ""} h-5 w-5 text-purple-500`} />
       </DisclosureButton>
-      <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-        If you're unhappy with your purchase for any reason, email us within 90
-        days and we'll refund you in full, no questions asked.
+      <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+        If you're unhappy with your purchase for any reason, email us within 90 days and we'll
+        refund you in full, no questions asked.
       </DisclosurePanel>
     </Disclosure>
     <Disclosure as="div" class="mt-2" let:open>
       <DisclosureButton
-        class="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
-      >
+        class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
         <span>Do you offer technical support?</span>
-        <ChevronUpIcon
-          class={`${
-            open ? "transform rotate-180" : ""
-          } w-5 h-5 text-purple-500`}
-        />
+        <ChevronUpIcon class={`${open ? "rotate-180 transform" : ""} h-5 w-5 text-purple-500`} />
       </DisclosureButton>
-      <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-500">
-        No.
-      </DisclosurePanel>
+      <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">No.</DisclosurePanel>
     </Disclosure>
   </div>
 </div>

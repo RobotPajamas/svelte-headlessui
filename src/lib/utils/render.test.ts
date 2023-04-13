@@ -44,7 +44,8 @@ it("should be possible to use style as a function", () => {
     as: "div",
     name: "test",
     slotProps: { enabled: true },
-    style: ({ enabled }: { enabled: boolean }) => enabled ? "background-color: red" : "background-color: green",
+    style: ({ enabled }: { enabled: boolean }) =>
+      enabled ? "background-color: red" : "background-color: green",
     "data-testid": "test-id",
   });
   let element = getByTestId(container, "test-id");

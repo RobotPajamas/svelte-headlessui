@@ -8,7 +8,7 @@ export function createRunWithCleanup() {
       cleanup[id]();
       delete cleanup[id];
     }
-  })
+  });
 
   return (fn: () => any, id: string) => {
     if (cleanup[id]) {
@@ -20,5 +20,5 @@ export function createRunWithCleanup() {
     if (typeof result === "function") {
       cleanup[id] = result;
     }
-  }
+  };
 }

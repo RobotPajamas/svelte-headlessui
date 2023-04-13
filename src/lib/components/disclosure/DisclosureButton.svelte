@@ -38,8 +38,7 @@
   $: buttonStore = $api.buttonStore;
   $: panelStore = $api.panelStore;
 
-  $: isWithinPanel =
-    panelContext === null ? false : panelContext === $api.panelId;
+  $: isWithinPanel = panelContext === null ? false : panelContext === $api.panelId;
 
   let ourStore = writable<HTMLElement | null>(null);
   $: if (!isWithinPanel) ourStore = buttonStore;
@@ -99,9 +98,7 @@
     : {
         id: $api.buttonId,
         type,
-        "aria-expanded": disabled
-          ? undefined
-          : $api.disclosureState === DisclosureStates.Open,
+        "aria-expanded": disabled ? undefined : $api.disclosureState === DisclosureStates.Open,
         "aria-controls": $panelStore ? $api.panelId : undefined,
         disabled: disabled ? true : undefined,
       };
@@ -121,8 +118,7 @@
     name={"DisclosureButton"}
     bind:el={$ourStore}
     on:click={handleClick}
-    on:keydown={handleKeyDown}
-  >
+    on:keydown={handleKeyDown}>
     <slot {...slotProps} />
   </Render>
 {:else}
@@ -135,8 +131,7 @@
     bind:el={$ourStore}
     on:click={handleClick}
     on:keydown={handleKeyDown}
-    on:keyup={handleKeyUp}
-  >
+    on:keyup={handleKeyUp}>
     <slot {...slotProps} />
   </Render>
 {/if}

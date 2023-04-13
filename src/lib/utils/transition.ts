@@ -22,19 +22,17 @@ function waitForTransition(node: HTMLElement, done: (reason: Reason) => void) {
   // Safari returns a comma separated list of values, so let's sort them and take the highest value.
   let { transitionDuration, transitionDelay } = getComputedStyle(node);
 
-  let [durationMs, delaysMs] = [transitionDuration, transitionDelay].map(
-    (value) => {
-      let [resolvedValue = 0] = value
-        .split(",")
-        // Remove falsy we can't work with
-        .filter(Boolean)
-        // Values are returned as `0.3s` or `75ms`
-        .map((v) => (v.includes("ms") ? parseFloat(v) : parseFloat(v) * 1000))
-        .sort((a, z) => z - a);
+  let [durationMs, delaysMs] = [transitionDuration, transitionDelay].map((value) => {
+    let [resolvedValue = 0] = value
+      .split(",")
+      // Remove falsy we can't work with
+      .filter(Boolean)
+      // Values are returned as `0.3s` or `75ms`
+      .map((v) => (v.includes("ms") ? parseFloat(v) : parseFloat(v) * 1000))
+      .sort((a, z) => z - a);
 
-      return resolvedValue;
-    }
-  );
+    return resolvedValue;
+  });
 
   // Waiting for the transition to end. We could use the `transitionend` event, however when no
   // actual transition/duration is defined then the `transitionend` event is not fired.

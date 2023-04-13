@@ -1,11 +1,6 @@
 <script lang="ts">
   import { Keys } from "$lib/utils/keyboard";
-  import {
-    focusElement,
-    focusIn,
-    Focus,
-    FocusResult,
-  } from "$lib/utils/focus-management";
+  import { focusElement, focusIn, Focus, FocusResult } from "$lib/utils/focus-management";
   import { contains } from "$lib/internal/dom-containers";
   import { onMount, onDestroy, tick } from "svelte";
 
@@ -14,9 +9,7 @@
   export let options: { initialFocus?: HTMLElement | null } = {};
 
   let restoreElement: HTMLElement | null =
-    typeof window !== "undefined"
-      ? (document.activeElement as HTMLElement)
-      : null;
+    typeof window !== "undefined" ? (document.activeElement as HTMLElement) : null;
 
   let previousActiveElement: HTMLElement | null = null;
 
@@ -51,10 +44,7 @@
         }
       }
 
-      if (!couldFocus)
-        console.warn(
-          "There are no focusable elements inside the <FocusTrap />"
-        );
+      if (!couldFocus) console.warn("There are no focusable elements inside the <FocusTrap />");
     }
 
     previousActiveElement = document.activeElement as HTMLElement;
@@ -133,7 +123,4 @@
   }
 </script>
 
-<svelte:window
-  on:keydown={handleWindowKeyDown}
-  on:focus|capture={handleWindowFocus}
-/>
+<svelte:window on:keydown={handleWindowKeyDown} on:focus|capture={handleWindowFocus} />

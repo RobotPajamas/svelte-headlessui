@@ -11,12 +11,6 @@
   export let href = "javascript:void(0);";
 </script>
 
-<a
-  bind:this={el}
-  use:useActions={use}
-  use:forwardEvents
-  {href}
-  {...$$restProps}
->
+<a bind:this={el} use:useActions={use} use:forwardEvents {href} {...$$restProps}>
   <slot />
 </a>

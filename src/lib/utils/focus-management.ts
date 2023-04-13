@@ -18,8 +18,7 @@ let focusableSelector = [
       ? // TODO: Remove this once JSDOM fixes the issue where an element that is
         // "hidden" can be the document.activeElement, because this is not possible
         // in real browsers.
-        (selector) =>
-          `${selector}:not([tabindex='-1']):not([style*='display: none'])`
+        (selector) => `${selector}:not([tabindex='-1']):not([style*='display: none'])`
       : (selector) => `${selector}:not([tabindex='-1'])`
   )
   .join(",");
@@ -56,9 +55,7 @@ enum Direction {
   Next = 1,
 }
 
-export function getFocusableElements(
-  container: HTMLElement | null = document.body
-) {
+export function getFocusableElements(container: HTMLElement | null = document.body) {
   if (container == null) return [];
   return Array.from(container.querySelectorAll<HTMLElement>(focusableSelector));
 }
@@ -99,30 +96,23 @@ export function focusElement(element: HTMLElement | null) {
 }
 
 export function focusIn(container: HTMLElement | HTMLElement[], focus: Focus) {
-  let elements = Array.isArray(container)
-    ? container
-    : getFocusableElements(container);
+  let elements = Array.isArray(container) ? container : getFocusableElements(container);
   let active = document.activeElement as HTMLElement;
 
   let direction = (() => {
     if (focus & (Focus.First | Focus.Next)) return Direction.Next;
     if (focus & (Focus.Previous | Focus.Last)) return Direction.Previous;
 
-    throw new Error(
-      "Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last"
-    );
+    throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last");
   })();
 
   let startIndex = (() => {
     if (focus & Focus.First) return 0;
-    if (focus & Focus.Previous)
-      return Math.max(0, elements.indexOf(active)) - 1;
+    if (focus & Focus.Previous) return Math.max(0, elements.indexOf(active)) - 1;
     if (focus & Focus.Next) return Math.max(0, elements.indexOf(active)) + 1;
     if (focus & Focus.Last) return elements.length - 1;
 
-    throw new Error(
-      "Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last"
-    );
+    throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last");
   })();
 
   let focusOptions = focus & Focus.NoScroll ? { preventScroll: true } : {};

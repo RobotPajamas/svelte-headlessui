@@ -7,10 +7,6 @@
   let state = initialChecked;
 </script>
 
-<Switch
-  checked={state}
-  on:change={(e) => (state = e.detail)}
-  on:change={onChange}
->
+<Switch checked={state} on:change={(e) => (state = e.detail)} on:change={onChange}>
   <slot />
 </Switch>

@@ -1,8 +1,5 @@
 let interactables = new Set<HTMLElement>();
-let originals = new Map<
-  HTMLElement,
-  { "aria-hidden": string | null; inert: boolean }
->();
+let originals = new Map<HTMLElement, { "aria-hidden": string | null; inert: boolean }>();
 
 function inert(element: HTMLElement) {
   element.setAttribute("aria-hidden", "true");

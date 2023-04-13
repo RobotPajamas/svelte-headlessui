@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TSwitchProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "button"> & {
+  type TSwitchProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "button"
+  > & {
     /** Whether the switch is checked */
     checked: boolean;
   };
@@ -32,9 +33,7 @@
   export let checked = false;
 
   /***** Events *****/
-  const forwardEvents = forwardEventsBuilder(get_current_component(), [
-    "change",
-  ]);
+  const forwardEvents = forwardEventsBuilder(get_current_component(), ["change"]);
   const dispatch = createEventDispatcher<{
     change: boolean;
   }>();
@@ -92,8 +91,7 @@
     bind:el={$switchStore}
     on:click={handleClick}
     on:keyup={handleKeyUp}
-    on:keypress={handleKeyPress}
-  >
+    on:keypress={handleKeyPress}>
     <slot {...slotProps} />
   </Render>
 {:else}
@@ -105,8 +103,7 @@
     name={"Switch"}
     on:click={handleClick}
     on:keyup={handleKeyUp}
-    on:keypress={handleKeyPress}
-  >
+    on:keypress={handleKeyPress}>
     <slot {...slotProps} />
   </Render>
 {/if}

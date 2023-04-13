@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TTabPanelsProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TTabPanelsProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -29,12 +30,6 @@
   $: slotProps = { selectedIndex: $api.selectedIndex };
 </script>
 
-<Render
-  {...$$restProps}
-  {as}
-  {slotProps}
-  use={[...use, forwardEvents]}
-  name={"TabPanels"}
->
+<Render {...$$restProps} {as} {slotProps} use={[...use, forwardEvents]} name={"TabPanels"}>
   <slot {...slotProps} />
 </Render>

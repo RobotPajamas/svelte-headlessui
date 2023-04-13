@@ -8,10 +8,11 @@
     return getContext(SWITCH_CONTEXT_NAME);
   }
 
-  type TSwitchGroupProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TSwitchGroupProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -54,13 +55,7 @@
   $: slotProps = {};
 </script>
 
-<Render
-  {...$$restProps}
-  {as}
-  use={[...use, forwardEvents]}
-  {slotProps}
-  name={"SwitchGroup"}
->
+<Render {...$$restProps} {as} use={[...use, forwardEvents]} {slotProps} name={"SwitchGroup"}>
   <DescriptionProvider name="SwitchDescription">
     <LabelProvider name="SwitchLabel" {onClick}>
       <slot {...slotProps} />

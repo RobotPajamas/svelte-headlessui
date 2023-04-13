@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TTabProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "button"> & {
+  type TTabProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "button"
+  > & {
     /** Whether the `Tab` is currently disabled */
     disabled?: boolean;
   };
@@ -77,17 +78,13 @@
 
     return match($api.orientation, {
       vertical() {
-        if (event.key === Keys.ArrowUp)
-          return focusIn(list, Focus.Previous | Focus.WrapAround);
-        if (event.key === Keys.ArrowDown)
-          return focusIn(list, Focus.Next | Focus.WrapAround);
+        if (event.key === Keys.ArrowUp) return focusIn(list, Focus.Previous | Focus.WrapAround);
+        if (event.key === Keys.ArrowDown) return focusIn(list, Focus.Next | Focus.WrapAround);
         return;
       },
       horizontal() {
-        if (event.key === Keys.ArrowLeft)
-          return focusIn(list, Focus.Previous | Focus.WrapAround);
-        if (event.key === Keys.ArrowRight)
-          return focusIn(list, Focus.Next | Focus.WrapAround);
+        if (event.key === Keys.ArrowLeft) return focusIn(list, Focus.Previous | Focus.WrapAround);
+        if (event.key === Keys.ArrowRight) return focusIn(list, Focus.Next | Focus.WrapAround);
         return;
       },
     });
@@ -130,7 +127,6 @@
   bind:el={tabRef}
   on:keydown={handleKeyDown}
   on:click={handleSelection}
-  on:focus={$api.activation === "manual" ? handleFocus : handleSelection}
->
+  on:focus={$api.activation === "manual" ? handleFocus : handleSelection}>
   <slot {...slotProps} />
 </Render>

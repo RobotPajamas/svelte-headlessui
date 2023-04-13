@@ -7,9 +7,7 @@ function assertNever(x: never): never {
 // ---
 
 export function getMenuButton(): HTMLElement | null {
-  return document.querySelector(
-    'button,[role="button"],[id^="headlessui-menu-button-"]'
-  );
+  return document.querySelector('button,[role="button"],[id^="headlessui-menu-button-"]');
 }
 
 export function getMenuButtons(): HTMLElement[] {
@@ -90,10 +88,7 @@ export function assertMenuButton(
 
     // Ensure menu button has the following attributes
     for (let attributeName in options.attributes) {
-      expect(button).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(button).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertMenuButton);
@@ -101,10 +96,7 @@ export function assertMenuButton(
   }
 }
 
-export function assertMenuButtonLinkedWithMenu(
-  button = getMenuButton(),
-  menu = getMenu()
-) {
+export function assertMenuButtonLinkedWithMenu(button = getMenuButton(), menu = getMenu()) {
   try {
     if (button === null) return expect(button).not.toBe(null);
     if (menu === null) return expect(menu).not.toBe(null);
@@ -118,19 +110,13 @@ export function assertMenuButtonLinkedWithMenu(
   }
 }
 
-export function assertMenuLinkedWithMenuItem(
-  item: HTMLElement | null,
-  menu = getMenu()
-) {
+export function assertMenuLinkedWithMenuItem(item: HTMLElement | null, menu = getMenu()) {
   try {
     if (menu === null) return expect(menu).not.toBe(null);
     if (item === null) return expect(item).not.toBe(null);
 
     // Ensure link between menu & menu item is correct
-    expect(menu).toHaveAttribute(
-      "aria-activedescendant",
-      item.getAttribute("id")
-    );
+    expect(menu).toHaveAttribute("aria-activedescendant", item.getAttribute("id"));
   } catch (err: any) {
     Error.captureStackTrace(err, assertMenuLinkedWithMenuItem);
     throw err;
@@ -167,14 +153,10 @@ export function assertMenu(
         expect(menu).toHaveAttribute("aria-labelledby");
         expect(menu).toHaveAttribute("role", "menu");
 
-        if (options.textContent)
-          expect(menu).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(menu).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(menu).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(menu).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -186,14 +168,10 @@ export function assertMenu(
         expect(menu).toHaveAttribute("aria-labelledby");
         expect(menu).toHaveAttribute("role", "menu");
 
-        if (options.textContent)
-          expect(menu).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(menu).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(menu).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(menu).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -223,16 +201,12 @@ export function assertMenuItem(
 
     // Check that we have the correct values for certain attributes
     expect(item).toHaveAttribute("role", "menuitem");
-    if (!item.getAttribute("aria-disabled"))
-      expect(item).toHaveAttribute("tabindex", "-1");
+    if (!item.getAttribute("aria-disabled")) expect(item).toHaveAttribute("tabindex", "-1");
 
     // Ensure menu button has the following attributes
     if (options) {
       for (let attributeName in options.attributes) {
-        expect(item).toHaveAttribute(
-          attributeName,
-          options.attributes[attributeName]
-        );
+        expect(item).toHaveAttribute(attributeName, options.attributes[attributeName]);
       }
 
       if (options.tag) {
@@ -252,9 +226,7 @@ export function getListboxLabel(): HTMLElement | null {
 }
 
 export function getListboxButton(): HTMLElement | null {
-  return document.querySelector(
-    'button,[role="button"],[id^="headlessui-listbox-button-"]'
-  );
+  return document.querySelector('button,[role="button"],[id^="headlessui-listbox-button-"]');
 }
 
 export function getListboxButtons(): HTMLElement[] {
@@ -308,14 +280,10 @@ export function assertListbox(
         expect(listbox).toHaveAttribute("aria-orientation", orientation);
         expect(listbox).toHaveAttribute("role", "listbox");
 
-        if (options.textContent)
-          expect(listbox).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(listbox).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(listbox).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(listbox).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -328,14 +296,10 @@ export function assertListbox(
         expect(listbox).toHaveAttribute("aria-orientation", orientation);
         expect(listbox).toHaveAttribute("role", "listbox");
 
-        if (options.textContent)
-          expect(listbox).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(listbox).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(listbox).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(listbox).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -401,10 +365,7 @@ export function assertListboxButton(
 
     // Ensure menu button has the following attributes
     for (let attributeName in options.attributes) {
-      expect(button).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(button).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertListboxButton);
@@ -436,10 +397,7 @@ export function assertListboxLabel(
 
     // Ensure menu button has the following attributes
     for (let attributeName in options.attributes) {
-      expect(label).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(label).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertListboxLabel);
@@ -457,10 +415,7 @@ export function assertListboxButtonLinkedWithListbox(
 
     // Ensure link between button & listbox is correct
     expect(button).toHaveAttribute("aria-controls", listbox.getAttribute("id"));
-    expect(listbox).toHaveAttribute(
-      "aria-labelledby",
-      button.getAttribute("id")
-    );
+    expect(listbox).toHaveAttribute("aria-labelledby", button.getAttribute("id"));
   } catch (err: any) {
     Error.captureStackTrace(err, assertListboxButtonLinkedWithListbox);
     throw err;
@@ -475,10 +430,7 @@ export function assertListboxLabelLinkedWithListbox(
     if (label === null) return expect(label).not.toBe(null);
     if (listbox === null) return expect(listbox).not.toBe(null);
 
-    expect(listbox).toHaveAttribute(
-      "aria-labelledby",
-      label.getAttribute("id")
-    );
+    expect(listbox).toHaveAttribute("aria-labelledby", label.getAttribute("id"));
   } catch (err: any) {
     Error.captureStackTrace(err, assertListboxLabelLinkedWithListbox);
     throw err;
@@ -494,29 +446,20 @@ export function assertListboxButtonLinkedWithListboxLabel(
     if (label === null) return expect(label).not.toBe(null);
 
     // Ensure link between button & label is correct
-    expect(button).toHaveAttribute(
-      "aria-labelledby",
-      `${label.id} ${button.id}`
-    );
+    expect(button).toHaveAttribute("aria-labelledby", `${label.id} ${button.id}`);
   } catch (err: any) {
     Error.captureStackTrace(err, assertListboxButtonLinkedWithListboxLabel);
     throw err;
   }
 }
 
-export function assertActiveListboxOption(
-  item: HTMLElement | null,
-  listbox = getListbox()
-) {
+export function assertActiveListboxOption(item: HTMLElement | null, listbox = getListbox()) {
   try {
     if (listbox === null) return expect(listbox).not.toBe(null);
     if (item === null) return expect(item).not.toBe(null);
 
     // Ensure link between listbox & listbox item is correct
-    expect(listbox).toHaveAttribute(
-      "aria-activedescendant",
-      item.getAttribute("id")
-    );
+    expect(listbox).toHaveAttribute("aria-activedescendant", item.getAttribute("id"));
   } catch (err: any) {
     Error.captureStackTrace(err, assertActiveListboxOption);
     throw err;
@@ -561,17 +504,13 @@ export function assertListboxOption(
 
     // Check that we have the correct values for certain attributes
     expect(item).toHaveAttribute("role", "option");
-    if (!item.getAttribute("aria-disabled"))
-      expect(item).toHaveAttribute("tabindex", "-1");
+    if (!item.getAttribute("aria-disabled")) expect(item).toHaveAttribute("tabindex", "-1");
 
     // Ensure listbox button has the following attributes
     if (!options) return;
 
     for (let attributeName in options.attributes) {
-      expect(item).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(item).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
 
     if (options.tag) {
@@ -736,10 +675,7 @@ export function assertDisclosureButton(
 
     // Ensure disclosure button has the following attributes
     for (let attributeName in options.attributes) {
-      expect(button).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(button).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertDisclosureButton);
@@ -762,14 +698,10 @@ export function assertDisclosurePanel(
 
         assertHidden(panel);
 
-        if (options.textContent)
-          expect(panel).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(panel).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(panel).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(panel).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -778,14 +710,10 @@ export function assertDisclosurePanel(
 
         assertVisible(panel);
 
-        if (options.textContent)
-          expect(panel).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(panel).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(panel).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(panel).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -879,10 +807,7 @@ export function assertPopoverButton(
 
     // Ensure popover button has the following attributes
     for (let attributeName in options.attributes) {
-      expect(button).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(button).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertPopoverButton);
@@ -905,14 +830,10 @@ export function assertPopoverPanel(
 
         assertHidden(panel);
 
-        if (options.textContent)
-          expect(panel).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(panel).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(panel).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(panel).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -921,14 +842,10 @@ export function assertPopoverPanel(
 
         assertVisible(panel);
 
-        if (options.textContent)
-          expect(panel).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(panel).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(panel).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(panel).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -952,9 +869,7 @@ export function assertLabelValue(element: HTMLElement | null, value: string) {
 
   if (element.hasAttribute("aria-labelledby")) {
     let ids = element.getAttribute("aria-labelledby")!.split(" ");
-    expect(
-      ids.map((id) => document.getElementById(id)?.textContent).join(" ")
-    ).toEqual(value);
+    expect(ids.map((id) => document.getElementById(id)?.textContent).join(" ")).toEqual(value);
     return;
   }
 
@@ -963,13 +878,8 @@ export function assertLabelValue(element: HTMLElement | null, value: string) {
     return;
   }
 
-  if (
-    element.hasAttribute("id") &&
-    document.querySelectorAll(`[for="${element.id}"]`).length > 0
-  ) {
-    expect(document.querySelector(`[for="${element.id}"]`)).toHaveTextContent(
-      value
-    );
+  if (element.hasAttribute("id") && document.querySelectorAll(`[for="${element.id}"]`).length > 0) {
+    expect(document.querySelector(`[for="${element.id}"]`)).toHaveTextContent(value);
     return;
   }
 
@@ -978,10 +888,7 @@ export function assertLabelValue(element: HTMLElement | null, value: string) {
 
 // ---
 
-export function assertDescriptionValue(
-  element: HTMLElement | null,
-  value: string
-) {
+export function assertDescriptionValue(element: HTMLElement | null, value: string) {
   if (element === null) return expect(element).not.toBe(null);
 
   let id = element.getAttribute("aria-describedby")!;
@@ -1011,9 +918,7 @@ export function getDialogOverlay(): HTMLElement | null {
 }
 
 export function getDialogOverlays(): HTMLElement[] {
-  return Array.from(
-    document.querySelectorAll('[id^="headlessui-dialog-overlay-"]')
-  );
+  return Array.from(document.querySelectorAll('[id^="headlessui-dialog-overlay-"]'));
 }
 
 // ---
@@ -1049,14 +954,10 @@ export function assertDialog(
         expect(dialog).toHaveAttribute("role", "dialog");
         expect(dialog).not.toHaveAttribute("aria-modal", "true");
 
-        if (options.textContent)
-          expect(dialog).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(dialog).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(dialog).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(dialog).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1068,14 +969,10 @@ export function assertDialog(
         expect(dialog).toHaveAttribute("role", "dialog");
         expect(dialog).toHaveAttribute("aria-modal", "true");
 
-        if (options.textContent)
-          expect(dialog).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(dialog).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(dialog).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(dialog).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1112,14 +1009,10 @@ export function assertDialogTitle(
         expect(title).toHaveAttribute("id");
         expect(dialog).toHaveAttribute("aria-labelledby", title.id);
 
-        if (options.textContent)
-          expect(title).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(title).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(title).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(title).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1132,14 +1025,10 @@ export function assertDialogTitle(
         expect(title).toHaveAttribute("id");
         expect(dialog).toHaveAttribute("aria-labelledby", title.id);
 
-        if (options.textContent)
-          expect(title).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(title).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(title).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(title).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1176,14 +1065,10 @@ export function assertDialogDescription(
         expect(description).toHaveAttribute("id");
         expect(dialog).toHaveAttribute("aria-describedby", description.id);
 
-        if (options.textContent)
-          expect(description).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(description).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(description).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(description).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1196,14 +1081,10 @@ export function assertDialogDescription(
         expect(description).toHaveAttribute("id");
         expect(dialog).toHaveAttribute("aria-describedby", description.id);
 
-        if (options.textContent)
-          expect(description).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(description).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(description).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(description).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1235,14 +1116,10 @@ export function assertDialogOverlay(
 
         assertHidden(overlay);
 
-        if (options.textContent)
-          expect(overlay).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(overlay).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(overlay).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(overlay).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1251,14 +1128,10 @@ export function assertDialogOverlay(
 
         assertVisible(overlay);
 
-        if (options.textContent)
-          expect(overlay).toHaveTextContent(options.textContent);
+        if (options.textContent) expect(overlay).toHaveTextContent(options.textContent);
 
         for (let attributeName in options.attributes) {
-          expect(overlay).toHaveAttribute(
-            attributeName,
-            options.attributes[attributeName]
-          );
+          expect(overlay).toHaveAttribute(attributeName, options.attributes[attributeName]);
         }
         break;
 
@@ -1286,9 +1159,7 @@ export function getRadioGroupLabel(): HTMLElement | null {
 }
 
 export function getRadioGroupOptions(): HTMLElement[] {
-  return Array.from(
-    document.querySelectorAll('[id^="headlessui-radiogroup-option-"]')
-  );
+  return Array.from(document.querySelectorAll('[id^="headlessui-radiogroup-option-"]'));
 }
 
 // ---
@@ -1308,14 +1179,10 @@ export function assertRadioGroupLabel(
     expect(label).toHaveAttribute("id");
     expect(radioGroup).toHaveAttribute("aria-labelledby", label.id);
 
-    if (options.textContent)
-      expect(label).toHaveTextContent(options.textContent);
+    if (options.textContent) expect(label).toHaveTextContent(options.textContent);
 
     for (let attributeName in options.attributes) {
-      expect(label).toHaveAttribute(
-        attributeName,
-        options.attributes[attributeName]
-      );
+      expect(label).toHaveAttribute(attributeName, options.attributes[attributeName]);
     }
   } catch (err: any) {
     Error.captureStackTrace(err, assertRadioGroupLabel);
@@ -1334,9 +1201,7 @@ export function getTabs(): HTMLElement[] {
 }
 
 export function getPanels(): HTMLElement[] {
-  return Array.from(
-    document.querySelectorAll('[id^="headlessui-tabs-panel-"]')
-  );
+  return Array.from(document.querySelectorAll('[id^="headlessui-tabs-panel-"]'));
 }
 
 // ---
@@ -1359,12 +1224,8 @@ export function assertTabs(
     expect(list).toHaveAttribute("role", "tablist");
     expect(list).toHaveAttribute("aria-orientation", orientation);
 
-    let activeTab = tabs.find(
-      (tab) => tab.dataset.headlessuiIndex === "" + active
-    );
-    let activePanel = panels.find(
-      (panel) => panel.dataset.headlessuiIndex === "" + active
-    );
+    let activeTab = tabs.find((tab) => tab.dataset.headlessuiIndex === "" + active);
+    let activePanel = panels.find((panel) => panel.dataset.headlessuiIndex === "" + active);
 
     for (let tab of tabs) {
       expect(tab).toHaveAttribute("id");
@@ -1494,20 +1355,15 @@ export function assertNotFocusable(element: HTMLElement | null) {
 // ---
 
 export function getByText(text: string): HTMLElement | null {
-  let walker = document.createTreeWalker(
-    document.body,
-    NodeFilter.SHOW_ELEMENT,
-    {
-      acceptNode(node: HTMLElement) {
-        if (node.children.length > 0) return NodeFilter.FILTER_SKIP;
-        return NodeFilter.FILTER_ACCEPT;
-      },
-    }
-  );
+  let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, {
+    acceptNode(node: HTMLElement) {
+      if (node.children.length > 0) return NodeFilter.FILTER_SKIP;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
 
   while (walker.nextNode()) {
-    if (walker.currentNode.textContent === text)
-      return walker.currentNode as HTMLElement;
+    if (walker.currentNode.textContent === text) return walker.currentNode as HTMLElement;
   }
 
   return null;

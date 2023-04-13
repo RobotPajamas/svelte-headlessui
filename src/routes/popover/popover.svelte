@@ -25,14 +25,10 @@
   let links = ["First", "Second", "Third", "Fourth"];
 </script>
 
-<div class="flex justify-center items-center space-x-12 p-12">
+<div class="flex items-center justify-center space-x-12 p-12">
   <button>Previous</button>
 
-  <PopoverGroup
-    as="nav"
-    aria-label="Mythical University"
-    class="flex space-x-3"
-  >
+  <PopoverGroup as="nav" aria-label="Mythical University" class="flex space-x-3">
     <Popover as="div" class="relative">
       <Transition
         enter="ease-out duration-300 fixed z-20"
@@ -40,21 +36,16 @@
         enterTo="opacity-100"
         leave="ease-in duration-300 fixed z-20"
         leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
+        leaveTo="opacity-0">
         <PopoverOverlay
-          class="bg-opacity-75 bg-gray-500 fixed inset-0 z-20 transition-opacity transform"
-        />
+          class="fixed inset-0 z-20 transform bg-gray-500 bg-opacity-75 transition-opacity" />
       </Transition>
 
       <PopoverButton
-        class="px-3 py-2 bg-gray-300 border-2 border-transparent focus:outline-none focus:border-blue-900 relative z-30"
-      >
+        class="relative z-30 border-2 border-transparent bg-gray-300 px-3 py-2 focus:border-blue-900 focus:outline-none">
         Normal
       </PopoverButton>
-      <PopoverPanel
-        class="absolute flex flex-col w-64 bg-gray-100 border-2 border-blue-900 z-30"
-      >
+      <PopoverPanel class="absolute z-30 flex w-64 flex-col border-2 border-blue-900 bg-gray-100">
         {#each links as link, i (link)}
           <Link key={link} hidden={i === 2 || undefined}>
             Normal - {link}
@@ -65,10 +56,7 @@
 
     <Popover as="div" class="relative">
       <Button>Focus</Button>
-      <PopoverPanel
-        focus
-        class="absolute flex flex-col w-64 bg-gray-100 border-2 border-blue-900"
-      >
+      <PopoverPanel focus class="absolute flex w-64 flex-col border-2 border-blue-900 bg-gray-100">
         {#each links as link (link)}
           <Link key={link}>Focus - {link}</Link>
         {/each}
@@ -80,8 +68,7 @@
       <Portal>
         <PopoverPanel
           use={[[popperContent1, options]]}
-          class="flex flex-col w-64 bg-gray-100 border-2 border-blue-900"
-        >
+          class="flex w-64 flex-col border-2 border-blue-900 bg-gray-100">
           {#each links as link (link)}
             <Link key={link}>Portal - {link}</Link>
           {/each}
@@ -95,8 +82,7 @@
         <PopoverPanel
           use={[[popperContent2, options]]}
           focus
-          class="flex flex-col w-64 bg-gray-100 border-2 border-blue-900"
-        >
+          class="flex w-64 flex-col border-2 border-blue-900 bg-gray-100">
           {#each links as link (link)}
             <Link key={link}>Focus in Portal - {link}</Link>
           {/each}

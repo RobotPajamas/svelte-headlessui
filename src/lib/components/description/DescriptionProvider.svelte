@@ -8,9 +8,7 @@
   }
 
   const DESCRIPTION_CONTEXT_NAME = "headlessui-description-context";
-  export function useDescriptionContext():
-    | Readable<DescriptionContext>
-    | undefined {
+  export function useDescriptionContext(): Readable<DescriptionContext> | undefined {
     return getContext(DESCRIPTION_CONTEXT_NAME);
   }
 </script>
@@ -35,16 +33,13 @@
     slotProps,
     props: $$restProps,
     register,
-    descriptionIds:
-      descriptionIds.length > 0 ? descriptionIds.join(" ") : undefined,
+    descriptionIds: descriptionIds.length > 0 ? descriptionIds.join(" ") : undefined,
   });
 
   function register(value: string) {
     descriptionIds = [...descriptionIds, value];
     return () => {
-      descriptionIds = descriptionIds.filter(
-        (descriptionId) => descriptionId !== value
-      );
+      descriptionIds = descriptionIds.filter((descriptionId) => descriptionId !== value);
     };
   }
 </script>

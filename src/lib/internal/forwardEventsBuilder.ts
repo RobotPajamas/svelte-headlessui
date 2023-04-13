@@ -1,11 +1,6 @@
 // This is a modified version of code from hperrin/svelte-material-ui
 import type { SvelteComponent } from "svelte";
-import {
-  bubble,
-  listen,
-  prevent_default,
-  stop_propagation,
-} from "svelte/internal";
+import { bubble, listen, prevent_default, stop_propagation } from "svelte/internal";
 
 const MODIFIER_DIVIDER = "!";
 const modifierRegex = new RegExp(
@@ -13,10 +8,7 @@ const modifierRegex = new RegExp(
 );
 
 type ForwardException = string | { name: string; shouldExclude: () => boolean };
-export function forwardEventsBuilder(
-  component: SvelteComponent,
-  except: ForwardException[] = []
-) {
+export function forwardEventsBuilder(component: SvelteComponent, except: ForwardException[] = []) {
   // This is our pseudo $on function. It is defined on component mount.
   let $on: (eventType: string, callback: (event: any) => void) => () => void;
   // This is a list of events bound before mount.
@@ -30,8 +22,7 @@ export function forwardEventsBuilder(
       if (typeof exception === "string" && exception === eventType) {
         // Bail out of the event forwarding and run the normal Svelte $on() code
         const callbacks =
-          component.$$.callbacks[eventType] ||
-          (component.$$.callbacks[eventType] = []);
+          component.$$.callbacks[eventType] || (component.$$.callbacks[eventType] = []);
         callbacks.push(callback);
         return () => {
           const index = callbacks.indexOf(callback);
@@ -41,9 +32,7 @@ export function forwardEventsBuilder(
       if (typeof exception === "object" && exception["name"] === eventType) {
         let oldCallback = callback;
         callback = (...props) => {
-          if (
-            !(typeof exception === "object" && exception["shouldExclude"]())
-          ) {
+          if (!(typeof exception === "object" && exception["shouldExclude"]())) {
             oldCallback(...props);
           }
         };

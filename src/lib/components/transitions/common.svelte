@@ -48,9 +48,7 @@
   }
 
   export function useParentNesting(): Readable<NestingContextValues> {
-    let context = getContext(NESTING_CONTEXT_NAME) as
-      | Writable<NestingContextValues>
-      | undefined;
+    let context = getContext(NESTING_CONTEXT_NAME) as Writable<NestingContextValues> | undefined;
     if (context === undefined) {
       throw new Error(
         "A <TransitionChild /> is used but it is missing a parent <TransitionRoot />."
@@ -61,9 +59,7 @@
   }
 
   export function hasChildren(
-    bag:
-      | NestingContextValues["children"]
-      | { children: NestingContextValues["children"] }
+    bag: NestingContextValues["children"] | { children: NestingContextValues["children"] }
   ): boolean {
     if ("children" in bag) return hasChildren(bag.children);
     return bag.filter(({ state }) => state === TreeStates.Visible).length > 0;

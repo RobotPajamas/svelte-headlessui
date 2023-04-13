@@ -11,20 +11,11 @@
 </script>
 
 {#if buttonText !== null && !buttonInside}
-  <button {...buttonProps} on:click={() => (state = !state)}
-    >{buttonText}</button
-  >
+  <button {...buttonProps} on:click={() => (state = !state)}>{buttonText}</button>
 {/if}
-<Dialog
-  {...$$restProps}
-  open={state}
-  on:close={(e) => (state = e.detail)}
-  on:close={onClose}
->
+<Dialog {...$$restProps} open={state} on:close={(e) => (state = e.detail)} on:close={onClose}>
   {#if buttonText !== null && buttonInside}
-    <button {...buttonProps} on:click={() => (state = !state)}
-      >{buttonText}</button
-    >
+    <button {...buttonProps} on:click={() => (state = !state)}>{buttonText}</button>
   {/if}
   <slot />
 </Dialog>

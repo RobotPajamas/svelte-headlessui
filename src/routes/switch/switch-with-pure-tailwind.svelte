@@ -8,7 +8,7 @@
   let state = false;
 </script>
 
-<div class="flex items-start justify-center w-screen h-full p-12 bg-gray-50">
+<div class="flex h-full w-screen items-start justify-center bg-gray-50 p-12">
   <SwitchGroup as="div" class="flex items-center space-x-4">
     <SwitchLabel>Enable notifications</SwitchLabel>
 
@@ -18,17 +18,15 @@
       on:change={(event) => (state = event.detail)}
       class={({ checked }) =>
         classNames(
-          "relative inline-flex flex-shrink-0 h-6 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline transition-colors ease-in-out duration-200",
+          "focus:shadow-outline relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",
           checked ? "bg-indigo-600" : "bg-gray-200"
         )}
-      let:checked
-    >
+      let:checked>
       <span
         class={classNames(
-          "inline-block w-5 h-5 bg-white rounded-full transform transition ease-in-out duration-200",
+          "inline-block h-5 w-5 transform rounded-full bg-white transition duration-200 ease-in-out",
           checked ? "translate-x-5" : "translate-x-0"
-        )}
-      />
+        )} />
     </Switch>
   </SwitchGroup>
 </div>

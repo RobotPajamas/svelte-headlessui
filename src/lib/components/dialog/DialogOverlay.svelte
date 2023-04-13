@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TDialogOverlayProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TDialogOverlayProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -52,7 +53,6 @@
   {slotProps}
   use={[...use, forwardEvents]}
   name={"DialogOverlay"}
-  on:click={handleClick}
->
+  on:click={handleClick}>
   <slot {...slotProps} />
 </Render>

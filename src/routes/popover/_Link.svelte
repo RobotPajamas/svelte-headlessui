@@ -1,7 +1,6 @@
 <a
   href="/"
-  class="px-3 py-2 border-2 border-transparent hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:border-blue-900"
-  {...$$restProps}
->
+  class="border-2 border-transparent px-3 py-2 hover:bg-gray-200 focus:border-blue-900 focus:bg-gray-200 focus:outline-none"
+  {...$$restProps}>
   <slot />
 </a>

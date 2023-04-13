@@ -1,9 +1,7 @@
 <script lang="ts">
   import { hasOpenClosed } from "$lib/internal/open-closed";
   import TransitionChild from "./TransitionChild.svelte";
-  import TransitionRoot, {
-    type TTransitionRootProps,
-  } from "./TransitionRoot.svelte";
+  import TransitionRoot, { type TTransitionRootProps } from "./TransitionRoot.svelte";
   import { forwardEventsBuilder } from "$lib/internal/forwardEventsBuilder";
   import { get_current_component } from "svelte/internal";
   import type { SupportedAs } from "$lib/internal/elements";
@@ -38,8 +36,7 @@
     on:afterEnter
     on:afterLeave
     on:beforeEnter
-    on:beforeLeave
-  >
+    on:beforeLeave>
     <slot />
   </TransitionRoot>
 {:else}
@@ -50,8 +47,7 @@
     on:afterEnter
     on:afterLeave
     on:beforeEnter
-    on:beforeLeave
-  >
+    on:beforeLeave>
     <slot />
   </TransitionChild>
 {/if}

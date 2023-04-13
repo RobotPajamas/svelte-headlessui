@@ -102,8 +102,7 @@
   let initial = true;
   let id = useId();
   let isTransitioning = false;
-  $: strategy =
-    $$props.unmount === false ? RenderStrategy.Hidden : RenderStrategy.Unmount;
+  $: strategy = $$props.unmount === false ? RenderStrategy.Hidden : RenderStrategy.Unmount;
 
   let nesting = writable<NestingContextValues>(
     useNesting(() => {
@@ -139,9 +138,7 @@
   }
 
   function splitClasses(classes: string = "") {
-    return classes
-      .split(" ")
-      .filter((className) => className.trim().length > 1);
+    return classes.split(" ").filter((className) => className.trim().length > 1);
   }
 
   $: enterClasses = splitClasses(enter);
@@ -210,10 +207,7 @@
       if (_cleanup) {
         _cleanup();
       }
-      _cleanup = executeTransition(
-        $transitionContext.show,
-        $transitionContext.appear
-      );
+      _cleanup = executeTransition($transitionContext.show, $transitionContext.appear);
       initial = false;
     }
   }
@@ -231,9 +225,7 @@
 
   // This is not in the base headless UI library, but is needed to prevent re-renders during the transition
   // from blowing away the transition classes
-  $: classes = isTransitioning
-    ? container?.className
-    : `${$$props.class || ""} ${entered}`;
+  $: classes = isTransitioning ? container?.className : `${$$props.class || ""} ${entered}`;
 </script>
 
 <Render
@@ -245,7 +237,6 @@
   bind:el={container}
   class={classes}
   visible={state === TreeStates.Visible}
-  features={Features.RenderStrategy}
->
+  features={Features.RenderStrategy}>
   <slot />
 </Render>

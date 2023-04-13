@@ -23,9 +23,7 @@ export enum Focus {
 }
 
 export function calculateActiveIndex<TItem>(
-  action:
-    | { focus: Focus.Specific; id: string }
-    | { focus: Exclude<Focus, Focus.Specific> },
+  action: { focus: Focus.Specific; id: string } | { focus: Exclude<Focus, Focus.Specific> },
   resolvers: {
     resolveItems(): TItem[];
     resolveActiveIndex(): number | null;
@@ -49,8 +47,7 @@ export function calculateActiveIndex<TItem>(
           .slice()
           .reverse()
           .findIndex((item, idx, all) => {
-            if (activeIndex !== -1 && all.length - idx - 1 >= activeIndex)
-              return false;
+            if (activeIndex !== -1 && all.length - idx - 1 >= activeIndex) return false;
             return !resolvers.resolveDisabled(item);
           });
         if (idx === -1) return idx;
@@ -73,9 +70,7 @@ export function calculateActiveIndex<TItem>(
       }
 
       case Focus.Specific:
-        return items.findIndex(
-          (item) => resolvers.resolveId(item) === action.id
-        );
+        return items.findIndex((item) => resolvers.resolveId(item) === action.id);
 
       case Focus.Nothing:
         return null;

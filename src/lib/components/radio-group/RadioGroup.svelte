@@ -28,26 +28,21 @@
   }
 
   const RADIO_GROUP_CONTEXT_NAME = "headlessui-radio-group-context";
-  export function useRadioGroupContext(
-    component: string
-  ): Readable<StateDefinition> {
-    const context = getContext(RADIO_GROUP_CONTEXT_NAME) as
-      | Writable<StateDefinition>
-      | undefined;
+  export function useRadioGroupContext(component: string): Readable<StateDefinition> {
+    const context = getContext(RADIO_GROUP_CONTEXT_NAME) as Writable<StateDefinition> | undefined;
 
     if (context === undefined) {
-      throw new Error(
-        `<${component} /> is missing a parent <RadioGroup /> component.`
-      );
+      throw new Error(`<${component} /> is missing a parent <RadioGroup /> component.`);
     }
 
     return context;
   }
 
-  type TRadioGroupProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {
+  type TRadioGroupProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {
     /** The currently selected value in the `RadioGroup` */
     value: StateDefinition["value"];
     /** Whether the `RadioGroup` and all of its `RadioGroupOption`s are disabled */
@@ -74,9 +69,7 @@
   export let disabled = false;
 
   /***** Events *****/
-  const forwardEvents = forwardEventsBuilder(get_current_component(), [
-    "change",
-  ]);
+  const forwardEvents = forwardEventsBuilder(get_current_component(), ["change"]);
   const dispatch = createEventDispatcher<{
     change: any;
   }>();
@@ -92,15 +85,11 @@
     value,
     disabled,
     firstOption: options.find((option) => !option.propsRef.disabled),
-    containsCheckedOption: options.some(
-      (option) => option.propsRef.value === value
-    ),
+    containsCheckedOption: options.some((option) => option.propsRef.value === value),
     change(nextValue: unknown) {
       if (disabled) return false;
       if (value === nextValue) return false;
-      let nextOption = options.find(
-        (option) => option.propsRef.value === nextValue
-      )?.propsRef;
+      let nextOption = options.find((option) => option.propsRef.value === nextValue)?.propsRef;
       if (nextOption?.disabled) return false;
       dispatch("change", nextValue);
       return true;
@@ -114,8 +103,7 @@
       let orderMap = Array.from(
         radioGroupRef.querySelectorAll('[id^="headlessui-radiogroup-option-"]')!
       ).reduce(
-        (lookup, element, index) =>
-          Object.assign(lookup, { [element.id]: index }),
+        (lookup, element, index) => Object.assign(lookup, { [element.id]: index }),
         {}
       ) as Record<string, number>;
 
@@ -136,17 +124,14 @@
       value,
       disabled,
       firstOption: options.find((option) => !option.propsRef.disabled),
-      containsCheckedOption: options.some(
-        (option) => option.propsRef.value === value
-      ),
+      containsCheckedOption: options.some((option) => option.propsRef.value === value),
     };
   });
 
   $: treeWalker({
     container: radioGroupRef,
     accept(node) {
-      if (node.getAttribute("role") === "radio")
-        return NodeFilter.FILTER_REJECT;
+      if (node.getAttribute("role") === "radio") return NodeFilter.FILTER_REJECT;
       if (node.hasAttribute("role")) return NodeFilter.FILTER_SKIP;
       return NodeFilter.FILTER_ACCEPT;
     },
@@ -174,9 +159,7 @@
           let result = focusIn(all, Focus.Previous | Focus.WrapAround);
 
           if (result === FocusResult.Success) {
-            let activeOption = options.find(
-              (option) => option.element === document.activeElement
-            );
+            let activeOption = options.find((option) => option.element === document.activeElement);
             if (activeOption) $api.change(activeOption.propsRef.value);
           }
         }
@@ -191,9 +174,7 @@
           let result = focusIn(all, Focus.Next | Focus.WrapAround);
 
           if (result === FocusResult.Success) {
-            let activeOption = options.find(
-              (option) => option.element === document.activeElement
-            );
+            let activeOption = options.find((option) => option.element === document.activeElement);
             if (activeOption) $api.change(activeOption.propsRef.value);
           }
         }
@@ -204,9 +185,7 @@
           event.preventDefault();
           event.stopPropagation();
 
-          let activeOption = options.find(
-            (option) => option.element === document.activeElement
-          );
+          let activeOption = options.find((option) => option.element === document.activeElement);
           if (activeOption) $api.change(activeOption.propsRef.value);
         }
         break;
@@ -232,8 +211,7 @@
       bind:el={radioGroupRef}
       aria-labelledby={labelledby}
       aria-describedby={describedby}
-      on:keydown={handleKeyDown}
-    >
+      on:keydown={handleKeyDown}>
       <slot {...slotProps} />
     </Render>
   </LabelProvider>

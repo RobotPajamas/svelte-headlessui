@@ -1,19 +1,16 @@
 <script lang="ts" context="module">
-  type TPopoverButtonProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "button"> & {
+  type TPopoverButtonProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "button"
+  > & {
     disabled?: boolean;
   };
 </script>
 
 <script lang="ts">
   import { Keys } from "$lib/utils/keyboard";
-  import {
-    getFocusableElements,
-    Focus,
-    focusIn,
-  } from "$lib/utils/focus-management";
+  import { getFocusableElements, Focus, focusIn } from "$lib/utils/focus-management";
   import { writable } from "svelte/store";
   import { PopoverStates, usePopoverContext } from "./Popover.svelte";
   import { usePopoverGroupContext } from "./PopoverGroup.svelte";
@@ -47,8 +44,7 @@
   let closeOthers = groupContext?.closeOthers;
 
   let panelContext = usePopoverPanelContext();
-  let isWithinPanel =
-    panelContext === null ? false : panelContext === $api.panelId;
+  let isWithinPanel = panelContext === null ? false : panelContext === $api.panelId;
   if (isWithinPanel) {
     ourStore = writable();
   }
@@ -87,14 +83,12 @@
         case Keys.Enter:
           event.preventDefault(); // Prevent triggering a *click* event
           event.stopPropagation();
-          if ($api.popoverState === PopoverStates.Closed)
-            closeOthers?.($api.buttonId);
+          if ($api.popoverState === PopoverStates.Closed) closeOthers?.($api.buttonId);
           $api.togglePopover();
           break;
 
         case Keys.Escape:
-          if ($api.popoverState !== PopoverStates.Open)
-            return closeOthers?.($api.buttonId);
+          if ($api.popoverState !== PopoverStates.Open) return closeOthers?.($api.buttonId);
           if (!$api.button) return;
           if (!$apiButton?.contains(document.activeElement)) return;
           event.preventDefault();
@@ -116,9 +110,7 @@
 
             // Check if the last focused element is *after* the button in the DOM
             let focusableElements = getFocusableElements();
-            let previousIdx = focusableElements.indexOf(
-              previousActiveElementRef as HTMLElement
-            );
+            let previousIdx = focusableElements.indexOf(previousActiveElementRef as HTMLElement);
             let buttonIdx = focusableElements.indexOf($apiButton);
             if (buttonIdx > previousIdx) return;
 
@@ -160,9 +152,7 @@
 
         // Check if the last focused element is *after* the button in the DOM
         let focusableElements = getFocusableElements();
-        let previousIdx = focusableElements.indexOf(
-          previousActiveElementRef as HTMLElement
-        );
+        let previousIdx = focusableElements.indexOf(previousActiveElementRef as HTMLElement);
         let buttonIdx = focusableElements.indexOf($apiButton);
         if (buttonIdx > previousIdx) return;
 
@@ -178,8 +168,7 @@
       $api.closePopover();
       $apiButton?.focus(); // Re-focus the original opening Button
     } else {
-      if ($api.popoverState === PopoverStates.Closed)
-        closeOthers?.($api.buttonId);
+      if ($api.popoverState === PopoverStates.Closed) closeOthers?.($api.buttonId);
       $apiButton?.focus();
       $api.togglePopover();
     }
@@ -191,9 +180,7 @@
     : {
         id: $api.buttonId,
         type,
-        "aria-expanded": disabled
-          ? undefined
-          : $api.popoverState === PopoverStates.Open,
+        "aria-expanded": disabled ? undefined : $api.popoverState === PopoverStates.Open,
         "aria-controls": $apiPanel ? $api.panelId : undefined,
         disabled: disabled ? true : undefined,
       };
@@ -215,7 +202,6 @@
   bind:el={$ourStore}
   on:click={handleClick}
   on:keydown={handleKeyDown}
-  on:keyup={handleKeyUp}
->
+  on:keyup={handleKeyUp}>
   <slot {...slotProps} />
 </Render>

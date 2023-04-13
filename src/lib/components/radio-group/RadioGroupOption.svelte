@@ -110,8 +110,7 @@
       aria-describedby={describedby}
       on:click={isDisabled ? () => {} : handleClick}
       on:focus={isDisabled ? () => {} : handleFocus}
-      on:blur={isDisabled ? () => {} : handleBlur}
-    >
+      on:blur={isDisabled ? () => {} : handleBlur}>
       <slot {...slotProps} />
     </Render>
   </LabelProvider>

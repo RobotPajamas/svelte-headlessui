@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TMenuItemsProps<
-    TSlotProp extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProp, TAsProp, "div"> & {
+  type TMenuItemsProps<TSlotProp extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProp,
+    TAsProp,
+    "div"
+  > & {
     /** Whether the element should ignore the internally managed open/closed state */
     static?: boolean;
     /** Whether the element should be unmounted, instead of just hidden, based on the open/closed state	*/
@@ -54,8 +55,7 @@
     container: $itemsStore,
     enabled: $api.menuState === MenuStates.Open,
     accept(node) {
-      if (node.getAttribute("role") === "menuitem")
-        return NodeFilter.FILTER_REJECT;
+      if (node.getAttribute("role") === "menuitem") return NodeFilter.FILTER_REJECT;
       if (node.hasAttribute("role")) return NodeFilter.FILTER_SKIP;
       return NodeFilter.FILTER_ACCEPT;
     },
@@ -148,9 +148,7 @@
 
   $: propsWeControl = {
     "aria-activedescendant":
-      $api.activeItemIndex === null
-        ? undefined
-        : $api.items[$api.activeItemIndex]?.id,
+      $api.activeItemIndex === null ? undefined : $api.items[$api.activeItemIndex]?.id,
     "aria-labelledby": $buttonStore?.id,
     id,
     role: "menu",
@@ -171,7 +169,6 @@
   on:keydown={handleKeyDown}
   on:keyup={handleKeyUp}
   {visible}
-  features={Features.RenderStrategy | Features.Static}
->
+  features={Features.RenderStrategy | Features.Static}>
   <slot {...slotProps} />
 </Render>

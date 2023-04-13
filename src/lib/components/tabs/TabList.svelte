@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TTabListProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TTabListProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -42,7 +43,6 @@
   {slotProps}
   bind:el={$listRef}
   use={[...use, forwardEvents]}
-  name={"TabList"}
->
+  name={"TabList"}>
   <slot {...slotProps} />
 </Render>

@@ -26,32 +26,24 @@
   }
 
   const POPOVER_CONTEXT_NAME = "headlessui-popover-context";
-  export function usePopoverContext(
-    component: string
-  ): Readable<StateDefinition> {
-    let context = getContext(POPOVER_CONTEXT_NAME) as
-      | Writable<StateDefinition>
-      | undefined;
+  export function usePopoverContext(component: string): Readable<StateDefinition> {
+    let context = getContext(POPOVER_CONTEXT_NAME) as Writable<StateDefinition> | undefined;
     if (context === undefined) {
-      throw new Error(
-        `<${component} /> is missing a parent <Popover /> component.`
-      );
+      throw new Error(`<${component} /> is missing a parent <Popover /> component.`);
     }
     return context;
   }
-  type TPopoverProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {};
+  type TPopoverProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {};
 </script>
 
 <script lang="ts">
   import { match } from "$lib/utils/match";
   import { useId } from "$lib/hooks/use-id";
-  import {
-    isFocusableElement,
-    FocusableMode,
-  } from "$lib/utils/focus-management";
+  import { isFocusableElement, FocusableMode } from "$lib/utils/focus-management";
   import { State, useOpenClosedProvider } from "$lib/internal/open-closed";
   import { usePopoverGroupContext } from "./PopoverGroup.svelte";
   import { getContext, setContext, onMount } from "svelte";
@@ -141,8 +133,7 @@
   function isFocusWithinPopoverGroup() {
     return (
       groupContext?.isFocusWithinPopoverGroup() ??
-      ($button?.contains(document.activeElement) ||
-        $panel?.contains(document.activeElement))
+      ($button?.contains(document.activeElement) || $panel?.contains(document.activeElement))
     );
   }
 
@@ -186,12 +177,6 @@
 </script>
 
 <svelte:window on:focus|capture={handleFocus} on:mousedown={handleMousedown} />
-<Render
-  {...$$restProps}
-  {as}
-  {slotProps}
-  use={[...use, forwardEvents]}
-  name={"Popover"}
->
+<Render {...$$restProps} {as} {slotProps} use={[...use, forwardEvents]} name={"Popover"}>
   <slot {...slotProps} />
 </Render>

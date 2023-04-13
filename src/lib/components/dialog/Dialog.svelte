@@ -1,12 +1,5 @@
 <script lang="ts" context="module">
-  import {
-    getContext,
-    setContext,
-    createEventDispatcher,
-    tick,
-    onDestroy,
-    onMount,
-  } from "svelte";
+  import { getContext, setContext, createEventDispatcher, tick, onDestroy, onMount } from "svelte";
   export enum DialogStates {
     Open,
     Closed,
@@ -24,24 +17,19 @@
 
   const DIALOG_CONTEXT_NAME = "headlessui-dialog-context";
 
-  export function useDialogContext(
-    component: string
-  ): Readable<StateDefinition> {
-    let context = getContext(DIALOG_CONTEXT_NAME) as
-      | Writable<StateDefinition>
-      | undefined;
+  export function useDialogContext(component: string): Readable<StateDefinition> {
+    let context = getContext(DIALOG_CONTEXT_NAME) as Writable<StateDefinition> | undefined;
     if (context === undefined) {
-      throw new Error(
-        `<${component} /> is missing a parent <Dialog /> component.`
-      );
+      throw new Error(`<${component} /> is missing a parent <Dialog /> component.`);
     }
     return context;
   }
 
-  type TDialogProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "div"> & {
+  type TDialogProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "div"
+  > & {
     /** Whether the `Dialog` is open */
     open?: boolean;
     /** The element that should receive focus when the Dialog is first opened */
@@ -63,9 +51,7 @@
   import { contains } from "$lib/internal/dom-containers";
   import { Keys } from "$lib/utils/keyboard";
   import FocusTrap from "$lib/components/focus-trap/FocusTrap.svelte";
-  import StackContextProvider, {
-    StackMessage,
-  } from "$lib/internal/StackContextProvider.svelte";
+  import StackContextProvider, { StackMessage } from "$lib/internal/StackContextProvider.svelte";
   import DescriptionProvider from "$lib/components/description/DescriptionProvider.svelte";
   import ForcePortalRootContext from "$lib/internal/ForcePortalRootContext.svelte";
   import Portal from "$lib/components/portal/Portal.svelte";
@@ -87,9 +73,7 @@
   export let initialFocus: HTMLElement | null = null;
 
   /***** Events *****/
-  const forwardEvents = forwardEventsBuilder(get_current_component(), [
-    "close",
-  ]);
+  const forwardEvents = forwardEventsBuilder(get_current_component(), ["close"]);
   const dispatch = createEventDispatcher<{
     close: boolean;
   }>();
@@ -111,9 +95,7 @@
     let hasOpen = open !== undefined || openClosedState !== undefined;
 
     if (!hasOpen) {
-      throw new Error(
-        `You forgot to provide an \`open\` prop to the \`Dialog\` component.`
-      );
+      throw new Error(`You forgot to provide an \`open\` prop to the \`Dialog\` component.`);
     }
 
     if (typeof open !== "boolean") {
@@ -204,8 +186,7 @@
     let overflow = document.documentElement.style.overflow;
     let paddingRight = document.documentElement.style.paddingRight;
 
-    let scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+    let scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 
     document.documentElement.style.overflow = "hidden";
     document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
@@ -267,10 +248,7 @@
   $: slotProps = { open };
 </script>
 
-<svelte:window
-  on:mousedown={handleWindowMousedown}
-  on:keydown={handleWindowKeydown}
-/>
+<svelte:window on:mousedown={handleWindowMousedown} on:keydown={handleWindowKeydown} />
 <FocusTrap {containers} {enabled} options={{ initialFocus }} />
 <StackContextProvider
   element={internalDialogRef}
@@ -284,17 +262,12 @@
         containers = new Set([...containers]);
       },
     });
-  }}
->
+  }}>
   <ForcePortalRootContext force={true}>
     <Portal>
       <PortalGroup target={internalDialogRef}>
         <ForcePortalRootContext force={false}>
-          <DescriptionProvider
-            name={"DialogDescription"}
-            {slotProps}
-            let:describedby
-          >
+          <DescriptionProvider name={"DialogDescription"} {slotProps} let:describedby>
             <Render
               {...{ ...$$restProps, ...propsWeControl }}
               {as}
@@ -305,8 +278,7 @@
               aria-describedby={describedby}
               on:click={handleClick}
               {visible}
-              features={Features.RenderStrategy | Features.Static}
-            >
+              features={Features.RenderStrategy | Features.Static}>
               <slot {...slotProps} />
             </Render>
           </DescriptionProvider>

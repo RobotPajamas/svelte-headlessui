@@ -1,7 +1,4 @@
-export function portal(
-  element: HTMLElement,
-  target: HTMLElement | null | undefined
-) {
+export function portal(element: HTMLElement, target: HTMLElement | null | undefined) {
   if (target) {
     target.append(element);
   }

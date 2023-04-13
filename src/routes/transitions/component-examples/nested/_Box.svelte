@@ -9,11 +9,9 @@
   enterTo="transform translate-x-0"
   leave="transition translate duration-300"
   leaveFrom="transform translate-x-0"
-  leaveTo="transform translate-x-full"
->
+  leaveTo="transform translate-x-full">
   <div
-    class="p-4 space-y-2 text-sm font-semibold tracking-wide text-gray-700 uppercase bg-white rounded-md shadow"
-  >
+    class="space-y-2 rounded-md bg-white p-4 text-sm font-semibold uppercase tracking-wide text-gray-700 shadow">
     <span>This is a box</span>
     <slot />
   </div>

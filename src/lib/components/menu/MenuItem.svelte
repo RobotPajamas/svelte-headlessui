@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TMenuItemProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "a"> & {
+  type TMenuItemProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "a"
+  > & {
     /** Whether the item should be disabled for keyboard navigation and ARIA purposes */
     disabled?: boolean;
   };
@@ -38,10 +39,7 @@
   const api = useMenuContext("MenuItem");
   const id = `headlessui-menu-item-${useId()}`;
 
-  $: active =
-    $api.activeItemIndex !== null
-      ? $api.items[$api.activeItemIndex].id === id
-      : false;
+  $: active = $api.activeItemIndex !== null ? $api.items[$api.activeItemIndex].id === id : false;
 
   $: buttonStore = $api.buttonStore;
 
@@ -114,7 +112,6 @@
   on:pointermove={handleMove}
   on:mousemove={handleMove}
   on:pointerleave={handleLeave}
-  on:mouseleave={handleLeave}
->
+  on:mouseleave={handleLeave}>
   <slot {...slotProps} />
 </Render>

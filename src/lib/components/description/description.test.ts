@@ -131,4 +131,3 @@ it("should be possible to use a DescriptionProvider with slot props", async () =
     </div>
   `);
 });
-

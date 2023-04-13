@@ -7,11 +7,7 @@
   let groupTarget = usePortalGroupContext();
   $: target = (() => {
     // Group context is used, but still null
-    if (
-      !(forceInRoot && $forceInRoot) &&
-      groupTarget !== undefined &&
-      $groupTarget !== null
-    )
+    if (!(forceInRoot && $forceInRoot) && groupTarget !== undefined && $groupTarget !== null)
       return $groupTarget;
 
     // No group context is used, let's create a default portal root

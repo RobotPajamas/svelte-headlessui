@@ -25,54 +25,49 @@ export enum Features {
 }
 
 export type TRestProps<T> = T extends SupportedElement
-  ? Omit<
-    svelteHTML.IntrinsicElements[T],
-    "class" | "style"
-  >
+  ? Omit<svelteHTML.IntrinsicElements[T], "class" | "style">
   : {};
 
-export type TResolveAs<TAsProp, TDefaultAs> = SupportedAs extends TAsProp
-  ? TDefaultAs
-  : TAsProp;
+export type TResolveAs<TAsProp, TDefaultAs> = SupportedAs extends TAsProp ? TDefaultAs : TAsProp;
 
 export type TRenderProps<
   TSlotProps extends {},
   TAsProp extends SupportedAs,
   TDefaultAs
-  > = TRestProps<TResolveAs<TAsProp, TDefaultAs>> & {
-    name: string;
-    slotProps: TSlotProps;
-    el?: HTMLElement | null;
-    visible?: boolean;
-    features?: Features;
-    as: TAsProp;
-    static?: boolean;
-    unmount?: boolean;
-    /**
-     * A list of actions to apply to the component's HTML element.
-     *
-     * Each action must take the form `[action]` or `[action, options]`:
-     *
-     * use={[[action1], [action2, action2Options], [action3]]}
-     */
-    use?: HTMLActionArray;
-    /**
-     * The class attribute for this component.
-     *
-     * In addition to a regular string, this may be a function that returns a string.
-     * In that case, the function will be passed this component's slot props as an argument,
-     * allowing you to conditionally apply classes. See the component's documentation for more.
-     */
-    class?: ((props: TSlotProps) => string) | string;
-    /**
-     * The style attribute for this component.
-     *
-     * In addition to a regular string, this may be a function that returns a string.
-     * In that case, the function will be passed this component's slot props as an argument,
-     * allowing you to conditionally apply styles. See the component's documentation for more.
-     */
-    style?: ((props: TSlotProps) => string) | string;
-  };
+> = TRestProps<TResolveAs<TAsProp, TDefaultAs>> & {
+  name: string;
+  slotProps: TSlotProps;
+  el?: HTMLElement | null;
+  visible?: boolean;
+  features?: Features;
+  as: TAsProp;
+  static?: boolean;
+  unmount?: boolean;
+  /**
+   * A list of actions to apply to the component's HTML element.
+   *
+   * Each action must take the form `[action]` or `[action, options]`:
+   *
+   * use={[[action1], [action2, action2Options], [action3]]}
+   */
+  use?: HTMLActionArray;
+  /**
+   * The class attribute for this component.
+   *
+   * In addition to a regular string, this may be a function that returns a string.
+   * In that case, the function will be passed this component's slot props as an argument,
+   * allowing you to conditionally apply classes. See the component's documentation for more.
+   */
+  class?: ((props: TSlotProps) => string) | string;
+  /**
+   * The style attribute for this component.
+   *
+   * In addition to a regular string, this may be a function that returns a string.
+   * In that case, the function will be passed this component's slot props as an argument,
+   * allowing you to conditionally apply styles. See the component's documentation for more.
+   */
+  style?: ((props: TSlotProps) => string) | string;
+};
 
 export type TInternalProps = "name" | "slotProps" | "el" | "visible" | "features";
 
@@ -80,10 +75,10 @@ export type TPassThroughProps<
   TSlotProps extends {},
   TAsProp extends SupportedAs,
   TDefaultAs
-  > = Omit<
-    TRenderProps<TSlotProps, TAsProp, TDefaultAs>,
-    TInternalProps | "as" | "static" | "unmount"
-  > & {
-    /** The HTML element the component should render as */
-    as?: TAsProp;
-  };
+> = Omit<
+  TRenderProps<TSlotProps, TAsProp, TDefaultAs>,
+  TInternalProps | "as" | "static" | "unmount"
+> & {
+  /** The HTML element the component should render as */
+  as?: TAsProp;
+};

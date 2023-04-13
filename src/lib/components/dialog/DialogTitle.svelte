@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TDialogTitleProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "h2"> & {};
+  type TDialogTitleProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "h2"
+  > & {};
 </script>
 
 <script lang="ts">
@@ -46,7 +47,6 @@
   {as}
   {slotProps}
   use={[...use, forwardEvents]}
-  name={"DialogTitle"}
->
+  name={"DialogTitle"}>
   <slot {...slotProps} />
 </Render>

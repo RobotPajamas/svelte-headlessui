@@ -20,10 +20,7 @@
   import { get_current_component } from "svelte/internal";
   import type { SupportedAs } from "$lib/internal/elements";
   import type { HTMLActionArray } from "$lib/hooks/use-actions";
-  import type {
-    NestingContextValues,
-    TransitionContextValues,
-  } from "./common.svelte";
+  import type { NestingContextValues, TransitionContextValues } from "./common.svelte";
   import {
     hasChildren,
     NESTING_CONTEXT_NAME,
@@ -66,22 +63,14 @@
     return show;
   }
 
-  let shouldShow = computeShow(
-    show,
-    openClosedState !== undefined ? $openClosedState : undefined
-  );
+  let shouldShow = computeShow(show, openClosedState !== undefined ? $openClosedState : undefined);
 
   let initialShow = shouldShow;
 
   $: {
-    shouldShow = computeShow(
-      show,
-      openClosedState !== undefined ? $openClosedState : undefined
-    );
+    shouldShow = computeShow(show, openClosedState !== undefined ? $openClosedState : undefined);
     if (shouldShow !== true && shouldShow !== false) {
-      throw new Error(
-        "A <Transition /> is used but it is missing a `show={true | false}` prop."
-      );
+      throw new Error("A <Transition /> is used but it is missing a `show={true | false}` prop.");
     }
   }
   let state = shouldShow ? TreeStates.Visible : TreeStates.Hidden;
@@ -124,8 +113,7 @@
     on:afterEnter
     on:afterLeave
     on:beforeEnter
-    on:beforeLeave
-  >
+    on:beforeLeave>
     <slot />
   </TransitionChild>
 {/if}

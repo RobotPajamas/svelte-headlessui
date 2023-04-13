@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  type TListboxOptionProps<
-    TSlotProps extends {},
-    TAsProp extends SupportedAs
-  > = TPassThroughProps<TSlotProps, TAsProp, "li"> & {
+  type TListboxOptionProps<TSlotProps extends {}, TAsProp extends SupportedAs> = TPassThroughProps<
+    TSlotProps,
+    TAsProp,
+    "li"
+  > & {
     /** The option value */
     value: unknown;
     /** Whether the option should be disabled for keyboard navigation and ARIA purposes */
@@ -41,9 +42,7 @@
   let buttonRef = $api.buttonRef;
 
   $: active =
-    $api.activeOptionIndex !== null
-      ? $api.options[$api.activeOptionIndex].id === id
-      : false;
+    $api.activeOptionIndex !== null ? $api.options[$api.activeOptionIndex].id === id : false;
 
   $: selected = $api.value === value;
   $: dataRef = {
@@ -53,10 +52,7 @@
   };
 
   onMount(() => {
-    let textValue = document
-      .getElementById(id)
-      ?.textContent?.toLowerCase()
-      .trim();
+    let textValue = document.getElementById(id)?.textContent?.toLowerCase().trim();
     if (textValue !== undefined) dataRef.textValue = textValue;
   });
 
@@ -66,11 +62,7 @@
   let oldState = $api.listboxState;
   let oldSelected = selected;
   let oldActive = active;
-  async function updateFocus(
-    newState: ListboxStates,
-    newSelected: boolean,
-    newActive: boolean
-  ) {
+  async function updateFocus(newState: ListboxStates, newSelected: boolean, newActive: boolean) {
     // Wait for a tick since we need to ensure registerOption has been applied
     await tick();
     if (newState !== oldState || newSelected !== oldSelected) {
@@ -138,7 +130,6 @@
   on:pointermove={handleMove}
   on:mousemove={handleMove}
   on:pointerleave={handleLeave}
-  on:mouseleave={handleLeave}
->
+  on:mouseleave={handleLeave}>
   <slot {...slotProps} />
 </Render>

@@ -31,26 +31,21 @@
   let static_ = false;
   export { static_ as static };
 
-  let classProp: ((props: TSlotProps) => string) | string | undefined =
-    undefined;
+  let classProp: ((props: TSlotProps) => string) | string | undefined = undefined;
   export { classProp as class };
 
   // This is not in upstream Headless UI, but we might as well add it here
-  export let style: ((props: TSlotProps) => string) | string | undefined =
-    undefined;
+  export let style: ((props: TSlotProps) => string) | string | undefined = undefined;
 
   if (!as) {
     throw new Error(`<${name}> did not provide an \`as\` value to <Render>`);
   }
 
   if (!isValidElement(as)) {
-    throw new Error(
-      `<${name}> has an invalid or unsupported \`as\` prop: ${as}`
-    );
+    throw new Error(`<${name}> has an invalid or unsupported \`as\` prop: ${as}`);
   }
 
-  $: computedClass =
-    typeof classProp === "function" ? classProp(slotProps) : classProp;
+  $: computedClass = typeof classProp === "function" ? classProp(slotProps) : classProp;
   $: computedStyle = typeof style === "function" ? style(slotProps) : style;
 
   $: show =
@@ -65,8 +60,7 @@
 
   $: propsWeControl = {
     class: computedClass,
-    style:
-      `${computedStyle ?? ""}${hidden ? " display: none" : ""}` || undefined,
+    style: `${computedStyle ?? ""}${hidden ? " display: none" : ""}` || undefined,
   };
   $: if (propsWeControl.style === undefined) {
     delete propsWeControl.style;
@@ -87,8 +81,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </a>
   {:else if as === "address"}
@@ -98,8 +91,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </address>
   {:else if as === "article"}
@@ -109,8 +101,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </article>
   {:else if as === "aside"}
@@ -120,8 +111,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </aside>
   {:else if as === "b"}
@@ -131,8 +121,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </b>
   {:else if as === "bdi"}
@@ -142,8 +131,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </bdi>
   {:else if as === "bdo"}
@@ -153,8 +141,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </bdo>
   {:else if as === "blockquote"}
@@ -164,8 +151,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </blockquote>
   {:else if as === "button"}
@@ -175,8 +161,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </button>
   {:else if as === "cite"}
@@ -186,8 +171,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </cite>
   {:else if as === "code"}
@@ -197,8 +181,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </code>
   {:else if as === "data"}
@@ -208,8 +191,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </data>
   {:else if as === "datalist"}
@@ -219,8 +201,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </datalist>
   {:else if as === "dd"}
@@ -230,8 +211,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </dd>
   {:else if as === "dl"}
@@ -241,8 +221,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </dl>
   {:else if as === "dt"}
@@ -252,8 +231,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </dt>
   {:else if as === "div"}
@@ -263,8 +241,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </div>
   {:else if as === "em"}
@@ -274,8 +251,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </em>
   {:else if as === "footer"}
@@ -285,8 +261,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </footer>
   {:else if as === "form"}
@@ -296,8 +271,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </form>
   {:else if as === "h1"}
@@ -307,8 +281,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h1>
   {:else if as === "h2"}
@@ -318,8 +291,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h2>
   {:else if as === "h3"}
@@ -329,8 +301,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h3>
   {:else if as === "h4"}
@@ -340,8 +311,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h4>
   {:else if as === "h5"}
@@ -351,8 +321,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h5>
   {:else if as === "h6"}
@@ -362,8 +331,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </h6>
   {:else if as === "header"}
@@ -373,8 +341,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </header>
   {:else if as === "i"}
@@ -384,8 +351,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </i>
   {:else if as === "input"}
@@ -395,8 +361,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    />
+      hidden={hidden || undefined} />
   {:else if as === "label"}
     <!-- svelte-ignore a11y-label-has-associated-control -->
     <label
@@ -405,8 +370,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </label>
   {:else if as === "li"}
@@ -416,8 +380,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </li>
   {:else if as === "main"}
@@ -427,8 +390,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </main>
   {:else if as === "nav"}
@@ -438,8 +400,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </nav>
   {:else if as === "ol"}
@@ -449,8 +410,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </ol>
   {:else if as === "p"}
@@ -460,8 +420,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </p>
   {:else if as === "section"}
@@ -471,8 +430,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </section>
   {:else if as === "span"}
@@ -482,8 +440,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </span>
   {:else if as === "strong"}
@@ -493,8 +450,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </strong>
   {:else if as === "ul"}
@@ -504,8 +460,7 @@
       use:forwardEvents
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </ul>
   {:else}
@@ -515,8 +470,7 @@
       use={[...use, forwardEvents]}
       {...$$restProps}
       {...propsWeControl}
-      hidden={hidden || undefined}
-    >
+      hidden={hidden || undefined}>
       <slot />
     </svelte:component>
   {/if}
