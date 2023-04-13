@@ -1,8 +1,16 @@
 {
+  "bracketSameLine": true,
   "overrides": [
+    { "files": "*.svelte", "options": { "parser": "svelte" } },
     {
       "files": "*.svx",
       "options": { "parser": "mdx" }
     }
-  ]
+  ],
+  "plugins": ["prettier-plugin-svelte"],
+  "organizeImportsSkipDestructiveCodeActions": true,
+  "pluginSearchDirs": false,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "trailingComma": "es5"
 }
