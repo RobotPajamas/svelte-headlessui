@@ -34,7 +34,7 @@
   export let as: SupportedAs = "div";
   export let use: HTMLActionArray = [];
   export let value: unknown;
-  export let disabled: boolean = false;
+  export let disabled = false;
 
   /***** Events *****/
   const forwardEvents = forwardEventsBuilder(get_current_component());

@@ -30,7 +30,7 @@ it(
 );
 
 it("should be possible to use a LabelProvider without using a Label", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       No label
@@ -45,7 +45,7 @@ it("should be possible to use a LabelProvider without using a Label", async () =
 });
 
 it("should be possible to use a LabelProvider and a single Label, and have them linked", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
@@ -73,7 +73,7 @@ it("should be possible to use a LabelProvider and a single Label, and have them 
 });
 
 it("should be possible to use a LabelProvider and multiple Label components, and have them linked", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
@@ -110,7 +110,7 @@ it("should be possible to use a LabelProvider and multiple Label components, and
 });
 
 it("should be possible to render a Label with an `as` prop", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label as="p">I am a label</Label>
@@ -138,8 +138,8 @@ it("should be possible to render a Label with an `as` prop", async () => {
 });
 
 it("should be possible to change the props of a Label", async () => {
-  let classStore = writable<string | null>(null);
-  let { container } = render(svelte`
+  const classStore = writable<string | null>(null);
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label class={$classStore}>I am a label</Label>
@@ -190,7 +190,7 @@ it("should be possible to change the props of a Label", async () => {
 });
 
 it("should be possible to use a LabelProvider with slot props", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
   <LabelProvider name={"test"} slotProps={{num: 12345}} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label let:num>{num}</Label>

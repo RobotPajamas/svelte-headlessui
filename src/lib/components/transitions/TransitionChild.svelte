@@ -137,7 +137,7 @@
     })();
   }
 
-  function splitClasses(classes: string = "") {
+  function splitClasses(classes = "") {
     return classes.split(" ").filter((className) => className.trim().length > 1);
   }
 

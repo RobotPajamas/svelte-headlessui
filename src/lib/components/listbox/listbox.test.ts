@@ -477,7 +477,7 @@ describe("Rendering", () => {
     );
 
     it("should guarantee the listbox option order after a few unmounts", async () => {
-      let showFirst = writable(false);
+      const showFirst = writable(false);
       render(svelte`
       <Listbox value={undefined}>
         <ListboxButton>Trigger</ListboxButton>
@@ -556,7 +556,7 @@ describe("Rendering composition", () => {
       // Open Listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // Verify correct classNames
       expect("" + options[0].classList).toEqual(
@@ -635,7 +635,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the ListboxOptions with a Transition component",
     suppressConsoleLogs(async () => {
-      let orderFn = jest.fn();
+      const orderFn = jest.fn();
       render(svelte`
         <Listbox value={undefined} on:change={console.log}>
           <ListboxButton>Trigger</ListboxButton>
@@ -724,7 +724,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option, { selected: false }));
 
@@ -805,7 +805,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -849,7 +849,7 @@ describe("Keyboard interactions", () => {
         assertActiveElement(getListbox());
         assertListboxButtonLinkedWithListbox();
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Hover over Option A
         await mouseMove(options[0]);
@@ -878,7 +878,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to open the listbox with Enter, and focus the selected option (with a list of objects)",
       suppressConsoleLogs(async () => {
-        let myOptions = [
+        const myOptions = [
           { id: "a", name: "Option A" },
           { id: "b", name: "Option B" },
           { id: "c", name: "Option C" },
@@ -916,7 +916,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -975,7 +975,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Verify that the first non-disabled listbox option is active
         assertActiveListboxOption(options[1]);
@@ -1008,7 +1008,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Verify that the first non-disabled listbox option is active
         assertActiveListboxOption(options[2]);
@@ -1086,8 +1086,8 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the listbox with Enter and choose the active listbox option",
       suppressConsoleLogs(async () => {
-        let handleChange = jest.fn();
-        let value = writable();
+        const handleChange = jest.fn();
+        const value = writable();
         render(svelte`
           <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
             <ListboxButton>Trigger</ListboxButton>
@@ -1112,7 +1112,7 @@ describe("Keyboard interactions", () => {
         assertListboxButton({ state: ListboxState.Visible });
 
         // Activate the first listbox option
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         await mouseMove(options[0]);
 
         // Choose option, and close listbox
@@ -1175,7 +1175,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -1253,7 +1253,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -1312,7 +1312,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Space);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Verify that the first non-disabled listbox option is active
         assertActiveListboxOption(options[1]);
@@ -1345,7 +1345,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Space);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Verify that the first non-disabled listbox option is active
         assertActiveListboxOption(options[2]);
@@ -1385,8 +1385,8 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the listbox with Space and choose the active listbox option",
       suppressConsoleLogs(async () => {
-        let handleChange = jest.fn();
-        let value = writable();
+        const handleChange = jest.fn();
+        const value = writable();
         render(svelte`
           <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
             <ListboxButton>Trigger</ListboxButton>
@@ -1411,7 +1411,7 @@ describe("Keyboard interactions", () => {
         assertListboxButton({ state: ListboxState.Visible });
 
         // Activate the first listbox option
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         await mouseMove(options[0]);
 
         // Choose option, and close listbox
@@ -1517,7 +1517,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -1568,7 +1568,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -1620,7 +1620,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
 
@@ -1700,7 +1700,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -1759,7 +1759,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -1805,7 +1805,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[1]);
@@ -1843,7 +1843,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[2]);
@@ -1879,7 +1879,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -1936,7 +1936,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
 
@@ -2016,7 +2016,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -2076,7 +2076,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.ArrowUp);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[0]);
@@ -2110,7 +2110,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[2]);
@@ -2161,7 +2161,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[2]);
@@ -2219,7 +2219,7 @@ describe("Keyboard interactions", () => {
         assertListboxButtonLinkedWithListbox();
 
         // Verify we have listbox options
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         expect(options).toHaveLength(3);
         options.forEach((option) => assertListboxOption(option));
         assertActiveListboxOption(options[2]);
@@ -2260,7 +2260,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first option
         assertActiveListboxOption(options[0]);
@@ -2292,7 +2292,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first option
         assertActiveListboxOption(options[0]);
@@ -2327,7 +2327,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.End);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         assertActiveListboxOption(options[0]);
       })
     );
@@ -2382,7 +2382,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first option
         assertActiveListboxOption(options[0]);
@@ -2414,7 +2414,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.Enter);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first option
         assertActiveListboxOption(options[0]);
@@ -2449,7 +2449,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageDown);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         assertActiveListboxOption(options[0]);
       })
     );
@@ -2504,7 +2504,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2539,7 +2539,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.Home);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first non-disabled option
         assertActiveListboxOption(options[2]);
@@ -2570,7 +2570,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.Home);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         assertActiveListboxOption(options[3]);
       })
     );
@@ -2625,7 +2625,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2660,7 +2660,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the first non-disabled option
         assertActiveListboxOption(options[2]);
@@ -2691,7 +2691,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
         assertActiveListboxOption(options[3]);
       })
     );
@@ -2743,7 +2743,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await click(getListboxButton());
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be able to go to the second option
         await type(word("bob"));
@@ -2779,7 +2779,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2818,7 +2818,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2857,7 +2857,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2890,7 +2890,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await press(Keys.ArrowUp);
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // We should be on the last option
         assertActiveListboxOption(options[2]);
@@ -2921,7 +2921,7 @@ describe("Keyboard interactions", () => {
         // Open listbox
         await click(getListboxButton());
 
-        let options = getListboxOptions();
+        const options = getListboxOptions();
 
         // Search for bob
         await type(word("b"));
@@ -3031,7 +3031,7 @@ describe("Mouse interactions", () => {
       assertListboxButtonLinkedWithListbox();
 
       // Verify we have listbox options
-      let options = getListboxOptions();
+      const options = getListboxOptions();
       expect(options).toHaveLength(3);
       options.forEach((option) => assertListboxOption(option));
     })
@@ -3130,7 +3130,7 @@ describe("Mouse interactions", () => {
       assertListboxButtonLinkedWithListbox();
 
       // Verify we have listbox options
-      let options = getListboxOptions();
+      const options = getListboxOptions();
       expect(options).toHaveLength(3);
       options.forEach((option, i) => assertListboxOption(option, { selected: i === 1 }));
 
@@ -3247,7 +3247,7 @@ describe("Mouse interactions", () => {
         </div>
         `);
 
-      let [button1, button2] = getListboxButtons();
+      const [button1, button2] = getListboxButtons();
 
       // Click the first listbox button
       await click(button1);
@@ -3300,7 +3300,7 @@ describe("Mouse interactions", () => {
   it.skip(
     "should be possible to click outside of the listbox, on an element which is within a focusable element, which closes the listbox",
     suppressConsoleLogs(async () => {
-      let focusFn = jest.fn();
+      const focusFn = jest.fn();
       render(svelte`
         <div>
           <Listbox value={undefined} on:change={console.log}>
@@ -3354,7 +3354,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
       // We should be able to go to the second option
       await mouseMove(options[1]);
       assertActiveListboxOption(options[1]);
@@ -3386,7 +3386,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
       // We should be able to go to the second option
       await mouseMove(options[1]);
       assertActiveListboxOption(options[1]);
@@ -3410,7 +3410,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // We should be able to go to the second option
       await mouseMove(options[1]);
@@ -3440,7 +3440,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       await mouseMove(options[1]);
       assertNoActiveListboxOption();
@@ -3464,7 +3464,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // Try to hover over option 1, which is disabled
       await mouseMove(options[1]);
@@ -3491,7 +3491,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // We should be able to go to the second option
       await mouseMove(options[1]);
@@ -3533,7 +3533,7 @@ describe("Mouse interactions", () => {
       // Open listbox
       await click(getListboxButton());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // Try to hover over option 1, which is disabled
       await mouseMove(options[1]);
@@ -3547,8 +3547,8 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a listbox option, which closes the listbox",
     suppressConsoleLogs(async () => {
-      let handleChange = jest.fn();
-      let value = writable();
+      const handleChange = jest.fn();
+      const value = writable();
       render(svelte`
         <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
           <ListboxButton>Trigger</ListboxButton>
@@ -3565,7 +3565,7 @@ describe("Mouse interactions", () => {
       assertListbox({ state: ListboxState.Visible });
       assertActiveElement(getListbox());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // We should be able to click the first option
       await click(options[1]);
@@ -3587,8 +3587,8 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a disabled listbox option, which is a no-op",
     suppressConsoleLogs(async () => {
-      let handleChange = jest.fn();
-      let value = writable();
+      const handleChange = jest.fn();
+      const value = writable();
       render(svelte`
         <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
           <ListboxButton>Trigger</ListboxButton>
@@ -3605,7 +3605,7 @@ describe("Mouse interactions", () => {
       assertListbox({ state: ListboxState.Visible });
       assertActiveElement(getListbox());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // We should be able to click the first option
       await click(options[1]);
@@ -3643,7 +3643,7 @@ describe("Mouse interactions", () => {
       assertListbox({ state: ListboxState.Visible });
       assertActiveElement(getListbox());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // Verify that nothing is active yet
       assertNoActiveListboxOption();
@@ -3673,7 +3673,7 @@ describe("Mouse interactions", () => {
       assertListbox({ state: ListboxState.Visible });
       assertActiveElement(getListbox());
 
-      let options = getListboxOptions();
+      const options = getListboxOptions();
 
       // We should not be able to focus the first option
       await focus(options[1]);

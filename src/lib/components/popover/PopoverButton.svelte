@@ -29,7 +29,7 @@
 
   export let as: SupportedAs = "button";
   export let use: HTMLActionArray = [];
-  export let disabled: boolean = false;
+  export let disabled = false;
 
   /***** Events *****/
   const forwardEvents = forwardEventsBuilder(get_current_component());

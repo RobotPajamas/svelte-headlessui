@@ -2,7 +2,7 @@ import { match } from "./match";
 
 // Credit:
 //  - https://stackoverflow.com/a/30753870
-let focusableSelector = [
+const focusableSelector = [
   "[contentEditable=true]",
   "[tabindex]",
   "a[href]",
@@ -96,17 +96,17 @@ export function focusElement(element: HTMLElement | null) {
 }
 
 export function focusIn(container: HTMLElement | HTMLElement[], focus: Focus) {
-  let elements = Array.isArray(container) ? container : getFocusableElements(container);
-  let active = document.activeElement as HTMLElement;
+  const elements = Array.isArray(container) ? container : getFocusableElements(container);
+  const active = document.activeElement as HTMLElement;
 
-  let direction = (() => {
+  const direction = (() => {
     if (focus & (Focus.First | Focus.Next)) return Direction.Next;
     if (focus & (Focus.Previous | Focus.Last)) return Direction.Previous;
 
     throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last");
   })();
 
-  let startIndex = (() => {
+  const startIndex = (() => {
     if (focus & Focus.First) return 0;
     if (focus & Focus.Previous) return Math.max(0, elements.indexOf(active)) - 1;
     if (focus & Focus.Next) return Math.max(0, elements.indexOf(active)) + 1;
@@ -115,10 +115,10 @@ export function focusIn(container: HTMLElement | HTMLElement[], focus: Focus) {
     throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last");
   })();
 
-  let focusOptions = focus & Focus.NoScroll ? { preventScroll: true } : {};
+  const focusOptions = focus & Focus.NoScroll ? { preventScroll: true } : {};
 
   let offset = 0;
-  let total = elements.length;
+  const total = elements.length;
   let next = undefined;
   do {
     // Guard against infinite loops

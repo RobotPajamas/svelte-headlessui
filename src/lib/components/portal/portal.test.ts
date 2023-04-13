@@ -24,8 +24,8 @@ it("should be possible to use a Portal", () => {
     </main>
   `);
 
-  let parent = document.getElementById("parent");
-  let content = document.getElementById("content");
+  const parent = document.getElementById("parent");
+  const content = document.getElementById("content");
 
   expect(getPortalRoot()).not.toBe(null);
 
@@ -52,9 +52,9 @@ it("should be possible to use multiple Portal elements", () => {
     </main>
   `);
 
-  let parent = document.getElementById("parent");
-  let content1 = document.getElementById("content1");
-  let content2 = document.getElementById("content2");
+  const parent = document.getElementById("parent");
+  const content1 = document.getElementById("content1");
+  const content2 = document.getElementById("content2");
 
   expect(getPortalRoot()).not.toBe(null);
 
@@ -103,8 +103,8 @@ it("should cleanup the Portal root when the last Portal is unmounted", async () 
     </main>
     `);
 
-  let a = document.getElementById("a");
-  let b = document.getElementById("b");
+  const a = document.getElementById("a");
+  const b = document.getElementById("b");
 
   expect(getPortalRoot()).toBe(null);
 
@@ -313,7 +313,7 @@ it("should cleanup the Portal properly when Svelte would not detach it", async (
     </main>
     `);
 
-  let a = document.getElementById("a");
+  const a = document.getElementById("a");
 
   expect(getPortalRoot()).toBe(null);
 

@@ -12,13 +12,13 @@ export function forwardEventsBuilder(component: SvelteComponent, except: Forward
   // This is our pseudo $on function. It is defined on component mount.
   let $on: (eventType: string, callback: (event: any) => void) => () => void;
   // This is a list of events bound before mount.
-  let events: [string, (event: any) => void][] = [];
+  const events: [string, (event: any) => void][] = [];
 
   // And we override the $on function to forward all bound events.
   component.$on = (fullEventType: string, callback: (event: any) => void) => {
-    let eventType = fullEventType;
+    const eventType = fullEventType;
     let destructor = () => {};
-    for (let exception of except) {
+    for (const exception of except) {
       if (typeof exception === "string" && exception === eventType) {
         // Bail out of the event forwarding and run the normal Svelte $on() code
         const callbacks =
@@ -30,7 +30,7 @@ export function forwardEventsBuilder(component: SvelteComponent, except: Forward
         };
       }
       if (typeof exception === "object" && exception["name"] === eventType) {
-        let oldCallback = callback;
+        const oldCallback = callback;
         callback = (...props) => {
           if (!(typeof exception === "object" && exception["shouldExclude"]())) {
             oldCallback(...props);
@@ -143,7 +143,7 @@ export function forwardEventsBuilder(component: SvelteComponent, except: Forward
         }
 
         // Remove all event forwarders.
-        for (let entry of Object.entries(forwardDestructors)) {
+        for (const entry of Object.entries(forwardDestructors)) {
           entry[1]();
         }
       },

@@ -15,15 +15,15 @@ export enum Reason {
 }
 
 function waitForTransition(node: HTMLElement, done: (reason: Reason) => void) {
-  let d = disposables();
+  const d = disposables();
 
   if (!node) return d.dispose;
 
   // Safari returns a comma separated list of values, so let's sort them and take the highest value.
-  let { transitionDuration, transitionDelay } = getComputedStyle(node);
+  const { transitionDuration, transitionDelay } = getComputedStyle(node);
 
-  let [durationMs, delaysMs] = [transitionDuration, transitionDelay].map((value) => {
-    let [resolvedValue = 0] = value
+  const [durationMs, delaysMs] = [transitionDuration, transitionDelay].map((value) => {
+    const [resolvedValue = 0] = value
       .split(",")
       // Remove falsy we can't work with
       .filter(Boolean)
@@ -63,8 +63,8 @@ export function transition(
   entered: string[],
   done?: (reason: Reason) => void
 ) {
-  let d = disposables();
-  let _done = done !== undefined ? once(done) : () => {};
+  const d = disposables();
+  const _done = done !== undefined ? once(done) : () => {};
 
   removeClasses(node, ...entered);
   addClasses(node, ...base, ...from);

@@ -207,7 +207,7 @@ describe("Keyboard interactions", () => {
 
   describe("`Enter` key", () => {
     it("should not be possible to use Enter to toggle the Switch", async () => {
-      let handleChange = jest.fn();
+      const handleChange = jest.fn();
       render(svelte`
         <ManagedSwitch onChange={handleChange}/>
       `);

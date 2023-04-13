@@ -5,7 +5,7 @@
   import { onMount, onDestroy, tick } from "svelte";
 
   export let containers: Set<HTMLElement>;
-  export let enabled: boolean = true;
+  export let enabled = true;
   export let options: { initialFocus?: HTMLElement | null } = {};
 
   let restoreElement: HTMLElement | null =

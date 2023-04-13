@@ -1,7 +1,7 @@
 import { onDestroy } from "svelte";
 
 export function createRunWithCleanup() {
-  let cleanup: { [key: string]: () => any } = {};
+  const cleanup: { [key: string]: () => any } = {};
 
   onDestroy(() => {
     for (const id in cleanup) {

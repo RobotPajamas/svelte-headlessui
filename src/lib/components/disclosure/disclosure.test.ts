@@ -411,7 +411,7 @@ describe("Composition", () => {
   it(
     "should be possible to control the DisclosurePanel by wrapping it in a Transition component",
     suppressConsoleLogs(async () => {
-      let orderFn = jest.fn();
+      const orderFn = jest.fn();
       render(svelte`
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
@@ -790,7 +790,7 @@ describe("Mouse interactions", () => {
       // Open the disclosure
       await click(getDisclosureButton());
 
-      let closeBtn = getByText("Close");
+      const closeBtn = getByText("Close");
 
       expect(closeBtn).not.toHaveAttribute("id");
       expect(closeBtn).not.toHaveAttribute("aria-controls");

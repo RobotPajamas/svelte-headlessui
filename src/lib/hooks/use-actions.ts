@@ -24,7 +24,7 @@ export type SVGActionArray = SVGActionEntry[];
 export type ActionArray = HTMLActionArray | SVGActionArray;
 
 export function useActions(node: HTMLElement | SVGElement, actions: ActionArray) {
-  let actionReturns: SvelteActionReturnType<any>[] = [];
+  const actionReturns: SvelteActionReturnType<any>[] = [];
 
   if (actions) {
     for (let i = 0; i < actions.length; i++) {

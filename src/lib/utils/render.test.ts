@@ -3,14 +3,14 @@ import Render from "$lib/utils/Render.svelte";
 import { getByTestId, render } from "@testing-library/svelte";
 
 it("should be possible to use class as a string", () => {
-  let { container } = render(Render, {
+  const { container } = render(Render, {
     as: "div",
     name: "test",
     slotProps: {},
     class: "test-class",
     "data-testid": "test-id",
   });
-  let element = getByTestId(container, "test-id");
+  const element = getByTestId(container, "test-id");
   expect(element).toHaveClass("test-class");
 });
 
@@ -28,19 +28,19 @@ it("should be possible to use class as a function", () => {
 });
 
 it("should be possible to use style as a string", () => {
-  let { container } = render(Render, {
+  const { container } = render(Render, {
     as: "div",
     name: "test",
     slotProps: {},
     style: "background-color: green",
     "data-testid": "test-id",
   });
-  let element = getByTestId(container, "test-id");
+  const element = getByTestId(container, "test-id");
   expect(element).toHaveStyle("background-color: green");
 });
 
 it("should be possible to use style as a function", () => {
-  let { container } = render(Render, {
+  const { container } = render(Render, {
     as: "div",
     name: "test",
     slotProps: { enabled: true },
@@ -48,6 +48,6 @@ it("should be possible to use style as a function", () => {
       enabled ? "background-color: red" : "background-color: green",
     "data-testid": "test-id",
   });
-  let element = getByTestId(container, "test-id");
+  const element = getByTestId(container, "test-id");
   expect(element).toHaveStyle("background-color: red");
 });

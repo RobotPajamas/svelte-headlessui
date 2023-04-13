@@ -609,7 +609,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the PopoverPanel with a Transition component",
     suppressConsoleLogs(async () => {
-      let orderFn = jest.fn();
+      const orderFn = jest.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -859,7 +859,7 @@ describe("Keyboard interactions", () => {
         // Open the popover
         await click(getPopoverButton());
 
-        let closeBtn = getByText("Close");
+        const closeBtn = getByText("Close");
 
         expect(closeBtn).not.toHaveAttribute("id");
         expect(closeBtn).not.toHaveAttribute("aria-controls");
@@ -2052,7 +2052,7 @@ describe("Keyboard interactions", () => {
         // Open the popover
         await click(getPopoverButton());
 
-        let closeBtn = getByText("Close");
+        const closeBtn = getByText("Close");
 
         expect(closeBtn).not.toHaveAttribute("id");
         expect(closeBtn).not.toHaveAttribute("aria-controls");
@@ -2326,7 +2326,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the popover, by clicking outside the popover on another element inside a focusable element",
     suppressConsoleLogs(async () => {
-      let focusFn = jest.fn();
+      const focusFn = jest.fn();
       render(svelte`
         <Popover>
           <PopoverButton on:focus={focusFn}>Trigger</PopoverButton>
@@ -2376,7 +2376,7 @@ describe("Mouse interactions", () => {
       // Open the popover
       await click(getPopoverButton());
 
-      let closeBtn = getByText("Close");
+      const closeBtn = getByText("Close");
 
       expect(closeBtn).not.toHaveAttribute("id");
       expect(closeBtn).not.toHaveAttribute("aria-controls");
@@ -2396,7 +2396,7 @@ describe("Mouse interactions", () => {
   it(
     "should not close the Popover when clicking on a focusable element inside a static PopoverPanel",
     suppressConsoleLogs(async () => {
-      let clickFn = jest.fn();
+      const clickFn = jest.fn();
 
       render(svelte`
         <Popover>

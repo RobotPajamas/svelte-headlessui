@@ -22,7 +22,7 @@ it("should be possible to render a DescriptionProvider", () => {
 });
 
 it("should be possible to use a DescriptionProvider without using a Description", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
       <DescriptionProvider name={"test"} let:describedby>
         <div aria-describedby={describedby}>
           No description
@@ -38,7 +38,7 @@ it("should be possible to use a DescriptionProvider without using a Description"
 });
 
 it("should be possible to use a DescriptionProvider and a single Description, and have them linked", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
     <DescriptionProvider name={"test"} let:describedby>
       <div aria-describedby={describedby}>
         <Description>I am a description</Description>
@@ -67,7 +67,7 @@ it("should be possible to use a DescriptionProvider and a single Description, an
 });
 
 it("should be possible to use a DescriptionProvider and multiple Description components, and have them linked", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
     <DescriptionProvider name={"test"} let:describedby>
       <div aria-describedby={describedby}>
         <Description>I am a description</Description>
@@ -104,7 +104,7 @@ it("should be possible to use a DescriptionProvider and multiple Description com
 });
 
 it("should be possible to use a DescriptionProvider with slot props", async () => {
-  let { container } = render(svelte`
+  const { container } = render(svelte`
     <DescriptionProvider name={"test"} slotProps={{num: 12345}} let:describedby>
       <div aria-describedby={describedby}>
         <Description let:num>{num}</Description>

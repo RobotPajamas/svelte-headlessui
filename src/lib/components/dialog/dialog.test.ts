@@ -122,7 +122,7 @@ describe("Rendering", () => {
     );
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and enable focus trapping based on `open`)", async () => {
-      let focusCounter = jest.fn();
+      const focusCounter = jest.fn();
       render(svelte`
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
@@ -142,8 +142,8 @@ describe("Rendering", () => {
     });
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and toggle focus trapping based on `open`)", async () => {
-      let focusCounter = jest.fn();
-      let isOpen = writable(false);
+      const focusCounter = jest.fn();
+      const isOpen = writable(false);
       render(svelte`
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
@@ -174,8 +174,8 @@ describe("Rendering", () => {
     });
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and enable focus trapping based on `open` with an if block)", async () => {
-      let focusCounter = jest.fn();
-      let isOpen = writable(false);
+      const focusCounter = jest.fn();
+      const isOpen = writable(false);
       render(svelte`
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
@@ -208,7 +208,7 @@ describe("Rendering", () => {
     });
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and disable focus trapping based on `open`)", () => {
-      let focusCounter = jest.fn();
+      const focusCounter = jest.fn();
       render(svelte`
         <button>Trigger</button>
         <Dialog open={false} on:close={console.log} static>
@@ -223,7 +223,7 @@ describe("Rendering", () => {
     });
 
     it("should be possible to use a different render strategy for the Dialog", async () => {
-      let focusCounter = jest.fn();
+      const focusCounter = jest.fn();
       render(svelte`
           <ManagedDialog unmount={false} buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             <input on:focus={focusCounter}>
@@ -260,7 +260,7 @@ describe("Rendering", () => {
         // No overflow yet
         expect(document.documentElement.style.overflow).toBe("");
 
-        let btn = document.getElementById("trigger");
+        const btn = document.getElementById("trigger");
 
         // Open the dialog
         await click(btn);
@@ -274,7 +274,7 @@ describe("Rendering", () => {
     it(
       "DialogOverlay should have slot props",
       suppressConsoleLogs(async () => {
-        let overlay = jest.fn().mockReturnValue(null);
+        const overlay = jest.fn().mockReturnValue(null);
         render(svelte`
           <script>
             let isOpen = false;
@@ -587,7 +587,7 @@ describe("Mouse interactions", () => {
   it(
     "should stop propagating click events when clicking on the DialogOverlay",
     suppressConsoleLogs(async () => {
-      let wrapperFn = jest.fn();
+      const wrapperFn = jest.fn();
       render(svelte`
         <div on:click={wrapperFn}>
           <ManagedDialog initialOpen>
@@ -618,7 +618,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to submit a form inside a Dialog",
     suppressConsoleLogs(async () => {
-      let submitFn = jest.fn();
+      const submitFn = jest.fn();
       render(svelte`
         <ManagedDialog initialOpen>
           <form on:submit={submitFn}>
@@ -643,7 +643,7 @@ describe("Mouse interactions", () => {
   it(
     "should stop propagating click events when clicking on an element inside the Dialog",
     suppressConsoleLogs(async () => {
-      let wrapperFn = jest.fn();
+      const wrapperFn = jest.fn();
       render(svelte`
         <div on:click={wrapperFn}>
           <ManagedDialog initialOpen buttonInside buttonText="Inside">

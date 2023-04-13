@@ -139,7 +139,7 @@ describe("Rendering", () => {
   });
 
   it("should be possible to disable a RadioGroup", async () => {
-    let changeFn = jest.fn();
+    const changeFn = jest.fn();
 
     render(svelte`
       <script>
@@ -174,9 +174,9 @@ describe("Rendering", () => {
     expect(changeFn).toHaveBeenCalledTimes(0);
 
     // Make sure that all the options get an `aria-disabled`
-    let options = getRadioGroupOptions();
+    const options = getRadioGroupOptions();
     expect(options).toHaveLength(4);
-    for (let option of options) expect(option).toHaveAttribute("aria-disabled", "true");
+    for (const option of options) expect(option).toHaveAttribute("aria-disabled", "true");
 
     // Toggle the disabled state
     await click(getByText("Toggle"));
@@ -198,7 +198,7 @@ describe("Rendering", () => {
   });
 
   it("should be possible to disable a RadioGroupOption", async () => {
-    let changeFn = jest.fn();
+    const changeFn = jest.fn();
 
     render(svelte`
       <script>
@@ -232,9 +232,9 @@ describe("Rendering", () => {
     expect(changeFn).toHaveBeenCalledTimes(0);
 
     // Make sure that the option with value "slot-prop" gets an `aria-disabled`
-    let options = getRadioGroupOptions();
+    const options = getRadioGroupOptions();
     expect(options).toHaveLength(4);
-    for (let option of options) {
+    for (const option of options) {
       if (option.dataset.value) {
         expect(option).toHaveAttribute("aria-disabled", "true");
       } else {
@@ -280,7 +280,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <RadioGroup value={undefined} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -313,7 +313,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus (when selecting the active item)", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <RadioGroup value={"home-delivery"} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -395,7 +395,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <RadioGroup value={undefined} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -434,7 +434,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus (when selecting the active item)", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <RadioGroup value={"home-delivery"} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -499,7 +499,7 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowLeft` key", () => {
     it("should go to the previous item when pressing the ArrowLeft key", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -533,7 +533,7 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowUp` key", () => {
     it("should go to the previous item when pressing the ArrowUp key", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -567,7 +567,7 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowRight` key", () => {
     it("should go to the next item when pressing the ArrowRight key", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -605,7 +605,7 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowDown` key", () => {
     it("should go to the next item when pressing the ArrowDown key", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -643,7 +643,7 @@ describe("Keyboard interactions", () => {
 
   describe("`Space` key", () => {
     it("should select the current option when pressing space", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
       render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -671,7 +671,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should select the current option only once when pressing space", async () => {
-      let changeFn = jest.fn();
+      const changeFn = jest.fn();
 
       render(svelte`
         <script>
@@ -711,7 +711,7 @@ describe("Keyboard interactions", () => {
 
 describe("Mouse interactions", () => {
   it("should be possible to change the current radio group value when clicking on a radio option", async () => {
-    let changeFn = jest.fn();
+    const changeFn = jest.fn();
     render(svelte`
       <button>Before</button>
       <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
@@ -731,7 +731,7 @@ describe("Mouse interactions", () => {
   });
 
   it("should be a no-op when clicking on the same item", async () => {
-    let changeFn = jest.fn();
+    const changeFn = jest.fn();
 
     render(svelte`
       <script>

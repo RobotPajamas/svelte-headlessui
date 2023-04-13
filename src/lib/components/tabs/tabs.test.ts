@@ -483,7 +483,7 @@ describe("Rendering", () => {
     });
 
     it("should guarantee the tab order after a few unmounts", async () => {
-      let showFirst = writable(false);
+      const showFirst = writable(false);
       render(svelte`
       <TabGroup>
         <TabList>
@@ -2275,7 +2275,7 @@ describe("Mouse interactions", () => {
 });
 
 it("should trigger the `on:change` when the tab changes", async () => {
-  let changes = jest.fn();
+  const changes = jest.fn();
 
   render(svelte`
     <TabGroup on:change={(e) => changes(e.detail)}>

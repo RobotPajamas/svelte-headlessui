@@ -1,5 +1,5 @@
-let interactables = new Set<HTMLElement>();
-let originals = new Map<HTMLElement, { "aria-hidden": string | null; inert: boolean }>();
+const interactables = new Set<HTMLElement>();
+const originals = new Map<HTMLElement, { "aria-hidden": string | null; inert: boolean }>();
 
 function inert(element: HTMLElement) {
   element.setAttribute("aria-hidden", "true");
@@ -8,7 +8,7 @@ function inert(element: HTMLElement) {
 }
 
 function restore(element: HTMLElement) {
-  let original = originals.get(element);
+  const original = originals.get(element);
   if (!original) return;
 
   if (original["aria-hidden"] === null) element.removeAttribute("aria-hidden");
@@ -19,18 +19,18 @@ function restore(element: HTMLElement) {
 
 export function useInertOthers<TElement extends HTMLElement>(
   container: TElement | null,
-  enabled: boolean = true
+  enabled = true
 ) {
   if (!enabled) return;
   if (!container) return;
 
-  let element = container;
+  const element = container;
 
   // Mark myself as an interactable element
   interactables.add(element);
 
   // Restore elements that now contain an interactable child
-  for (let original of originals.keys()) {
+  for (const original of originals.keys()) {
     if (original.contains(element)) {
       restore(original);
       originals.delete(original);
@@ -42,7 +42,7 @@ export function useInertOthers<TElement extends HTMLElement>(
     if (!(child instanceof HTMLElement)) return; // Skip non-HTMLElements
 
     // Skip the interactables, and the parents of the interactables
-    for (let interactable of interactables) {
+    for (const interactable of interactables) {
       if (child.contains(interactable)) return;
     }
 
@@ -74,7 +74,7 @@ export function useInertOthers<TElement extends HTMLElement>(
         if (originals.has(child)) return;
 
         // Skip the interactables, and the parents of the interactables
-        for (let interactable of interactables) {
+        for (const interactable of interactables) {
           if (child.contains(interactable)) return;
         }
 
@@ -88,7 +88,7 @@ export function useInertOthers<TElement extends HTMLElement>(
         inert(child);
       });
     } else {
-      for (let element of originals.keys()) {
+      for (const element of originals.keys()) {
         // Restore
         restore(element);
 
