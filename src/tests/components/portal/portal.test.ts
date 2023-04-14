@@ -1,4 +1,4 @@
-import Holder from "./holder.svelte";
+import svelte from "svelte-inline-compile";
 import { render, screen } from "@testing-library/svelte";
 import Portal from "$lib/components/portal/Portal.svelte";
 import PortalGroup from "$lib/components/portal/PortalGroup.svelte";
@@ -16,15 +16,13 @@ beforeEach(() => {
 it("should be possible to use a Portal", () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <main id="parent">
       <Portal>
         <p id="content">Contents...</p>
       </Portal>
     </main>
-  `,
-  });
+  `);
 
   const parent = document.getElementById("parent");
   const content = document.getElementById("content");
@@ -42,8 +40,7 @@ it("should be possible to use a Portal", () => {
 it("should be possible to use multiple Portal elements", () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <main id="parent">
       <Portal>
         <p id="content1">Contents 1 ...</p>
@@ -53,8 +50,7 @@ it("should be possible to use multiple Portal elements", () => {
         <p id="content2">Contents 2 ...</p>
       </Portal>
     </main>
-  `,
-  });
+  `);
 
   const parent = document.getElementById("parent");
   const content1 = document.getElementById("content1");
@@ -80,8 +76,7 @@ it("should be possible to use multiple Portal elements", () => {
 it("should cleanup the Portal root when the last Portal is unmounted", async () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <script>
       let renderA = false;
       let renderB = false;
@@ -106,8 +101,7 @@ it("should cleanup the Portal root when the last Portal is unmounted", async () 
         </Portal>
       {/if}
     </main>
-    `,
-  });
+    `);
 
   const a = document.getElementById("a");
   const b = document.getElementById("b");
@@ -147,8 +141,7 @@ it("should cleanup the Portal root when the last Portal is unmounted", async () 
 it("should be possible to render multiple portals at the same time", async () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <script>
       let renderA = true;
       let renderB = true;
@@ -193,8 +186,7 @@ it("should be possible to render multiple portals at the same time", async () =>
         </Portal>
       {/if}
     </main>
-  `,
-  });
+  `);
 
   expect(getPortalRoot()).not.toBe(null);
   expect(getPortalRoot().childNodes).toHaveLength(3);
@@ -227,8 +219,7 @@ it("should be possible to render multiple portals at the same time", async () =>
 it("should be possible to tamper with the modal root and restore correctly", async () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <script>
       let renderA = true;
       let renderB = true;
@@ -253,8 +244,7 @@ it("should be possible to tamper with the modal root and restore correctly", asy
         </Portal>
       {/if}
     </main>
-  `,
-  });
+  `);
 
   expect(getPortalRoot()).not.toBe(null);
 
@@ -276,8 +266,7 @@ it("should be possible to tamper with the modal root and restore correctly", asy
 });
 
 it("should be possible to force the Portal into a specific element using PortalGroup", async () => {
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <script>
       let container = null;
     </script>
@@ -295,8 +284,7 @@ it("should be possible to force the Portal into a specific element using PortalG
 
       <Portal>I am in the portal root</Portal>
     </main>
-    `,
-  });
+    `);
 
   // The random whitespace in here is a little annoying but whatever
   expect(document.body.innerHTML).toMatchInlineSnapshot(
@@ -307,8 +295,7 @@ it("should be possible to force the Portal into a specific element using PortalG
 it("should cleanup the Portal properly when Svelte would not detach it", async () => {
   expect(getPortalRoot()).toBe(null);
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <script>
       let render = false;
     </script>
@@ -324,8 +311,7 @@ it("should cleanup the Portal properly when Svelte would not detach it", async (
         </div>
       {/if}
     </main>
-    `,
-  });
+    `);
 
   const a = document.getElementById("a");
 

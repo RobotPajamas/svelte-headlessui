@@ -1,4 +1,3 @@
-import Holder from "./holder.svelte";
 import {
   assertActiveElement,
   assertMenu,
@@ -14,10 +13,10 @@ import {
   getMenuItems,
   getMenus,
   MenuState,
-} from "../../test-utils/accessibility-assertionss";
-import { act, render, screen } from "@testing-library/svelte";
-import { Menu, MenuButton, MenuItem, MenuItems } from "$lib/components/menu";
-import { suppressConsoleLogs } from "../../test-utils/suppress-console-logss";
+} from "../../utils/accessibility-assertions";
+import { act, render } from "@testing-library/svelte";
+import { Menu, MenuButton, MenuItem, MenuItems } from ".";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import TestRenderer from "../../utils/TestRenderer.svelte";
 import {
   click,
@@ -30,24 +29,11 @@ import {
   shift,
   type,
   word,
-} from "../../test-utils/interactionss";
-import { Transition, TransitionChild } from "$lib/components/transitions";
+} from "$lib/test-utils/interactions";
+import { Transition, TransitionChild } from "../transitions";
 import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
+import svelte from "svelte-inline-compile";
 import { writable } from "svelte/store";
-
-let mockId = 0;
-vi.mock("../../hooks/use-id", () => {
-  return {
-    useId: vi.fn(() => ++mockId),
-  };
-});
-
-beforeEach(() => (mockId = 0));
-beforeAll(() => {
-  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
-});
-afterAll(() => vi.restoreAllMocks());
 
 function nextFrame() {
   return new Promise<void>((resolve) => {
@@ -111,8 +97,7 @@ describe("Rendering", () => {
     it(
       "Menu should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
         <Menu let:open>
           <MenuButton>Trigger</MenuButton>
           {#if open}
@@ -123,8 +108,7 @@ describe("Rendering", () => {
             </MenuItems>
           {/if}
         </Menu>
-      `,
-        });
+      `);
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -147,8 +131,7 @@ describe("Rendering", () => {
     it(
       "MenuButton should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <Menu>
             <MenuButton let:open>{open}</MenuButton>
             <MenuItems>
@@ -157,8 +140,7 @@ describe("Rendering", () => {
               <MenuItem as="a">Item C</MenuItem>
             </MenuItems>
           </Menu>
-        `,
-        });
+        `);
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -181,8 +163,7 @@ describe("Rendering", () => {
     it(
       "MenuButton should have slot props and support an `as` prop",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <Menu>
             <MenuButton as="div" role="button" let:open>
               {open}
@@ -193,8 +174,7 @@ describe("Rendering", () => {
               <MenuItem as="a">Item C</MenuItem>
             </MenuItems>
           </Menu>
-        `,
-        });
+        `);
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -245,16 +225,14 @@ describe("Rendering", () => {
     it(
       "MenuItems should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <Menu>
             <MenuButton>Trigger</MenuButton>
             <MenuItems let:open>
               <MenuItem as="a">{open}</MenuItem>
             </MenuItems>
           </Menu>
-        `,
-        });
+        `);
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -336,16 +314,14 @@ describe("Rendering", () => {
     it(
       "MenuItem should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <MenuItems>
             <MenuItem as="a" let:active let:disabled>{JSON.stringify({ active, disabled })}</MenuItem>
           </MenuItems>
         </Menu>
-      `,
-        });
+      `);
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -367,9 +343,8 @@ describe("Rendering", () => {
     );
 
     it("should guarantee the menu item order after a few unmounts", async () => {
-      const showFirst = writable(false);
-      render(Holder, {
-        componentString: `
+      let showFirst = writable(false);
+      render(svelte`
       <Menu>
         <MenuButton>Trigger</MenuButton>
         <MenuItems>
@@ -380,8 +355,7 @@ describe("Rendering", () => {
           <MenuItem as="a">Item C</MenuItem>
         </MenuItems>
       </Menu>
-    `,
-      });
+    `);
 
       assertMenuButton({
         state: MenuState.InvisibleUnmounted,
@@ -468,7 +442,7 @@ describe("Rendering composition", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // Verify correct classNames
       expect("" + document.querySelector('[id="menu"]')?.classList).toEqual(
@@ -541,7 +515,7 @@ describe("Rendering composition", () => {
       await click(getMenuButton());
 
       // Verify items are buttons now
-      const items = getMenuItems();
+      let items = getMenuItems();
       items.forEach((item) => assertMenuItem(item, { tag: "button" }));
     })
   );
@@ -549,8 +523,7 @@ describe("Rendering composition", () => {
   it(
     "should mark all the elements between MenuItems and MenuItem with role none",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <div class="outer">
@@ -575,8 +548,7 @@ describe("Rendering composition", () => {
             </MenuItems>
           </div>
         </Menu>
-      `,
-      });
+      `);
 
       // Open menu
       await click(getMenuButton());
@@ -598,7 +570,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the MenuItems with a Transition component",
     suppressConsoleLogs(async () => {
-      const orderFn = vi.fn();
+      let orderFn = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -666,7 +638,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the MenuItems with a TransitionChild component",
     suppressConsoleLogs(async () => {
-      const orderFn = vi.fn();
+      let orderFn = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -779,7 +751,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
 
@@ -889,7 +861,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // Verify that the first non-disabled menu item is active
         assertMenuLinkedWithMenuItem(items[1]);
@@ -932,7 +904,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // Verify that the first non-disabled menu item is active
         assertMenuLinkedWithMenuItem(items[2]);
@@ -1030,7 +1002,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the menu with Enter and invoke the active menu item",
       suppressConsoleLogs(async () => {
-        const clickHandler = vi.fn();
+        let clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -1065,7 +1037,7 @@ describe("Keyboard interactions", () => {
         assertMenuButton({ state: MenuState.Visible });
 
         // Activate the first menu item
-        const items = getMenuItems();
+        let items = getMenuItems();
         await mouseMove(items[0]);
 
         // Close menu, and invoke the item
@@ -1087,7 +1059,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to use a button as a menu item and invoke it upon Enter",
       suppressConsoleLogs(async () => {
-        const clickHandler = vi.fn();
+        let clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -1122,7 +1094,7 @@ describe("Keyboard interactions", () => {
         assertMenuButton({ state: MenuState.Visible });
 
         // Activate the second menu item
-        const items = getMenuItems();
+        let items = getMenuItems();
         await mouseMove(items[1]);
 
         // Close menu, and invoke the item
@@ -1187,7 +1159,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[0]);
@@ -1294,7 +1266,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Space);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // Verify that the first non-disabled menu item is active
         assertMenuLinkedWithMenuItem(items[1]);
@@ -1337,7 +1309,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Space);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // Verify that the first non-disabled menu item is active
         assertMenuLinkedWithMenuItem(items[2]);
@@ -1435,7 +1407,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the menu with Space and invoke the active menu item",
       suppressConsoleLogs(async () => {
-        const clickHandler = vi.fn();
+        let clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -1470,7 +1442,7 @@ describe("Keyboard interactions", () => {
         assertMenuButton({ state: MenuState.Visible });
 
         // Activate the first menu item
-        const items = getMenuItems();
+        let items = getMenuItems();
         await mouseMove(items[0]);
 
         // Close menu, and invoke the item
@@ -1587,7 +1559,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[0]);
@@ -1646,7 +1618,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[0]);
@@ -1707,7 +1679,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
 
@@ -1818,7 +1790,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[0]);
@@ -1874,7 +1846,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[1]);
@@ -1922,7 +1894,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[2]);
@@ -1976,7 +1948,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
 
@@ -2087,7 +2059,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.ArrowUp);
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[0]);
@@ -2131,7 +2103,7 @@ describe("Keyboard interactions", () => {
         await press(Keys.Enter);
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2191,7 +2163,7 @@ describe("Keyboard interactions", () => {
         assertMenuButtonLinkedWithMenu();
 
         // Verify we have menu items
-        const items = getMenuItems();
+        let items = getMenuItems();
         expect(items).toHaveLength(3);
         items.forEach((item) => assertMenuItem(item));
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2242,7 +2214,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first item
         assertMenuLinkedWithMenuItem(items[0]);
@@ -2284,7 +2256,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first item
         assertMenuLinkedWithMenuItem(items[0]);
@@ -2329,7 +2301,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.End);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
         assertMenuLinkedWithMenuItem(items[0]);
       })
     );
@@ -2404,7 +2376,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first item
         assertMenuLinkedWithMenuItem(items[0]);
@@ -2446,7 +2418,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.Enter);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first item
         assertMenuLinkedWithMenuItem(items[0]);
@@ -2491,7 +2463,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageDown);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
         assertMenuLinkedWithMenuItem(items[0]);
       })
     );
@@ -2566,7 +2538,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2611,7 +2583,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.Home);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first non-disabled item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2652,7 +2624,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.Home);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
         assertMenuLinkedWithMenuItem(items[3]);
       })
     );
@@ -2727,7 +2699,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2772,7 +2744,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the first non-disabled item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2813,7 +2785,7 @@ describe("Keyboard interactions", () => {
         // We should not be able to go to the end
         await press(Keys.PageUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
         assertMenuLinkedWithMenuItem(items[3]);
       })
     );
@@ -2885,7 +2857,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await click(getMenuButton());
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be able to go to the second item
         await type(word("bob"));
@@ -2931,7 +2903,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -2980,7 +2952,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -3029,7 +3001,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -3071,7 +3043,7 @@ describe("Keyboard interactions", () => {
         // Open menu
         await press(Keys.ArrowUp);
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // We should be on the last item
         assertMenuLinkedWithMenuItem(items[2]);
@@ -3087,8 +3059,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to search for the next occurence",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <Menu>
             <MenuButton>Trigger</MenuButton>
             <MenuItems>
@@ -3098,13 +3069,12 @@ describe("Keyboard interactions", () => {
               <MenuItem as="a">bob</MenuItem>
             </MenuItems>
           </Menu>
-        `,
-        });
+        `);
 
         // Open menu
         await click(getMenuButton());
 
-        const items = getMenuItems();
+        let items = getMenuItems();
 
         // Search for bob
         await type(word("b"));
@@ -3171,7 +3141,7 @@ describe("Mouse interactions", () => {
       assertMenuButtonLinkedWithMenu();
 
       // Verify we have menu items
-      const items = getMenuItems();
+      let items = getMenuItems();
       expect(items).toHaveLength(3);
       items.forEach((item) => assertMenuItem(item));
     })
@@ -3412,8 +3382,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click outside of the menu on another menu button which should close the current menu and open the new menu",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <div>
           <Menu>
             <MenuButton>Trigger</MenuButton>
@@ -3432,10 +3401,9 @@ describe("Mouse interactions", () => {
             </MenuItems>
           </Menu>
         </div>
-      `,
-      });
+      `);
 
-      const [button1, button2] = getMenuButtons();
+      let [button1, button2] = getMenuButtons();
 
       // Click the first menu button
       await click(button1);
@@ -3458,9 +3426,8 @@ describe("Mouse interactions", () => {
   it.skip(
     "should be possible to click outside of the menu, on an element which is within a focusable element, which closes the menu",
     suppressConsoleLogs(async () => {
-      const focusFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let focusFn = vi.fn();
+      render(svelte`
         <div>
           <Menu>
             <MenuButton on:focus={focusFn}>Trigger</MenuButton>
@@ -3474,8 +3441,7 @@ describe("Mouse interactions", () => {
             <span>Next</span>
           </button>
         </div>
-      `,
-      });
+      `);
 
       // Click the menu button
       await click(getMenuButton());
@@ -3524,7 +3490,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
       // We should be able to go to the second item
       await mouseMove(items[1]);
       assertMenuLinkedWithMenuItem(items[1]);
@@ -3566,7 +3532,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
       // We should be able to go to the second item
       await mouseMove(items[1]);
       assertMenuLinkedWithMenuItem(items[1]);
@@ -3600,7 +3566,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // We should be able to go to the second item
       await mouseMove(items[1]);
@@ -3640,7 +3606,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       await mouseMove(items[1]);
       assertNoActiveMenuItem();
@@ -3674,7 +3640,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // Try to hover over item 1, which is disabled
       await mouseMove(items[1]);
@@ -3711,7 +3677,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // We should be able to go to the second item
       await mouseMove(items[1]);
@@ -3763,7 +3729,7 @@ describe("Mouse interactions", () => {
       // Open menu
       await click(getMenuButton());
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // Try to hover over item 1, which is disabled
       await mouseMove(items[1]);
@@ -3777,7 +3743,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a menu item, which closes the menu",
     suppressConsoleLogs(async () => {
-      const clickHandler = vi.fn();
+      let clickHandler = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -3803,7 +3769,7 @@ describe("Mouse interactions", () => {
       await click(getMenuButton());
       assertMenu({ state: MenuState.Visible });
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // We should be able to click the first item
       await click(items[1]);
@@ -3816,7 +3782,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a menu item, which closes the menu and invokes the @click handler",
     suppressConsoleLogs(async () => {
-      const clickHandler = vi.fn();
+      let clickHandler = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -3879,7 +3845,7 @@ describe("Mouse interactions", () => {
       await click(getMenuButton());
       assertMenu({ state: MenuState.Visible });
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // We should be able to click the first item
       await click(items[1]);
@@ -3915,7 +3881,7 @@ describe("Mouse interactions", () => {
       await click(getMenuButton());
       assertMenu({ state: MenuState.Visible });
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // Verify that nothing is active yet
       assertNoActiveMenuItem();
@@ -3954,7 +3920,7 @@ describe("Mouse interactions", () => {
       await click(getMenuButton());
       assertMenu({ state: MenuState.Visible });
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       // We should not be able to focus the first item
       await focus(items[1]);
@@ -3965,10 +3931,9 @@ describe("Mouse interactions", () => {
   it(
     "should not be possible to activate a disabled item",
     suppressConsoleLogs(async () => {
-      const clickHandler = vi.fn();
+      let clickHandler = vi.fn();
 
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <MenuItems>
@@ -3979,14 +3944,13 @@ describe("Mouse interactions", () => {
             </MenuItem>
           </MenuItems>
         </Menu>
-      `,
-      });
+      `);
 
       // Open menu
       await click(getMenuButton());
       assertMenu({ state: MenuState.Visible });
 
-      const items = getMenuItems();
+      let items = getMenuItems();
 
       await focus(items[0]);
       await click(items[1]);

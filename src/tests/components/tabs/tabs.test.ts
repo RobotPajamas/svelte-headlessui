@@ -1,31 +1,17 @@
-import Holder from "./holder.svelte";
 import { act, render } from "@testing-library/svelte";
-import { suppressConsoleLogs } from "../../utils/suppress-console-logss";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import TestRenderer from "../../utils/TestRenderer.svelte";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "$lib/components/tabs";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from ".";
 import {
   assertActiveElement,
   assertTabs,
   getByText,
   getTabs,
 } from "../../utils/accessibility-assertions";
-import { click, Keys, press, shift } from "../../utils/interactionss";
+import { click, Keys, press, shift } from "../../utils/interactions";
 import Button from "$lib/internal/elements/Button.svelte";
+import svelte from "svelte-inline-compile";
 import { writable } from "svelte/store";
-
-let mockId = 0;
-vi.mock("../../hooks/use-id", () => {
-  return {
-    useId: vi.fn(() => ++mockId),
-  };
-});
-
-beforeEach(() => (mockId = 0));
-beforeAll(() => {
-  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
-});
-afterAll(() => vi.restoreAllMocks());
 
 describe("safeguards", () => {
   it.each([
@@ -112,8 +98,7 @@ describe("Rendering", () => {
 
   describe("`slot props`", () => {
     it("should expose the `selectedIndex` on the `TabGroup` component", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <TabGroup let:selectedIndex>
           <pre id="exposed">{JSON.stringify({ selectedIndex })}</pre>
 
@@ -129,8 +114,7 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `,
-      });
+      `);
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -144,8 +128,7 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selectedIndex` on the `TabList` component", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <TabGroup>
           <TabList let:selectedIndex>
             <pre id="exposed">{ JSON.stringify({ selectedIndex }) }</pre>
@@ -159,8 +142,7 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `,
-      });
+      `);
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -174,8 +156,7 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selectedIndex` on the `TabPanels` component", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <TabGroup>
           <TabList>
             <Tab>Tab 1</Tab>
@@ -190,8 +171,7 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
       </TabGroup>
-    `,
-      });
+    `);
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -205,8 +185,7 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selected` state on the `Tab` components", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <TabGroup>
           <TabList>
             <Tab let:selected>
@@ -229,8 +208,7 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `,
-      });
+      `);
 
       expect(document.querySelector('[data-tab="0"]')).toHaveTextContent(
         JSON.stringify({ selected: true })
@@ -256,8 +234,7 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selected` state on the `TabPanel` components", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <TabGroup>
           <TabList>
             <Tab>Tab 1</Tab>
@@ -280,8 +257,7 @@ describe("Rendering", () => {
             </TabPanel>
           </TabPanels>
         </TabGroup>
-      `,
-      });
+      `);
 
       expect(document.querySelector('[data-panel="0"]')).toHaveTextContent(
         JSON.stringify({ selected: true })
@@ -493,9 +469,8 @@ describe("Rendering", () => {
     });
 
     it("should guarantee the tab order after a few unmounts", async () => {
-      const showFirst = writable(false);
-      render(Holder, {
-        componentString: `
+      let showFirst = writable(false);
+      render(svelte`
       <TabGroup>
         <TabList>
           {#if $showFirst}
@@ -505,8 +480,7 @@ describe("Rendering", () => {
           <Tab>Tab 3</Tab>
         </TabList>
       </TabGroup>
-    `,
-      });
+    `);
 
       let tabs = getTabs();
       expect(tabs).toHaveLength(2);
@@ -2287,10 +2261,9 @@ describe("Mouse interactions", () => {
 });
 
 it("should trigger the `on:change` when the tab changes", async () => {
-  const changes = vi.fn();
+  let changes = vi.fn();
 
-  render(Holder, {
-    componentString: `
+  render(svelte`
     <TabGroup on:change={(e) => changes(e.detail)}>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -2304,8 +2277,7 @@ it("should trigger the `on:change` when the tab changes", async () => {
       </TabPanels>
     </TabGroup>
     <Button>After</Button>
-  `,
-  });
+  `);
 
   await click(getByText("Tab 2"));
   await click(getByText("Tab 3"));

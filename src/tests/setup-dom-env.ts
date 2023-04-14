@@ -4,7 +4,7 @@
 // It gives us access to some handy assertions (e.g. toBeInTheDocument())
 // https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-
+import { beforeEach, afterAll } from "vitest";
 import { vi } from "vitest";
 
 const IntersectionObserverMock = vi.fn(() => ({
@@ -15,3 +15,18 @@ const IntersectionObserverMock = vi.fn(() => ({
 }));
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
+
+// Extracted this common ID mocking from each file, into here
+let mockId = 0;
+vi.mock("$lib/hooks/use-id", () => {
+  return {
+    useId: vi.fn(() => ++mockId),
+  };
+});
+
+beforeEach(() => {
+  mockId = 0;
+});
+afterAll(() => {
+  vi.restoreAllMocks();
+});

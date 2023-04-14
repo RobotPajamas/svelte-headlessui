@@ -1,7 +1,7 @@
-import Holder from "./Holder.svelte";
+import svelte from "svelte-inline-compile";
 import { Dialog, DialogOverlay, DialogTitle } from "$lib/components/dialog";
 import TestTabSentinel from "./TestTabSentinel.svelte";
-import ManagedDialog from "./ManagedDialog.test.svelte";
+import ManagedDialog from "./ManagedDialog.svelte";
 import NestedTestComponent from "./NestedTestComponent.svelte";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { render, screen } from "@testing-library/svelte";
@@ -49,16 +49,14 @@ describe("Safe guards", () => {
   it(
     "should be possible to render a Dialog without crashing",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Dialog open={false} on:close={console.log}>
         <button>Trigger</button>
         <DialogOverlay />
         <DialogTitle />
         <p>Contents</p>
         <DialogDescription />
-        </Dialog>`,
-      });
+        </Dialog>`);
 
       assertDialog({ state: DialogState.InvisibleUnmounted });
     })
@@ -81,9 +79,8 @@ describe("Rendering", () => {
       "should complain when an `open` prop is not a boolean",
       suppressConsoleLogs(async () => {
         expect(() =>
-          render(Holder, {
-            componentString: `<Dialog open={null} on:close={console.log} as="div" />`,
-          })
+          render(svelte`
+            <Dialog open={null} on:close={console.log} as="div" />`)
         ).toThrowErrorMatchingInlineSnapshot(
           `"You provided an \`open\` prop to the \`Dialog\`, but the value is not a boolean. Received: null"`
         );
@@ -94,8 +91,8 @@ describe("Rendering", () => {
     it(
       "Dialog should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
+          
           <script lang="ts">
             let isOpen = false;
           </script>
@@ -106,8 +103,7 @@ describe("Rendering", () => {
             <pre>{JSON.stringify({open})}</pre>
             <TestTabSentinel />
           </Dialog>
-          `,
-        });
+          `);
 
         assertDialog({ state: DialogState.InvisibleUnmounted });
 
@@ -117,10 +113,11 @@ describe("Rendering", () => {
       })
     );
 
-    it("should be possible to always render the Dialog if we provide it a `static` prop (and enable focus trapping based on `open`)", async () => {
-      const focusCounter = vi.fn();
-      render(Holder, {
-        componentString: `
+    it(
+      "should be possible to always render the Dialog if we provide it a `static` prop (and enable focus trapping based on `open`)",
+      suppressConsoleLogs(async () => {
+        const focusCounter = vi.fn();
+        render(svelte`
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
           </button>
@@ -128,22 +125,22 @@ describe("Rendering", () => {
             <p>Contents</p>
             <div tabindex={0} on:focus={focusCounter} />
           </Dialog>
-        `,
-      });
+        `);
 
-      // Wait for the focus to take effect
-      await tick();
+        // Wait for the focus to take effect
+        await tick();
 
-      // Let's verify that the Dialog is already there
-      expect(getDialog()).not.toBe(null);
-      expect(focusCounter).toHaveBeenCalledTimes(1);
-    });
+        // Let's verify that the Dialog is already there
+        expect(getDialog()).not.toBe(null);
+        expect(focusCounter).toHaveBeenCalledTimes(1);
+      })
+    );
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and toggle focus trapping based on `open`)", async () => {
       const focusCounter = vi.fn();
       const isOpen = writable(false);
-      render(Holder, {
-        componentString: `
+      render(svelte`
+        
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
           </button>
@@ -151,8 +148,7 @@ describe("Rendering", () => {
             <p>Contents</p>
             <div tabindex={0} on:focus={focusCounter} />
           </Dialog>
-        `,
-      });
+        `);
 
       // Wait for the focus to take effect
       await tick();
@@ -176,8 +172,7 @@ describe("Rendering", () => {
     it("should be possible to always render the Dialog if we provide it a `static` prop (and enable focus trapping based on `open` with an if block)", async () => {
       const focusCounter = vi.fn();
       const isOpen = writable(false);
-      render(Holder, {
-        componentString: `
+      render(svelte`
           <button id="trigger" on:click={() => isOpen = !isOpen}>
             Trigger
           </button>
@@ -187,8 +182,7 @@ describe("Rendering", () => {
               <div tabindex={0} on:focus={focusCounter} />
             {/if}
           </Dialog>
-        `,
-      });
+        `);
 
       // Wait for the focus to take effect
       await tick();
@@ -211,15 +205,13 @@ describe("Rendering", () => {
 
     it("should be possible to always render the Dialog if we provide it a `static` prop (and disable focus trapping based on `open`)", () => {
       const focusCounter = vi.fn();
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Trigger</button>
         <Dialog open={false} on:close={console.log} static>
           <p>Contents</p>
           <TestTabSentinel onFocus={focusCounter} />
         </Dialog>
-      `,
-      });
+      `);
 
       // Let's verify that the Dialog is already there
       expect(getDialog()).not.toBe(null);
@@ -228,13 +220,11 @@ describe("Rendering", () => {
 
     it("should be possible to use a different render strategy for the Dialog", async () => {
       const focusCounter = vi.fn();
-      render(Holder, {
-        componentString: `
+      render(svelte`
           <ManagedDialog unmount={false} buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             <input on:focus={focusCounter}>
           </ManagedDialog>
-        `,
-      });
+        `);
 
       assertDialog({ state: DialogState.InvisibleHidden });
       expect(focusCounter).toHaveBeenCalledTimes(0);
@@ -255,15 +245,13 @@ describe("Rendering", () => {
     it(
       "should add a scroll lock to the html tag",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             <input id="a" type="text">
             <input id="b" type="text">
             <input id="c" type="text">
           </ManagedDialog>
-        `,
-        });
+        `);
 
         // No overflow yet
         expect(document.documentElement.style.overflow).toBe("");
@@ -283,8 +271,7 @@ describe("Rendering", () => {
       "DialogOverlay should have slot props",
       suppressConsoleLogs(async () => {
         const overlay = vi.fn().mockReturnValue(null);
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <script>
             let isOpen = false;
           </script>
@@ -295,8 +282,7 @@ describe("Rendering", () => {
             <DialogOverlay let:open>{overlay({ open })}</DialogOverlay>
             <TestTabSentinel />
           </Dialog>
-        `,
-        });
+        `);
 
         assertDialogOverlay({
           state: DialogState.InvisibleUnmounted,
@@ -318,14 +304,12 @@ describe("Rendering", () => {
     it(
       "DialogTitle should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
             <Dialog open on:close={console.log}>
               <DialogTitle let:open>{JSON.stringify({ open })}</DialogTitle>
               <TestTabSentinel />
             </Dialog>
-          `,
-        });
+          `);
 
         assertDialog({
           state: DialogState.Visible,
@@ -343,14 +327,12 @@ describe("Rendering", () => {
     it(
       "DialogDescription should have slot props",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte` 
           <Dialog open on:close={console.log}>
             <DialogDescription let:open>{JSON.stringify({ open })}</DialogDescription>
             <TestTabSentinel />
           </Dialog>
-        `,
-        });
+        `);
 
         assertDialog({
           state: DialogState.Visible,
@@ -369,16 +351,14 @@ describe("Composition", () => {
   it(
     "should be possible to open the Dialog via a Transition component",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte` 
         <Transition show>
           <Dialog on:close={console.log}>
             <DialogDescription>Description</DialogDescription>
             <TestTabSentinel />
           </Dialog>
         </Transition>
-      `,
-      });
+      `);
 
       assertDialog({ state: DialogState.Visible });
       assertDialogDescription({
@@ -391,16 +371,14 @@ describe("Composition", () => {
   it(
     "should be possible to close the Dialog via a Transition component",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Transition show={false}>
           <Dialog on:close={console.log}>
             <DialogDescription>Description</DialogDescription>
             <TestTabSentinel />
           </Dialog>
         </Transition>
-      `,
-      });
+      `);
 
       assertDialog({ state: DialogState.InvisibleUnmounted });
     })
@@ -410,14 +388,12 @@ describe("Composition", () => {
 describe("Keyboard interactions", () => {
   describe("`Escape` key", () => {
     it("should be possible to close the dialog with Escape", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
           <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             Contents
             <TestTabSentinel />
           </ManagedDialog>
-        `,
-      });
+        `);
 
       assertDialog({ state: DialogState.InvisibleUnmounted });
 
@@ -440,15 +416,13 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the dialog with Escape, when a field is focused",
       suppressConsoleLogs(async () => {
-        render(Holder, {
-          componentString: `
+        render(svelte`
           <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             Contents
             <input id="name">
             <TestTabSentinel />
           </ManagedDialog>
-        `,
-        });
+        `);
 
         assertDialog({ state: DialogState.InvisibleUnmounted });
 
@@ -470,15 +444,13 @@ describe("Keyboard interactions", () => {
     );
 
     it("should not be possible to close the dialog with Escape, when a field is focused but cancels the event", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
           <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
             Contents
             <input id="name" on:keydown={(e) => { e.preventDefault(); e.stopPropagation(); } }>
             <TestTabSentinel />
           </ManagedDialog>
-        `,
-      });
+        `);
 
       assertDialog({ state: DialogState.InvisibleUnmounted });
 
@@ -504,15 +476,13 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close a Dialog using a click on the DialogOverlay",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
           <DialogOverlay />
           Contents
           <TestTabSentinel />
         </ManagedDialog>
-      `,
-      });
+      `);
 
       // Open dialog
       await click(document.getElementById("trigger"));
@@ -531,8 +501,7 @@ describe("Mouse interactions", () => {
   it(
     "should not close the Dialog when clicking on contents of the DialogOverlay",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
           <DialogOverlay>
             <button>hi</button>
@@ -540,8 +509,7 @@ describe("Mouse interactions", () => {
           Contents
           <TestTabSentinel />
         </ManagedDialog>
-      `,
-      });
+      `);
 
       // Open dialog
       await click(document.getElementById("trigger"));
@@ -560,14 +528,12 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the dialog, and re-focus the button when we click outside on the body element",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`   
         <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
           Contents
           <TestTabSentinel />
         </ManagedDialog>
-      `,
-      });
+      `);
 
       // Open dialog
       await click(getByText("Trigger"));
@@ -589,15 +555,13 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the dialog, and keep focus on the focusable element",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Hello</button>
         <ManagedDialog buttonText="Trigger" buttonProps={{ id: "trigger" }}>
           Contents
           <TestTabSentinel />
         </ManagedDialog>
-      `,
-      });
+      `);
 
       // Open dialog
       await click(getByText("Trigger"));
@@ -620,8 +584,7 @@ describe("Mouse interactions", () => {
     "should stop propagating click events when clicking on the DialogOverlay",
     suppressConsoleLogs(async () => {
       const wrapperFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <div on:click={wrapperFn}>
           <ManagedDialog initialOpen>
             Contents
@@ -629,8 +592,7 @@ describe("Mouse interactions", () => {
             <TestTabSentinel />
           </ManagedDialog>
         </div>
-      `,
-      });
+      `);
 
       // Verify it is open
       assertDialog({ state: DialogState.Visible });
@@ -653,8 +615,7 @@ describe("Mouse interactions", () => {
     "should be possible to submit a form inside a Dialog",
     suppressConsoleLogs(async () => {
       const submitFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <ManagedDialog initialOpen>
           <form on:submit={submitFn}>
             <input type="hidden" value="abc">
@@ -662,8 +623,7 @@ describe("Mouse interactions", () => {
           </form>
           <TestTabSentinel />
         </ManagedDialog>
-      `,
-      });
+      `);
 
       // Verify it is open
       assertDialog({ state: DialogState.Visible });
@@ -680,16 +640,14 @@ describe("Mouse interactions", () => {
     "should stop propagating click events when clicking on an element inside the Dialog",
     suppressConsoleLogs(async () => {
       const wrapperFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <div on:click={wrapperFn}>
           <ManagedDialog initialOpen buttonInside buttonText="Inside">
             Contents
             <TestTabSentinel />
           </ManagedDialog>
         </div>
-      `,
-      });
+      `);
 
       // Verify it is open
       assertDialog({ state: DialogState.Visible });

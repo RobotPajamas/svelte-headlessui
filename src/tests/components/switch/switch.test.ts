@@ -1,6 +1,5 @@
-import Holder from "./holder.svelte";
-import { render, screen } from "@testing-library/svelte";
-import { Switch, SwitchDescription, SwitchGroup, SwitchLabel } from "$lib/components/switch";
+import { render } from "@testing-library/svelte";
+import { Switch, SwitchDescription, SwitchGroup, SwitchLabel } from ".";
 import {
   assertActiveElement,
   assertSwitch,
@@ -10,100 +9,81 @@ import {
 } from "../../utils/accessibility-assertions";
 import ManagedSwitch from "./ManagedSwitch.svelte";
 import { click, Keys, press } from "../../utils/interactions";
-
-vi.mock("../../hooks/use-id");
+import svelte from "svelte-inline-compile";
 
 describe("Safe guards", () => {
   it("should be possible to render a Switch without crashing", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch checked={false} on:change={console.log} />
-    `,
-    });
+    `);
   });
 });
 
 describe("Rendering", () => {
   it("(on) Switch should have a slot prop", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch checked={true} on:change={console.log} let:checked>
         <span>{checked ? 'On' : 'Off'}</span>
       </Switch>
-    `,
-    });
+    `);
 
     assertSwitch({ state: SwitchState.On, textContent: "On" });
   });
 
   it("(off) Switch should have a slot prop", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch checked={false} on:change={console.log} let:checked>
         <span>{checked ? 'On' : 'Off'}</span>
       </Switch>
-    `,
-    });
+    `);
 
     assertSwitch({ state: SwitchState.Off, textContent: "Off" });
   });
 
   it("should be possible to render an (on) Switch using an `as` prop", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch as={"span"} checked={true} on:change={console.log} />
-    `,
-    });
+    `);
     assertSwitch({ state: SwitchState.On, tag: "span" });
   });
 
   it("should be possible to render an (off) Switch using an `as` prop", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch as={"span"} checked={false} on:change={console.log} />
-    `,
-    });
+    `);
     assertSwitch({ state: SwitchState.Off, tag: "span" });
   });
 
   it("should be possible to use the switch contents as the label", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <Switch checked={false} on:change={console.log}>
         <span>Enable notifications</span>
       </Switch>
-    `,
-    });
+    `);
     assertSwitch({ state: SwitchState.Off, label: "Enable notifications" });
   });
 
   describe("`type` attribute", () => {
     it('should set the `type` to "button" by default', async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Switch checked={false} on:change={console.log}>Trigger</Switch>
-      `,
-      });
+      `);
 
       expect(getSwitch()).toHaveAttribute("type", "button");
     });
 
     it('should not set the `type` to "button" if it already contains a `type`', async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Switch checked={false} on:change={console.log} type={"submit"}>Trigger</Switch>
-      `,
-      });
+      `);
 
       expect(getSwitch()).toHaveAttribute("type", "submit");
     });
 
     it('should not set the type if the "as" prop is not a "button"', async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <Switch checked={false} on:change={console.log} as={"div"}>Trigger</Switch>
-      `,
-      });
+      `);
 
       expect(getSwitch()).not.toHaveAttribute("type");
     });
@@ -112,27 +92,23 @@ describe("Rendering", () => {
 
 describe("Render composition", () => {
   it("should be possible to render a Switch.Group, Switch and Switch.Label", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <Switch checked={false} on:change={console.log} />
         <SwitchLabel>Enable notifications</SwitchLabel>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     assertSwitch({ state: SwitchState.Off, label: "Enable notifications" });
   });
 
   it("should be possible to render a Switch.Group, Switch and Switch.Label (before the Switch)", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <SwitchLabel>Label B</SwitchLabel>
         <Switch checked={false} on:change={console.log}>Label A</Switch>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     // Warning! Using aria-label or aria-labelledby will hide any descendant content from assistive
     // technologies.
@@ -142,14 +118,12 @@ describe("Render composition", () => {
   });
 
   it("should be possible to render a Switch.Group, Switch and Switch.Label (after the Switch)", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <Switch checked={false} on:change={console.log}>Label A</Switch>
         <SwitchLabel>Label B</SwitchLabel>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     // Warning! Using aria-label or aria-labelledby will hide any descendant content from assistive
     // technologies.
@@ -159,14 +133,12 @@ describe("Render composition", () => {
   });
 
   it("should be possible to render a Switch.Group, Switch and Switch.Description (before the Switch)", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <SwitchDescription>This is an important feature</SwitchDescription>
         <Switch checked={false} on:change={console.log} />
       </SwitchGroup>
-    `,
-    });
+    `);
 
     assertSwitch({
       state: SwitchState.Off,
@@ -175,14 +147,12 @@ describe("Render composition", () => {
   });
 
   it("should be possible to render a Switch.Group, Switch and Switch.Description (after the Switch)", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <Switch checked={false} on:change={console.log} />
         <SwitchDescription>This is an important feature</SwitchDescription>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     assertSwitch({
       state: SwitchState.Off,
@@ -191,15 +161,13 @@ describe("Render composition", () => {
   });
 
   it("should be possible to render a Switch.Group, Switch, Switch.Label and Switch.Description", () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <SwitchLabel>Label A</SwitchLabel>
         <Switch checked={false} on:change={console.log} />
         <SwitchDescription>This is an important feature</SwitchDescription>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     assertSwitch({
       state: SwitchState.Off,
@@ -212,11 +180,9 @@ describe("Render composition", () => {
 describe("Keyboard interactions", () => {
   describe("`Space` key", () => {
     it("should be possible to toggle the Switch with Space", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <ManagedSwitch />
-      `,
-      });
+      `);
 
       // Ensure checkbox is off
       assertSwitch({ state: SwitchState.Off });
@@ -240,12 +206,10 @@ describe("Keyboard interactions", () => {
 
   describe("`Enter` key", () => {
     it("should not be possible to use Enter to toggle the Switch", async () => {
-      const handleChange = vi.fn();
-      render(Holder, {
-        componentString: `
+      let handleChange = vi.fn();
+      render(svelte`
         <ManagedSwitch onChange={handleChange}/>
-      `,
-      });
+      `);
 
       // Ensure checkbox is off
       assertSwitch({ state: SwitchState.Off });
@@ -262,14 +226,12 @@ describe("Keyboard interactions", () => {
 
   describe("`Tab` key", () => {
     it("should be possible to tab away from the Switch", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <div>
           <Switch checked={false} on:change={console.log} />
           <button id="btn">Other element</button>
         </div>
-      `,
-      });
+      `);
 
       // Ensure checkbox is off
       assertSwitch({ state: SwitchState.Off });
@@ -291,11 +253,9 @@ describe("Keyboard interactions", () => {
 
 describe("Mouse interactions", () => {
   it("should be possible to toggle the Switch with a click", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <ManagedSwitch />
-    `,
-    });
+    `);
 
     // Ensure checkbox is off
     assertSwitch({ state: SwitchState.Off });
@@ -314,14 +274,12 @@ describe("Mouse interactions", () => {
   });
 
   it("should be possible to toggle the Switch with a click on the Label", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <ManagedSwitch />
         <SwitchLabel>The label</SwitchLabel>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     // Ensure checkbox is off
     assertSwitch({ state: SwitchState.Off });
@@ -346,14 +304,12 @@ describe("Mouse interactions", () => {
   });
 
   it("should not be possible to toggle the Switch with a click on the Label (passive)", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <SwitchGroup>
         <ManagedSwitch />
         <SwitchLabel passive={true}>The label</SwitchLabel>
       </SwitchGroup>
-    `,
-    });
+    `);
 
     // Ensure checkbox is off
     assertSwitch({ state: SwitchState.Off });

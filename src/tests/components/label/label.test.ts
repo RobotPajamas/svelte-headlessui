@@ -1,20 +1,10 @@
-import Holder from "./holder.svelte";
 import { render, screen } from "@testing-library/svelte";
-import Label from "../../../lib/components/label/Label.svelte";
-import LabelProvider from "../../../lib/components/label/LabelProvider.svelte";
+import Label from "$lib/components/label/Label.svelte";
+import LabelProvider from "$lib/components/label/LabelProvider.svelte";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { writable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-
-let mockId = 0;
-vi.mock("../../hooks/use-id", () => {
-  return {
-    useId: vi.fn(() => ++mockId),
-  };
-});
-
-beforeEach(() => (mockId = 0));
-afterAll(() => vi.restoreAllMocks());
+import svelte from "svelte-inline-compile";
 
 beforeEach(() => {
   document.body.innerHTML = "";
@@ -30,15 +20,13 @@ it(
 );
 
 it("should be possible to use a LabelProvider without using a Label", async () => {
-  const { container } = render(Holder, {
-    componentString: `
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       No label
     </div>
   </LabelProvider>
-`,
-  });
+`);
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div>
       No label
@@ -47,16 +35,14 @@ it("should be possible to use a LabelProvider without using a Label", async () =
 });
 
 it("should be possible to use a LabelProvider and a single Label, and have them linked", async () => {
-  const { container } = render(Holder, {
-    componentString: `
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`,
-  });
+`);
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1"
@@ -77,8 +63,7 @@ it("should be possible to use a LabelProvider and a single Label, and have them 
 });
 
 it("should be possible to use a LabelProvider and multiple Label components, and have them linked", async () => {
-  const { container } = render(Holder, {
-    componentString: `
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
@@ -86,8 +71,7 @@ it("should be possible to use a LabelProvider and multiple Label components, and
       <Label>I am also a label</Label>
     </div>
   </LabelProvider>
-`,
-  });
+`);
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1 headlessui-label-2"
@@ -116,16 +100,14 @@ it("should be possible to use a LabelProvider and multiple Label components, and
 });
 
 it("should be possible to render a Label with an `as` prop", async () => {
-  const { container } = render(Holder, {
-    componentString: `
+  const { container } = render(svelte`
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label as="p">I am a label</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`,
-  });
+`);
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1"

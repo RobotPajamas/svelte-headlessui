@@ -1,4 +1,3 @@
-import Holder from "./holder.svelte";
 import {
   assertActiveElement,
   assertFocusable,
@@ -7,24 +6,11 @@ import {
   getByText,
   getRadioGroupOptions,
 } from "../../utils/accessibility-assertions";
-import { render, screen } from "@testing-library/svelte";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "$lib/components/radio-group";
+import { render } from "@testing-library/svelte";
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from ".";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { click, Keys, press, shift } from "../../utils/interactions";
-
-let mockId = 0;
-vi.mock("../../hooks/use-id", () => {
-  return {
-    useId: vi.fn(() => ++mockId),
-  };
-});
-
-beforeEach(() => (mockId = 0));
-beforeAll(() => {
-  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
-});
-afterAll(() => vi.restoreAllMocks());
+import svelte from "svelte-inline-compile";
 
 describe("Safe guards", () => {
   it.each([["RadioGroupOption", RadioGroupOption]])(
@@ -39,16 +25,14 @@ describe("Safe guards", () => {
   it(
     "should be possible to render a RadioGroup without crashing",
     suppressConsoleLogs(async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <RadioGroup value={undefined} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
           <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
-      `,
-      });
+      `);
 
       assertRadioGroupLabel({ textContent: "Pizza Delivery" });
     })
@@ -61,16 +45,14 @@ describe("Safe guards", () => {
 
 describe("Rendering", () => {
   it("should be possible to render a RadioGroup, where the first element is tabbable (value is undefined)", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <RadioGroup value={undefined} on:change={console.log}>
         <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
         <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
         <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     expect(getRadioGroupOptions()).toHaveLength(3);
 
@@ -80,16 +62,14 @@ describe("Rendering", () => {
   });
 
   it("should be possible to render a RadioGroup, where the first element is tabbable (value is null)", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <RadioGroup value={null} on:change={console.log}>
         <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
         <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
         <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     expect(getRadioGroupOptions()).toHaveLength(3);
 
@@ -99,16 +79,14 @@ describe("Rendering", () => {
   });
 
   it("should be possible to render a RadioGroup with an active value", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <RadioGroup value={"home-delivery"} on:change={console.log}>
         <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
         <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
         <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     expect(getRadioGroupOptions()).toHaveLength(3);
 
@@ -118,8 +96,7 @@ describe("Rendering", () => {
   });
 
   it("should guarantee the radio option order after a few unmounts", async () => {
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <script>
         let showFirst = false;
         let active;
@@ -133,8 +110,7 @@ describe("Rendering", () => {
         <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     await click(getByText("Toggle")); // Render the pickup again
 
@@ -149,10 +125,9 @@ describe("Rendering", () => {
   });
 
   it("should be possible to disable a RadioGroup", async () => {
-    const changeFn = vi.fn();
+    let changeFn = vi.fn();
 
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <script>
         let disabled = true;
       </script>
@@ -166,8 +141,7 @@ describe("Rendering", () => {
           {JSON.stringify({ checked, disabled, active })}
         </RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     // Try to click one a few options
     await click(getByText("Pickup"));
@@ -186,9 +160,9 @@ describe("Rendering", () => {
     expect(changeFn).toHaveBeenCalledTimes(0);
 
     // Make sure that all the options get an `aria-disabled`
-    const options = getRadioGroupOptions();
+    let options = getRadioGroupOptions();
     expect(options).toHaveLength(4);
-    for (const option of options) expect(option).toHaveAttribute("aria-disabled", "true");
+    for (let option of options) expect(option).toHaveAttribute("aria-disabled", "true");
 
     // Toggle the disabled state
     await click(getByText("Toggle"));
@@ -210,10 +184,9 @@ describe("Rendering", () => {
   });
 
   it("should be possible to disable a RadioGroupOption", async () => {
-    const changeFn = vi.fn();
+    let changeFn = vi.fn();
 
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <script>
         let disabled = true;
       </script>
@@ -227,8 +200,7 @@ describe("Rendering", () => {
           {JSON.stringify({ checked, disabled, active })}
         </RadioGroupOption>
       </RadioGroup>
-    `,
-    });
+    `);
 
     // Try to click the disabled option
     await click(document.querySelector('[data-value="slot-prop"]'));
@@ -246,9 +218,9 @@ describe("Rendering", () => {
     expect(changeFn).toHaveBeenCalledTimes(0);
 
     // Make sure that the option with value "slot-prop" gets an `aria-disabled`
-    const options = getRadioGroupOptions();
+    let options = getRadioGroupOptions();
     expect(options).toHaveLength(4);
-    for (const option of options) {
+    for (let option of options) {
       if (option.dataset.value) {
         expect(option).toHaveAttribute("aria-disabled", "true");
       } else {
@@ -279,16 +251,14 @@ describe("Rendering", () => {
 describe("Keyboard interactions", () => {
   describe("`Tab` key", () => {
     it("should be possible to tab to the first item", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <RadioGroup value={undefined} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
           <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
 
@@ -296,17 +266,15 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <RadioGroup value={undefined} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
           <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
 
@@ -316,16 +284,14 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab to the active item", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <RadioGroup value={"home-delivery"} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
           <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
 
@@ -333,17 +299,15 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus (when selecting the active item)", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <RadioGroup value={"home-delivery"} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
           <RadioGroupOption value="home-delivery">Home delivery</RadioGroupOption>
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
 
@@ -353,8 +317,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab out of the radio group (no selected value)", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -363,8 +326,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
       assertActiveElement(getByText("Before"));
@@ -377,8 +339,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab out of the radio group (selected value)", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={"home-delivery"} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -387,8 +348,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       await press(Keys.Tab);
       assertActiveElement(getByText("Before"));
@@ -403,8 +363,7 @@ describe("Keyboard interactions", () => {
 
   describe("`Shift+Tab` key", () => {
     it("should be possible to tab to the first item", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <RadioGroup value={undefined} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
@@ -412,8 +371,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -423,9 +381,8 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <RadioGroup value={undefined} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
@@ -433,8 +390,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -446,8 +402,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab to the active item", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <RadioGroup value={"home-delivery"} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
@@ -455,8 +410,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -466,9 +420,8 @@ describe("Keyboard interactions", () => {
     });
 
     it("should not change the selected element on focus (when selecting the active item)", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <RadioGroup value={"home-delivery"} on:change={changeFn}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
           <RadioGroupOption value="pickup">Pickup</RadioGroupOption>
@@ -476,8 +429,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -489,8 +441,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab out of the radio group (no selected value)", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -499,8 +450,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -512,8 +462,7 @@ describe("Keyboard interactions", () => {
     });
 
     it("should be possible to tab out of the radio group (selected value)", async () => {
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={"home-delivery"} on:change={console.log}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -522,8 +471,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       getByText("After")?.focus();
 
@@ -537,9 +485,8 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowLeft` key", () => {
     it("should go to the previous item when pressing the ArrowLeft key", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -548,8 +495,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -573,9 +519,8 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowUp` key", () => {
     it("should go to the previous item when pressing the ArrowUp key", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -584,8 +529,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -609,9 +553,8 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowRight` key", () => {
     it("should go to the next item when pressing the ArrowRight key", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -620,8 +563,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -649,9 +591,8 @@ describe("Keyboard interactions", () => {
 
   describe("`ArrowDown` key", () => {
     it("should go to the next item when pressing the ArrowDown key", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -660,8 +601,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -689,9 +629,8 @@ describe("Keyboard interactions", () => {
 
   describe("`Space` key", () => {
     it("should select the current option when pressing space", async () => {
-      const changeFn = vi.fn();
-      render(Holder, {
-        componentString: `
+      let changeFn = vi.fn();
+      render(svelte`
         <button>Before</button>
         <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
           <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -700,8 +639,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -719,10 +657,9 @@ describe("Keyboard interactions", () => {
     });
 
     it("should select the current option only once when pressing space", async () => {
-      const changeFn = vi.fn();
+      let changeFn = vi.fn();
 
-      render(Holder, {
-        componentString: `
+      render(svelte`
         <script>
           let value;
         </script>
@@ -735,8 +672,7 @@ describe("Keyboard interactions", () => {
           <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
         </RadioGroup>
         <button>After</button>
-      `,
-      });
+      `);
 
       // Focus the "Before" button
       await press(Keys.Tab);
@@ -761,9 +697,8 @@ describe("Keyboard interactions", () => {
 
 describe("Mouse interactions", () => {
   it("should be possible to change the current radio group value when clicking on a radio option", async () => {
-    const changeFn = vi.fn();
-    render(Holder, {
-      componentString: `
+    let changeFn = vi.fn();
+    render(svelte`
       <button>Before</button>
       <RadioGroup value={undefined} on:change={(e) => changeFn(e.detail)}>
         <RadioGroupLabel>Pizza Delivery</RadioGroupLabel>
@@ -772,8 +707,7 @@ describe("Mouse interactions", () => {
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
       <button>After</button>
-    `,
-    });
+    `);
 
     await click(getByText("Home delivery"));
 
@@ -783,10 +717,9 @@ describe("Mouse interactions", () => {
   });
 
   it("should be a no-op when clicking on the same item", async () => {
-    const changeFn = vi.fn();
+    let changeFn = vi.fn();
 
-    render(Holder, {
-      componentString: `
+    render(svelte`
       <script>
         let value;
       </script>
@@ -799,8 +732,7 @@ describe("Mouse interactions", () => {
         <RadioGroupOption value="dine-in">Dine in</RadioGroupOption>
       </RadioGroup>
       <button>After</button>
-    `,
-    });
+    `);
 
     await click(getByText("Home delivery"));
     await click(getByText("Home delivery"));
