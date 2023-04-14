@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Dialog from "./Dialog.svelte";
-  import DialogOverlay from "./DialogOverlay.svelte";
+  import Dialog from "$lib/components/dialog/Dialog.svelte";
+  import DialogOverlay from "$lib/components/dialog/DialogOverlay.svelte";
 
   export let level = 1;
   let showChild = false;

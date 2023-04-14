@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NestedDialog from "./_NestedDialog.svelte";
+  import NestedDialog from "./NestedDialog.svelte";
   let open = false;
 </script>
 

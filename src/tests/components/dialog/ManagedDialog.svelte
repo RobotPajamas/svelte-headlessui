@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Dialog from "./Dialog.svelte";
+  import Dialog from "$lib/components/dialog/Dialog.svelte";
 
   // This component is only for use in tests
   export let initialOpen = false;
