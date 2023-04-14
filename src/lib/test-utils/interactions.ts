@@ -286,7 +286,9 @@ function focusNext(event: Partial<KeyboardEvent>) {
 
   function innerFocusNext(offset = 0): Element {
     const currentIdx = focusableElements.indexOf(document.activeElement as HTMLElement);
-    const next = focusableElements[(currentIdx + total + direction + offset) % total] as HTMLElement;
+    const next = focusableElements[
+      (currentIdx + total + direction + offset) % total
+    ] as HTMLElement;
 
     if (next) next?.focus({ preventScroll: true });
 
