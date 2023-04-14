@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Listbox from "./Listbox.svelte";
+  import Listbox from "../../../lib/components/listbox/Listbox.svelte";
   export let value: unknown;
 </script>
 

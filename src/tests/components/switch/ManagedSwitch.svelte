@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Switch from "./Switch.svelte";
+  import Switch from "$lib/components/switch/Switch.svelte";
 
   // This component is only for use in tests
   export let initialChecked = false;

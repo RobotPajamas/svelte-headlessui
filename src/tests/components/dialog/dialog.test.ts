@@ -3,7 +3,7 @@ import { Dialog, DialogOverlay, DialogTitle } from "$lib/components/dialog";
 import TestTabSentinel from "./TestTabSentinel.svelte";
 import ManagedDialog from "./ManagedDialog.test.svelte";
 import NestedTestComponent from "./NestedTestComponent.svelte";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { render } from "@testing-library/svelte";
 import {
   assertActiveElement,
@@ -17,8 +17,8 @@ import {
   getDialogOverlay,
   getDialogOverlays,
   getDialogs,
-} from "$lib/test-utils/accessibility-assertions";
-import { click, Keys, press } from "$lib/test-utils/interactions";
+} from "../../utils/accessibility-assertions";
+import { click, Keys, press } from "../../utils/interactions";
 import { tick } from "svelte";
 import { writable } from "svelte/store";
 

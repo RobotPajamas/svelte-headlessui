@@ -1,16 +1,17 @@
+import Holder from "./holder.svelte";
 import { render } from "@testing-library/svelte";
-import { Switch, SwitchDescription, SwitchGroup, SwitchLabel } from ".";
+import { Switch, SwitchDescription, SwitchGroup, SwitchLabel } from "$lib/components/switch";
 import {
   assertActiveElement,
   assertSwitch,
   getSwitch,
   getSwitchLabel,
   SwitchState,
-} from "$lib/test-utils/accessibility-assertions";
-import ManagedSwitch from "./_ManagedSwitch.svelte";
-import { click, Keys, press } from "$lib/test-utils/interactions";
-import svelte from "svelte-inline-compile";
-jest.mock("../../hooks/use-id");
+} from "../../utils/accessibility-assertions";
+import ManagedSwitch from "./ManagedSwitch.svelte";
+import { click, Keys, press } from "../../utils/interactions";
+
+vi.mock("../../hooks/use-id");
 
 describe("Safe guards", () => {
   it("should be possible to render a Switch without crashing", () => {
@@ -207,7 +208,7 @@ describe("Keyboard interactions", () => {
 
   describe("`Enter` key", () => {
     it("should not be possible to use Enter to toggle the Switch", async () => {
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       render(svelte`
         <ManagedSwitch onChange={handleChange}/>
       `);

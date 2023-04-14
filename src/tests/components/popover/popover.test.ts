@@ -1,3 +1,4 @@
+import Holder from "./holder.svelte";
 import {
   assertActiveElement,
   assertContainsActiveElement,
@@ -8,31 +9,36 @@ import {
   getPopoverOverlay,
   getPopoverPanel,
   PopoverState,
-} from "$lib/test-utils/accessibility-assertions";
+} from "../../utils/accessibility-assertionss";
 import { render } from "@testing-library/svelte";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
-import TestRenderer from "$lib/test-utils/TestRenderer.svelte";
-import { Popover, PopoverButton, PopoverGroup, PopoverOverlay, PopoverPanel } from ".";
-import { click, Keys, MouseButton, press, shift } from "$lib/test-utils/interactions";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logss";
+import TestRenderer from "../../utils/TestRenderer.svelte";
+import {
+  Popover,
+  PopoverButton,
+  PopoverGroup,
+  PopoverOverlay,
+  PopoverPanel,
+} from "$lib/components/popover";
+import { click, Keys, MouseButton, press, shift } from "../../utils/interactionss";
 import A from "$lib/internal/elements/A.svelte";
 import { Transition, TransitionChild } from "$lib/components/transitions";
 import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
 import Portal from "$lib/components/portal/Portal.svelte";
-import svelte from "svelte-inline-compile";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
 beforeAll(() => {
-  // jest.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
+  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
+  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
 });
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 function nextFrame() {
   return new Promise<void>((resolve) => {
@@ -609,7 +615,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the PopoverPanel with a Transition component",
     suppressConsoleLogs(async () => {
-      const orderFn = jest.fn();
+      const orderFn = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -2326,7 +2332,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the popover, by clicking outside the popover on another element inside a focusable element",
     suppressConsoleLogs(async () => {
-      const focusFn = jest.fn();
+      const focusFn = vi.fn();
       render(svelte`
         <Popover>
           <PopoverButton on:focus={focusFn}>Trigger</PopoverButton>
@@ -2396,7 +2402,7 @@ describe("Mouse interactions", () => {
   it(
     "should not close the Popover when clicking on a focusable element inside a static PopoverPanel",
     suppressConsoleLogs(async () => {
-      const clickFn = jest.fn();
+      const clickFn = vi.fn();
 
       render(svelte`
         <Popover>

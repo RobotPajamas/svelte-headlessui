@@ -1,5 +1,6 @@
+import Holder from "./holder.svelte";
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from ".";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { act, render } from "@testing-library/svelte";
 import {
   assertActiveElement,
@@ -21,7 +22,7 @@ import {
   getListboxLabel,
   getListboxOptions,
   ListboxState,
-} from "$lib/test-utils/accessibility-assertions";
+} from "../../utils/accessibility-assertions";
 import {
   click,
   focus,
@@ -33,25 +34,24 @@ import {
   shift,
   type,
   word,
-} from "$lib/test-utils/interactions";
+} from "../../utils/interactions";
 import { Transition } from "../transitions";
 import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
-import svelte from "svelte-inline-compile";
 import { writable } from "svelte/store";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
 beforeAll(() => {
-  // jest.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
+  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
+  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
 });
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 function nextFrame() {
   return new Promise<void>((resolve) => {
@@ -635,7 +635,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the ListboxOptions with a Transition component",
     suppressConsoleLogs(async () => {
-      const orderFn = jest.fn();
+      const orderFn = vi.fn();
       render(svelte`
         <Listbox value={undefined} on:change={console.log}>
           <ListboxButton>Trigger</ListboxButton>
@@ -1086,7 +1086,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the listbox with Enter and choose the active listbox option",
       suppressConsoleLogs(async () => {
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         const value = writable();
         render(svelte`
           <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
@@ -1385,7 +1385,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the listbox with Space and choose the active listbox option",
       suppressConsoleLogs(async () => {
-        const handleChange = jest.fn();
+        const handleChange = vi.fn();
         const value = writable();
         render(svelte`
           <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
@@ -3300,7 +3300,7 @@ describe("Mouse interactions", () => {
   it.skip(
     "should be possible to click outside of the listbox, on an element which is within a focusable element, which closes the listbox",
     suppressConsoleLogs(async () => {
-      const focusFn = jest.fn();
+      const focusFn = vi.fn();
       render(svelte`
         <div>
           <Listbox value={undefined} on:change={console.log}>
@@ -3547,7 +3547,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a listbox option, which closes the listbox",
     suppressConsoleLogs(async () => {
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       const value = writable();
       render(svelte`
         <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>
@@ -3587,7 +3587,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a disabled listbox option, which is a no-op",
     suppressConsoleLogs(async () => {
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       const value = writable();
       render(svelte`
         <Listbox value={$value} on:change={(e) => { value.set(e.detail); handleChange(e.detail) } }>

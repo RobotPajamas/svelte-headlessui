@@ -1,3 +1,4 @@
+import Holder from "./holder.svelte";
 import {
   assertActiveElement,
   assertMenu,
@@ -13,11 +14,11 @@ import {
   getMenuItems,
   getMenus,
   MenuState,
-} from "$lib/test-utils/accessibility-assertions";
+} from "../../test-utils/accessibility-assertionss";
 import { act, render } from "@testing-library/svelte";
-import { Menu, MenuButton, MenuItem, MenuItems } from ".";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
-import TestRenderer from "$lib/test-utils/TestRenderer.svelte";
+import { Menu, MenuButton, MenuItem, MenuItems } from "$lib/components/menu";
+import { suppressConsoleLogs } from "../../test-utils/suppress-console-logss";
+import TestRenderer from "../../utils/TestRenderer.svelte";
 import {
   click,
   focus,
@@ -29,25 +30,24 @@ import {
   shift,
   type,
   word,
-} from "$lib/test-utils/interactions";
-import { Transition, TransitionChild } from "../transitions";
+} from "../../test-utils/interactionss";
+import { Transition, TransitionChild } from "$lib/components/transitions";
 import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
-import svelte from "svelte-inline-compile";
 import { writable } from "svelte/store";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
 beforeAll(() => {
-  // jest.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
+  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
+  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
 });
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 function nextFrame() {
   return new Promise<void>((resolve) => {
@@ -584,7 +584,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the MenuItems with a Transition component",
     suppressConsoleLogs(async () => {
-      const orderFn = jest.fn();
+      const orderFn = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -652,7 +652,7 @@ describe("Composition", () => {
   it(
     "should be possible to wrap the MenuItems with a TransitionChild component",
     suppressConsoleLogs(async () => {
-      const orderFn = jest.fn();
+      const orderFn = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -1016,7 +1016,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the menu with Enter and invoke the active menu item",
       suppressConsoleLogs(async () => {
-        const clickHandler = jest.fn();
+        const clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -1073,7 +1073,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to use a button as a menu item and invoke it upon Enter",
       suppressConsoleLogs(async () => {
-        const clickHandler = jest.fn();
+        const clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -1421,7 +1421,7 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the menu with Space and invoke the active menu item",
       suppressConsoleLogs(async () => {
-        const clickHandler = jest.fn();
+        const clickHandler = vi.fn();
         render(TestRenderer, {
           allProps: [
             [
@@ -3440,7 +3440,7 @@ describe("Mouse interactions", () => {
   it.skip(
     "should be possible to click outside of the menu, on an element which is within a focusable element, which closes the menu",
     suppressConsoleLogs(async () => {
-      const focusFn = jest.fn();
+      const focusFn = vi.fn();
       render(svelte`
         <div>
           <Menu>
@@ -3757,7 +3757,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a menu item, which closes the menu",
     suppressConsoleLogs(async () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -3796,7 +3796,7 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click a menu item, which closes the menu and invokes the @click handler",
     suppressConsoleLogs(async () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
       render(TestRenderer, {
         allProps: [
           [
@@ -3945,7 +3945,7 @@ describe("Mouse interactions", () => {
   it(
     "should not be possible to activate a disabled item",
     suppressConsoleLogs(async () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
 
       render(svelte`
         <Menu>

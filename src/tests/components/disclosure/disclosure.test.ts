@@ -1,5 +1,6 @@
-import { Disclosure, DisclosureButton, DisclosurePanel } from ".";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
+import Holder from "./holder.svelte";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "$lib/components/disclosure";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { render } from "@testing-library/svelte";
 import {
   assertActiveElement,
@@ -9,21 +10,20 @@ import {
   getByText,
   getDisclosureButton,
   getDisclosurePanel,
-} from "$lib/test-utils/accessibility-assertions";
-import { click, Keys, MouseButton, press } from "$lib/test-utils/interactions";
-import { Transition, TransitionChild } from "../transitions";
-import TransitionDebug from "./_TransitionDebug.svelte";
-import svelte from "svelte-inline-compile";
+} from "../../utils/accessibility-assertions";
+import { click, Keys, MouseButton, press } from "../../utils/interactions";
+import { Transition, TransitionChild } from "$lib/components/transitionsomponents/transitions";
+import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 function nextFrame() {
   return new Promise<void>((resolve) => {
@@ -51,12 +51,14 @@ describe("Safe guards", () => {
   it(
     "should be possible to render a Disclosure without crashing",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({
         state: DisclosureState.InvisibleUnmounted,
@@ -72,12 +74,14 @@ describe("Rendering", () => {
     it(
       "should render a Disclosure with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure let:open>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>Panel is: {open ? 'open' : 'closed'}</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -96,12 +100,14 @@ describe("Rendering", () => {
     );
 
     it("should be possible to render a Disclosure in an open state by default", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure defaultOpen let:open>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>Panel is: {open ? 'open' : 'closed'}</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({
         state: DisclosureState.Visible,
@@ -117,14 +123,16 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the disclosure",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure let:close>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>
               <button on:click={() => close()}>Close me</button>
             </DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         // Focus the button
         getDisclosureButton()?.focus();
@@ -149,7 +157,8 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the disclosure and restores to a specific element",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <button id="test">restoreable</button>
           <Disclosure let:close>
             <DisclosureButton>Trigger</DisclosureButton>
@@ -159,7 +168,8 @@ describe("Rendering", () => {
               </button>
             </DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         // Focus the button
         getDisclosureButton()?.focus();
@@ -186,12 +196,14 @@ describe("Rendering", () => {
     it(
       "should render a DisclosureButton with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure let:open>
             <DisclosureButton>{JSON.stringify({ open })}</DisclosureButton>
             <DisclosurePanel></DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -214,14 +226,16 @@ describe("Rendering", () => {
     it(
       "should be possible to render a DisclosureButton using a render prop and an `as` prop",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton as="div" role="button" let:open>
               {JSON.stringify({ open })}
             </DisclosureButton>
             <DisclosurePanel />
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -243,31 +257,37 @@ describe("Rendering", () => {
 
     describe("`type` attribute", () => {
       it('should set the `type` to "button" by default', async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
           </Disclosure>
-        `);
+        `,
+        });
 
         expect(getDisclosureButton()).toHaveAttribute("type", "button");
       });
 
       it('should not set the `type` to "button" if it already contains a `type`', async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton type="submit">Trigger</DisclosureButton>
           </Disclosure>
-        `);
+        `,
+        });
 
         expect(getDisclosureButton()).toHaveAttribute("type", "submit");
       });
 
       it('should not set the type if the "as" prop is not a "button"', async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton as="div">Trigger</DisclosureButton>
           </Disclosure>
-        `);
+        `,
+        });
 
         expect(getDisclosureButton()).not.toHaveAttribute("type");
       });
@@ -278,12 +298,14 @@ describe("Rendering", () => {
     it(
       "should render a DisclosurePanel with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel let:open>{JSON.stringify({ open })}</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -305,24 +327,28 @@ describe("Rendering", () => {
     );
 
     it("should be possible to always render the DisclosurePanel if we provide it a `static` prop", () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel static>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       // Let's verify that the Disclosure is already there
       expect(getDisclosurePanel()).not.toBe(null);
     });
 
     it("should be possible to use a different render strategy for the DisclosurePanel", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel unmount={false}>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({ state: DisclosureState.InvisibleHidden });
       assertDisclosurePanel({ state: DisclosureState.InvisibleHidden });
@@ -343,14 +369,16 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the disclosure",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel let:close>
               <button on:click={() => close()}>Close me</button>
             </DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         // Focus the button
         getDisclosureButton()?.focus();
@@ -375,7 +403,8 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the disclosure and restores to a specific element",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <button id="test">restoreable</button>
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
@@ -383,7 +412,8 @@ describe("Rendering", () => {
                 <button on:click={() => close(document.getElementById('test'))}>Close me</button>
             </DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         // Focus the button
         getDisclosureButton()?.focus();
@@ -411,8 +441,9 @@ describe("Composition", () => {
   it(
     "should be possible to control the DisclosurePanel by wrapping it in a Transition component",
     suppressConsoleLogs(async () => {
-      const orderFn = jest.fn();
-      render(svelte`
+      const orderFn = vi.fn();
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <TransitionDebug name="Disclosure" fn={orderFn} />
@@ -425,7 +456,8 @@ describe("Composition", () => {
             </DisclosurePanel>
           </Transition>
         </Disclosure>
-      `);
+      `,
+      });
 
       // Verify the Disclosure is hidden
       assertDisclosurePanel({ state: DisclosureState.InvisibleUnmounted });
@@ -460,12 +492,14 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to open the Disclosure with Enter",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -495,12 +529,14 @@ describe("Keyboard interactions", () => {
     it(
       "should not be possible to open the disclosure with Enter when the button is disabled",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton disabled>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -526,12 +562,14 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the disclosure with Enter when the disclosure is open",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -566,12 +604,14 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to open the disclosure with Space",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -597,12 +637,14 @@ describe("Keyboard interactions", () => {
     it(
       "should not be possible to open the disclosure with Space when the button is disabled",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton disabled>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -628,12 +670,14 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to close the disclosure with Space when the disclosure is open",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Disclosure>
             <DisclosureButton>Trigger</DisclosureButton>
             <DisclosurePanel>Contents</DisclosurePanel>
           </Disclosure>
-        `);
+        `,
+        });
 
         assertDisclosureButton({
           state: DisclosureState.InvisibleUnmounted,
@@ -669,12 +713,14 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to open a disclosure on click",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({
         state: DisclosureState.InvisibleUnmounted,
@@ -697,12 +743,14 @@ describe("Mouse interactions", () => {
   it(
     "should not be possible to open a disclosure on right click",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({
         state: DisclosureState.InvisibleUnmounted,
@@ -725,12 +773,14 @@ describe("Mouse interactions", () => {
   it(
     "should not be possible to open a disclosure on click when the button is disabled",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton disabled>Trigger</DisclosureButton>
           <DisclosurePanel>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       assertDisclosureButton({
         state: DisclosureState.InvisibleUnmounted,
@@ -753,12 +803,14 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close a disclosure on click",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>Contents</DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       // Open disclosure
       await click(getDisclosureButton());
@@ -778,14 +830,16 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the Disclosure by clicking on a DisclosureButton inside a DisclosurePanel",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Disclosure>
           <DisclosureButton>Trigger</DisclosureButton>
           <DisclosurePanel>
             <DisclosureButton>Close</DisclosureButton>
           </DisclosurePanel>
         </Disclosure>
-      `);
+      `,
+      });
 
       // Open the disclosure
       await click(getDisclosureButton());

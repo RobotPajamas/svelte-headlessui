@@ -1,31 +1,31 @@
+import Holder from "./holder.svelte";
 import { act, render } from "@testing-library/svelte";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
-import TestRenderer from "$lib/test-utils/TestRenderer.svelte";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from ".";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logss";
+import TestRenderer from "../../utils/TestRenderer.svelte";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "$lib/components/tabs";
 import {
   assertActiveElement,
   assertTabs,
   getByText,
   getTabs,
-} from "$lib/test-utils/accessibility-assertions";
-import { click, Keys, press, shift } from "$lib/test-utils/interactions";
+} from "../../utils/accessibility-assertions";
+import { click, Keys, press, shift } from "../../utils/interactionss";
 import Button from "$lib/internal/elements/Button.svelte";
-import svelte from "svelte-inline-compile";
 import { writable } from "svelte/store";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
 beforeAll(() => {
-  // jest.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
-  // jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
+  // vi.spyOn(window, 'requestAnimationFrame').mockImplementation(setImmediate as any)
+  // vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(clearImmediate as any)
 });
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 describe("safeguards", () => {
   it.each([
@@ -2275,7 +2275,7 @@ describe("Mouse interactions", () => {
 });
 
 it("should trigger the `on:change` when the tab changes", async () => {
-  const changes = jest.fn();
+  const changes = vi.fn();
 
   render(svelte`
     <TabGroup on:change={(e) => changes(e.detail)}>

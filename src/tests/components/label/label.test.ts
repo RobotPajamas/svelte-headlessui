@@ -1,20 +1,20 @@
+import Holder from "./holder.svelte";
 import { render } from "@testing-library/svelte";
-import Label from "./Label.svelte";
-import LabelProvider from "./LabelProvider.svelte";
-import svelte from "svelte-inline-compile";
-import { suppressConsoleLogs } from "$lib/test-utils/suppress-console-logs";
+import Label from "../../../lib/components/label/Label.svelte";
+import LabelProvider from "../../../lib/components/label/LabelProvider.svelte";
+import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
 import { writable, type Writable } from "svelte/store";
 import { tick } from "svelte";
 
 let mockId = 0;
-jest.mock("../../hooks/use-id", () => {
+vi.mock("../../hooks/use-id", () => {
   return {
-    useId: jest.fn(() => ++mockId),
+    useId: vi.fn(() => ++mockId),
   };
 });
 
 beforeEach(() => (mockId = 0));
-afterAll(() => jest.restoreAllMocks());
+afterAll(() => vi.restoreAllMocks());
 
 beforeEach(() => {
   document.body.innerHTML = "";

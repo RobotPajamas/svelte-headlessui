@@ -1,8 +1,8 @@
-import svelte from "svelte-inline-compile";
+import Holder from "./holder.svelte";
 import { render } from "@testing-library/svelte";
-import Portal from "./Portal.svelte";
-import PortalGroup from "./PortalGroup.svelte";
-import { click } from "$lib/test-utils/interactions";
+import Portal from "$lib/components/portal/Portal.svelte";
+import PortalGroup from "$lib/components/portal/PortalGroup.svelte";
+import { click } from "../../utils/interactions";
 import { tick } from "svelte";
 
 function getPortalRoot() {
