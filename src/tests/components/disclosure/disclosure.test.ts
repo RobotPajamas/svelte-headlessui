@@ -1,7 +1,7 @@
 import Holder from "./holder.svelte";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "$lib/components/disclosure";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
-import { render } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
 import {
   assertActiveElement,
   assertDisclosureButton,
@@ -12,8 +12,8 @@ import {
   getDisclosurePanel,
 } from "../../utils/accessibility-assertions";
 import { click, Keys, MouseButton, press } from "../../utils/interactions";
-import { Transition, TransitionChild } from "$lib/components/transitionsomponents/transitions";
-import TransitionDebug from "$lib/components/disclosure/_TransitionDebug.svelte";
+import { Transition, TransitionChild } from "$lib/components/transitions";
+import TransitionDebug from "./TransitionDebug.svelte";
 
 let mockId = 0;
 vi.mock("../../hooks/use-id", () => {

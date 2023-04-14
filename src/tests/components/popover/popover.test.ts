@@ -10,7 +10,7 @@ import {
   getPopoverPanel,
   PopoverState,
 } from "../../utils/accessibility-assertionss";
-import { render } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logss";
 import TestRenderer from "../../utils/TestRenderer.svelte";
 import {
@@ -150,12 +150,14 @@ describe("Rendering", () => {
     it(
       "should render a Popover with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover let:open>
             <PopoverButton>Trigger</PopoverButton>
             <PopoverPanel>Panel is: {open ? 'open' : 'closed'}</PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         assertPopoverButton({
           state: PopoverState.InvisibleUnmounted,
@@ -176,14 +178,16 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the popover",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover let:close>
             <PopoverButton>Trigger</PopoverButton>
             <PopoverPanel>
               <button on:click={() => close()}>Close me</button>
             </PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         // Focus the button
         getPopoverButton()?.focus();
@@ -208,7 +212,8 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the popover and restores to a specific element",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
             <button id="test">restoreable</button>
             <Popover let:close>
               <PopoverButton>Trigger</PopoverButton>
@@ -218,7 +223,8 @@ describe("Rendering", () => {
                 </button>
               </PopoverPanel>
             </Popover>
-        `);
+        `,
+        });
 
         // Focus the button
         getPopoverButton()?.focus();
@@ -245,12 +251,14 @@ describe("Rendering", () => {
     it(
       "should render a PopoverButton with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover>
             <PopoverButton let:open>{JSON.stringify({open})}</PopoverButton>
             <PopoverPanel></PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         assertPopoverButton({
           state: PopoverState.InvisibleUnmounted,
@@ -273,14 +281,16 @@ describe("Rendering", () => {
     it(
       "should render a PopoverButton with a slot prop and use an `as` prop",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover>
             <PopoverButton as="div" role="button" let:open>
               {JSON.stringify({ open })}
             </PopoverButton>
             <PopoverPanel />
           </Popover>
-        `);
+        `,
+        });
 
         assertPopoverButton({
           state: PopoverState.InvisibleUnmounted,
@@ -329,12 +339,14 @@ describe("Rendering", () => {
     it(
       "should render PopoverPanel with slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover>
             <PopoverButton>Trigger</PopoverButton>
             <PopoverPanel let:open>{JSON.stringify({ open })}</PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         assertPopoverButton({
           state: PopoverState.InvisibleUnmounted,
@@ -547,14 +559,16 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the popover",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Popover>
             <PopoverButton>Trigger</PopoverButton>
             <PopoverPanel let:close>
               <button on:click={() => close()}>Close me</button>
             </PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         // Focus the button
         getPopoverButton()?.focus();
@@ -579,7 +593,8 @@ describe("Rendering", () => {
     it(
       "should expose a close function that closes the popover and restores to a specific element",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <button id="test">restoreable</button>
           <Popover>
             <PopoverButton>Trigger</PopoverButton>
@@ -587,7 +602,8 @@ describe("Rendering", () => {
               <button on:click={() => close(document.getElementById('test'))}>Close me</button>
             </PopoverPanel>
           </Popover>
-        `);
+        `,
+        });
 
         // Focus the button
         getPopoverButton()?.focus();
@@ -2276,13 +2292,15 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the popover, and re-focus the button when we click outside on a non-focusable element",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton>Trigger</PopoverButton>
           <PopoverPanel>Contents</PopoverPanel>
         </Popover>
         <span>I am just text</span>
-      `);
+      `,
+      });
 
       // Open popover
       await click(getPopoverButton());
@@ -2304,13 +2322,15 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to close the popover, by clicking outside the popover on another focusable element",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton>Trigger</PopoverButton>
           <PopoverPanel>Contents</PopoverPanel>
         </Popover>
         <button>Different button</button>
-      `);
+      `,
+      });
 
       // Open popover
       await click(getPopoverButton());
@@ -2333,7 +2353,8 @@ describe("Mouse interactions", () => {
     "should be possible to close the popover, by clicking outside the popover on another element inside a focusable element",
     suppressConsoleLogs(async () => {
       const focusFn = vi.fn();
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton on:focus={focusFn}>Trigger</PopoverButton>
           <PopoverPanel>Contents</PopoverPanel>
@@ -2341,7 +2362,8 @@ describe("Mouse interactions", () => {
         <button id="btn">
           <span>Different button</span>
         </button>
-      `);
+      `,
+      });
 
       // Open popover
       await click(getPopoverButton());
@@ -2404,14 +2426,16 @@ describe("Mouse interactions", () => {
     suppressConsoleLogs(async () => {
       const clickFn = vi.fn();
 
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton>Open</PopoverButton>
           <PopoverPanel static>
             <button on:click={clickFn}>btn</button>
           </PopoverPanel>
         </Popover>
-      `);
+      `,
+      });
 
       // Open the popover
       await click(getPopoverButton());
@@ -2430,14 +2454,16 @@ describe("Mouse interactions", () => {
   it(
     "should not close the Popover when clicking on a non-focusable element inside a static PopoverPanel",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton>Open</PopoverButton>
           <PopoverPanel static>
             <span>element</span>
           </PopoverPanel>
         </Popover>
-      `);
+      `,
+      });
 
       // Open the popover
       await click(getPopoverButton());
@@ -2453,14 +2479,16 @@ describe("Mouse interactions", () => {
   it(
     "should close the Popover when clicking outside of a static PopoverPanel",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Popover>
           <PopoverButton>Open</PopoverButton>
           <PopoverPanel static>
             <span>element</span>
           </PopoverPanel>
         </Popover>
-      `);
+      `,
+      });
 
       // Open the popover
       await click(getPopoverButton());

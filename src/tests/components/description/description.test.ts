@@ -1,6 +1,6 @@
 import Holder from "./holder.svelte";
 import DescriptionProvider from "$lib/components/description/DescriptionProvider.svelte";
-import { render } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
 
 let mockId = 0;
 vi.mock("../../hooks/use-id", () => {

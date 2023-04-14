@@ -1,5 +1,5 @@
 import Holder from "./holder.svelte";
-import { render } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
 import Label from "../../../lib/components/label/Label.svelte";
 import LabelProvider from "../../../lib/components/label/LabelProvider.svelte";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
@@ -30,13 +30,15 @@ it(
 );
 
 it("should be possible to use a LabelProvider without using a Label", async () => {
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       No label
     </div>
   </LabelProvider>
-`);
+`,
+  });
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div>
       No label
@@ -45,14 +47,16 @@ it("should be possible to use a LabelProvider without using a Label", async () =
 });
 
 it("should be possible to use a LabelProvider and a single Label, and have them linked", async () => {
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`);
+`,
+  });
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1"
@@ -73,7 +77,8 @@ it("should be possible to use a LabelProvider and a single Label, and have them 
 });
 
 it("should be possible to use a LabelProvider and multiple Label components, and have them linked", async () => {
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label>I am a label</Label>
@@ -81,7 +86,8 @@ it("should be possible to use a LabelProvider and multiple Label components, and
       <Label>I am also a label</Label>
     </div>
   </LabelProvider>
-`);
+`,
+  });
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1 headlessui-label-2"
@@ -110,14 +116,16 @@ it("should be possible to use a LabelProvider and multiple Label components, and
 });
 
 it("should be possible to render a Label with an `as` prop", async () => {
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label as="p">I am a label</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`);
+`,
+  });
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1"
@@ -139,14 +147,16 @@ it("should be possible to render a Label with an `as` prop", async () => {
 
 it("should be possible to change the props of a Label", async () => {
   const classStore = writable<string | null>(null);
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label class={$classStore}>I am a label</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`);
+`,
+  });
 
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
@@ -190,14 +200,16 @@ it("should be possible to change the props of a Label", async () => {
 });
 
 it("should be possible to use a LabelProvider with slot props", async () => {
-  const { container } = render(svelte`
+  const { container } = render(Holder, {
+    componentString: `
   <LabelProvider name={"test"} slotProps={{num: 12345}} let:labelledby>
     <div aria-labelledby={labelledby}>
       <Label let:num>{num}</Label>
       <span>Contents</span>
     </div>
   </LabelProvider>
-`);
+`,
+  });
   expect(container.firstChild?.firstChild).toMatchInlineSnapshot(`
     <div
       aria-labelledby="headlessui-label-1"

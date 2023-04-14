@@ -112,7 +112,8 @@ describe("Rendering", () => {
 
   describe("`slot props`", () => {
     it("should expose the `selectedIndex` on the `TabGroup` component", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <TabGroup let:selectedIndex>
           <pre id="exposed">{JSON.stringify({ selectedIndex })}</pre>
 
@@ -128,7 +129,8 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `);
+      `,
+      });
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -142,7 +144,8 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selectedIndex` on the `TabList` component", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <TabGroup>
           <TabList let:selectedIndex>
             <pre id="exposed">{ JSON.stringify({ selectedIndex }) }</pre>
@@ -156,7 +159,8 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `);
+      `,
+      });
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -170,7 +174,8 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selectedIndex` on the `TabPanels` component", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <TabGroup>
           <TabList>
             <Tab>Tab 1</Tab>
@@ -185,7 +190,8 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
       </TabGroup>
-    `);
+    `,
+      });
 
       expect(document.getElementById("exposed")).toHaveTextContent(
         JSON.stringify({ selectedIndex: 0 })
@@ -199,7 +205,8 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selected` state on the `Tab` components", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <TabGroup>
           <TabList>
             <Tab let:selected>
@@ -222,7 +229,8 @@ describe("Rendering", () => {
             <TabPanel>Content 3</TabPanel>
           </TabPanels>
         </TabGroup>
-      `);
+      `,
+      });
 
       expect(document.querySelector('[data-tab="0"]')).toHaveTextContent(
         JSON.stringify({ selected: true })
@@ -248,7 +256,8 @@ describe("Rendering", () => {
     });
 
     it("should expose the `selected` state on the `TabPanel` components", async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <TabGroup>
           <TabList>
             <Tab>Tab 1</Tab>
@@ -271,7 +280,8 @@ describe("Rendering", () => {
             </TabPanel>
           </TabPanels>
         </TabGroup>
-      `);
+      `,
+      });
 
       expect(document.querySelector('[data-panel="0"]')).toHaveTextContent(
         JSON.stringify({ selected: true })
@@ -484,7 +494,8 @@ describe("Rendering", () => {
 
     it("should guarantee the tab order after a few unmounts", async () => {
       const showFirst = writable(false);
-      render(svelte`
+      render(Holder, {
+        componentString: `
       <TabGroup>
         <TabList>
           {#if $showFirst}
@@ -494,7 +505,8 @@ describe("Rendering", () => {
           <Tab>Tab 3</Tab>
         </TabList>
       </TabGroup>
-    `);
+    `,
+      });
 
       let tabs = getTabs();
       expect(tabs).toHaveLength(2);
@@ -2277,7 +2289,8 @@ describe("Mouse interactions", () => {
 it("should trigger the `on:change` when the tab changes", async () => {
   const changes = vi.fn();
 
-  render(svelte`
+  render(Holder, {
+    componentString: `
     <TabGroup on:change={(e) => changes(e.detail)}>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -2291,7 +2304,8 @@ it("should trigger the `on:change` when the tab changes", async () => {
       </TabPanels>
     </TabGroup>
     <Button>After</Button>
-  `);
+  `,
+  });
 
   await click(getByText("Tab 2"));
   await click(getByText("Tab 3"));

@@ -4,7 +4,7 @@ import TestTabSentinel from "./TestTabSentinel.svelte";
 import ManagedDialog from "./ManagedDialog.test.svelte";
 import NestedTestComponent from "./NestedTestComponent.svelte";
 import { suppressConsoleLogs } from "../../utils/suppress-console-logs";
-import { render } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
 import {
   assertActiveElement,
   assertDialog,

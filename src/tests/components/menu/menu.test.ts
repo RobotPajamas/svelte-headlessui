@@ -15,7 +15,7 @@ import {
   getMenus,
   MenuState,
 } from "../../test-utils/accessibility-assertionss";
-import { act, render } from "@testing-library/svelte";
+import { act, render, screen } from "@testing-library/svelte";
 import { Menu, MenuButton, MenuItem, MenuItems } from "$lib/components/menu";
 import { suppressConsoleLogs } from "../../test-utils/suppress-console-logss";
 import TestRenderer from "../../utils/TestRenderer.svelte";
@@ -111,7 +111,8 @@ describe("Rendering", () => {
     it(
       "Menu should have slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
         <Menu let:open>
           <MenuButton>Trigger</MenuButton>
           {#if open}
@@ -122,7 +123,8 @@ describe("Rendering", () => {
             </MenuItems>
           {/if}
         </Menu>
-      `);
+      `,
+        });
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -145,7 +147,8 @@ describe("Rendering", () => {
     it(
       "MenuButton should have slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Menu>
             <MenuButton let:open>{open}</MenuButton>
             <MenuItems>
@@ -154,7 +157,8 @@ describe("Rendering", () => {
               <MenuItem as="a">Item C</MenuItem>
             </MenuItems>
           </Menu>
-        `);
+        `,
+        });
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -177,7 +181,8 @@ describe("Rendering", () => {
     it(
       "MenuButton should have slot props and support an `as` prop",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Menu>
             <MenuButton as="div" role="button" let:open>
               {open}
@@ -188,7 +193,8 @@ describe("Rendering", () => {
               <MenuItem as="a">Item C</MenuItem>
             </MenuItems>
           </Menu>
-        `);
+        `,
+        });
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -239,14 +245,16 @@ describe("Rendering", () => {
     it(
       "MenuItems should have slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Menu>
             <MenuButton>Trigger</MenuButton>
             <MenuItems let:open>
               <MenuItem as="a">{open}</MenuItem>
             </MenuItems>
           </Menu>
-        `);
+        `,
+        });
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -328,14 +336,16 @@ describe("Rendering", () => {
     it(
       "MenuItem should have slot props",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <MenuItems>
             <MenuItem as="a" let:active let:disabled>{JSON.stringify({ active, disabled })}</MenuItem>
           </MenuItems>
         </Menu>
-      `);
+      `,
+        });
 
         assertMenuButton({
           state: MenuState.InvisibleUnmounted,
@@ -358,7 +368,8 @@ describe("Rendering", () => {
 
     it("should guarantee the menu item order after a few unmounts", async () => {
       const showFirst = writable(false);
-      render(svelte`
+      render(Holder, {
+        componentString: `
       <Menu>
         <MenuButton>Trigger</MenuButton>
         <MenuItems>
@@ -369,7 +380,8 @@ describe("Rendering", () => {
           <MenuItem as="a">Item C</MenuItem>
         </MenuItems>
       </Menu>
-    `);
+    `,
+      });
 
       assertMenuButton({
         state: MenuState.InvisibleUnmounted,
@@ -537,7 +549,8 @@ describe("Rendering composition", () => {
   it(
     "should mark all the elements between MenuItems and MenuItem with role none",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <div class="outer">
@@ -562,7 +575,8 @@ describe("Rendering composition", () => {
             </MenuItems>
           </div>
         </Menu>
-      `);
+      `,
+      });
 
       // Open menu
       await click(getMenuButton());
@@ -3073,7 +3087,8 @@ describe("Keyboard interactions", () => {
     it(
       "should be possible to search for the next occurence",
       suppressConsoleLogs(async () => {
-        render(svelte`
+        render(Holder, {
+          componentString: `
           <Menu>
             <MenuButton>Trigger</MenuButton>
             <MenuItems>
@@ -3083,7 +3098,8 @@ describe("Keyboard interactions", () => {
               <MenuItem as="a">bob</MenuItem>
             </MenuItems>
           </Menu>
-        `);
+        `,
+        });
 
         // Open menu
         await click(getMenuButton());
@@ -3396,7 +3412,8 @@ describe("Mouse interactions", () => {
   it(
     "should be possible to click outside of the menu on another menu button which should close the current menu and open the new menu",
     suppressConsoleLogs(async () => {
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <div>
           <Menu>
             <MenuButton>Trigger</MenuButton>
@@ -3415,7 +3432,8 @@ describe("Mouse interactions", () => {
             </MenuItems>
           </Menu>
         </div>
-      `);
+      `,
+      });
 
       const [button1, button2] = getMenuButtons();
 
@@ -3441,7 +3459,8 @@ describe("Mouse interactions", () => {
     "should be possible to click outside of the menu, on an element which is within a focusable element, which closes the menu",
     suppressConsoleLogs(async () => {
       const focusFn = vi.fn();
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <div>
           <Menu>
             <MenuButton on:focus={focusFn}>Trigger</MenuButton>
@@ -3455,7 +3474,8 @@ describe("Mouse interactions", () => {
             <span>Next</span>
           </button>
         </div>
-      `);
+      `,
+      });
 
       // Click the menu button
       await click(getMenuButton());
@@ -3947,7 +3967,8 @@ describe("Mouse interactions", () => {
     suppressConsoleLogs(async () => {
       const clickHandler = vi.fn();
 
-      render(svelte`
+      render(Holder, {
+        componentString: `
         <Menu>
           <MenuButton>Trigger</MenuButton>
           <MenuItems>
@@ -3958,7 +3979,8 @@ describe("Mouse interactions", () => {
             </MenuItem>
           </MenuItems>
         </Menu>
-      `);
+      `,
+      });
 
       // Open menu
       await click(getMenuButton());
