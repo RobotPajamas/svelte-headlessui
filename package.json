@@ -1,6 +1,21 @@
 {
-  "name": "@rgossiaux/svelte-headlessui",
-  "description": "A complete, full-featured, unofficial Svelte port of Headless UI, an unstyled, fully accessible UI component library.",
+  "name": "@robotpajamas/svelte-headlessui",
+  "version": "1.0.3-rc0",
+  "description": "A somewhat complete, mostly full-featured, unofficial Svelte port of Headless UI, an unstyled, fully accessible UI component library.",
+  "homepage": "https://svelte-headlessui.goss.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robotpajamas/svelte-headlessui"
+  },
+  "author": { 
+    "name": "SJ",
+    "email": "suresh@robotpajamas.com",
+    "url": "https://sureshjoshi.com"
+  },
+  "bugs": {
+    "url": "https://github.com/robotpajamas/svelte-headlessui/issues"
+  },
+  "license": "MIT",
   "keywords": [
     "svelte",
     "headlessui",
@@ -9,13 +24,6 @@
     "headless",
     "sveltejs"
   ],
-  "homepage": "https://svelte-headlessui.goss.io",
-  "bugs": {
-    "url": "https://github.com/rgossiaux/svelte-headlessui/issues"
-  },
-  "license": "MIT",
-  "repository": "github:rgossiaux/svelte-headlessui",
-  "version": "1.0.2",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
