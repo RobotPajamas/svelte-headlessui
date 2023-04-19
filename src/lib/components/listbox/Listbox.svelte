@@ -3,6 +3,10 @@
     Open,
     Closed,
   }
+  export enum ValueMode {
+    Single,
+    Multi,
+  }
   export type ListboxOptionDataRef = {
     textValue: string;
     disabled: boolean;
@@ -14,6 +18,7 @@
     listboxState: ListboxStates;
     value: unknown;
     orientation: "vertical" | "horizontal";
+    mode: ValueMode;
 
     labelRef: Writable<HTMLLabelElement | null>;
     buttonRef: Writable<HTMLButtonElement | null>;
@@ -61,6 +66,10 @@
     horizontal?: boolean;
     /** The selected value */
     value?: StateDefinition["value"];
+    /** Whether the `Listbox` should allow mutliple selections */
+    multiple?: boolean;
+    /** The name used when using this component inside a form. */
+    name?: string;
   };
 </script>
 
@@ -80,6 +89,8 @@
   import type { HTMLActionArray } from "$lib/hooks/use-actions";
   import Render from "$lib/utils/Render.svelte";
   import type { TPassThroughProps } from "$lib/types";
+  import Hidden, { Features as HiddenFeatures } from "$lib/internal/Hidden.svelte";
+  import { objectToFormEntries } from "$lib/utils/form";
 
   /***** Props *****/
   type TAsProp = $$Generic<SupportedAs>;
@@ -89,7 +100,9 @@
   export let use: HTMLActionArray = [];
   export let disabled = false;
   export let horizontal = false;
+  export let multiple = false;
   export let value: StateDefinition["value"];
+  export let name: string | null = null;
 
   /***** Events *****/
   const forwardEvents = forwardEventsBuilder(get_current_component(), [
@@ -112,6 +125,9 @@
   let options: StateDefinition["options"] = [];
   let searchQuery: StateDefinition["searchQuery"] = "";
   let activeOptionIndex: StateDefinition["activeOptionIndex"] = null;
+  let mode: StateDefinition["mode"] = multiple
+    ? ValueMode.Multi
+    : ValueMode.Single;
 
   let api = writable<StateDefinition>({
     listboxState,
@@ -124,6 +140,7 @@
     activeOptionIndex,
     disabled,
     orientation,
+    mode,
     closeListbox() {
       if (disabled) return;
       if (listboxState === ListboxStates.Closed) return;
@@ -231,7 +248,25 @@
     },
     select(value: unknown) {
       if (disabled) return;
-      dispatch("change", value);
+      dispatch(
+        "change",
+        match(mode, {
+          [ValueMode.Single]: () => value,
+          [ValueMode.Multi]: () => {
+            let copy = ($api.value as unknown[]).slice();
+            let raw = value;
+
+            let idx = copy.indexOf(raw);
+            if (idx === -1) {
+              copy.push(raw);
+            } else {
+              copy.splice(idx, 1);
+            }
+
+            return copy;
+          },
+        })
+      );
     },
   });
   setContext(LISTBOX_CONTEXT_NAME, api);
@@ -256,6 +291,7 @@
       activeOptionIndex,
       disabled,
       orientation,
+      mode,
     };
   });
 
@@ -276,6 +312,21 @@
 </script>
 
 <svelte:window on:mousedown={handleMousedown} />
+
+{#if name != null && value != null}
+  {@const options = objectToFormEntries({ [name]: value })}
+  {#each options as [optionName, optionValue], index (index)}      
+    <Hidden
+      features={HiddenFeatures.Hidden}
+      as="input"
+      type="hidden"
+      hidden
+      readonly
+      name={optionName}
+      value={optionValue}
+    />
+  {/each}
+{/if}  
 <Render
   {...$$restProps}
   {as}
