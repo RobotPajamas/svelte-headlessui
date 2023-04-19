@@ -4,7 +4,8 @@
 // It gives us access to some handy assertions (e.g. toBeInTheDocument())
 // https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-import { beforeEach, afterAll } from "vitest";
+import { beforeEach, afterAll, afterEach } from "vitest";
+import { cleanup } from "@testing-library/svelte";
 import { vi } from "vitest";
 
 const IntersectionObserverMock = vi.fn(() => ({
@@ -26,6 +27,9 @@ vi.mock("$lib/hooks/use-id", () => {
 
 beforeEach(() => {
   mockId = 0;
+});
+afterEach(() => {
+  cleanup();
 });
 afterAll(() => {
   vi.restoreAllMocks();
